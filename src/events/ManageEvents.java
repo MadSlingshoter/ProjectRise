@@ -131,7 +131,7 @@ public class ManageEvents {
 			dice.setPlayerList(playerList.getList());
 			board.removePlayer(player);
 			deathGUI.addGui();
-		} 
+		}
 	}
 
 	/**
@@ -143,21 +143,22 @@ public class ManageEvents {
 	public void propertyEvent(Tile tile, Player player) {
 		Property tempProperty = (Property) tile;
 		int tempInt = 0;
+		boolean purchasable = tempProperty.getPurchaseable();
 
-		if (tempProperty.getPurchaseable() == true) {
+		if (purchasable) {
 			if (player.getBalance() < tempProperty.getPrice()) {
 				JOptionPane.showMessageDialog(null, "Not enough funds to purchase this property");
 			} else {
 				propertyDialog(tempProperty, player);
 			}
-		} else if (tempProperty.getPurchaseable() == false) {
+		} else {
 
 			if (tempProperty.getLevel() == 0) {
 				tempInt = tempProperty.getDefaultRent();
 
 				control(player, tempInt);
-				if (player.isAlive() == true) {
-					JOptionPane.showMessageDialog(null, player.getName() + " paid " + tempProperty.getTotalRent() + " GC to " 
+				if (player.isAlive()) {
+					JOptionPane.showMessageDialog(null, player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
 							+ tempProperty.getOwner().getName());
 					westPanel.append(player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
 							+ tempProperty.getOwner().getName() + "\n");
@@ -168,8 +169,8 @@ public class ManageEvents {
 			} else {
 				tempInt = tempProperty.getTotalRent();
 				control(player, tempInt);
-				if (player.isAlive() == true) {
-					JOptionPane.showMessageDialog(null, player.getName() + " paid " + tempProperty.getTotalRent() + " GC to " 
+				if (player.isAlive()) {
+					JOptionPane.showMessageDialog(null, player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
 							+ tempProperty.getOwner().getName());
 					westPanel.append(player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
 							+ tempProperty.getOwner().getName() + "\n");
@@ -208,7 +209,7 @@ public class ManageEvents {
 
 		control(player, chargePlayer);
 
-		if (player.isAlive() == true) {
+		if (player.isAlive()) {
 			westPanel.append(player.getName() + " paid 200 GC in tax\n");
 			player.decreaseBalace(chargePlayer);
 			player.decreaseNetWorth(chargePlayer);
@@ -249,7 +250,7 @@ public class ManageEvents {
 			}
 			
 			control(player, randomValue);
-			if (player.isAlive() == true) {
+			if (player.isAlive()) {
 				JOptionPane.showMessageDialog(null, player.getName() + " paid " + randomValue + " GC to " 
 						+ tempTavernObj.getOwner().getName());
 				westPanel.append(player.getName() + " paid " + randomValue + " GC to "
@@ -267,7 +268,7 @@ public class ManageEvents {
 	 * @param player in jail
 	 */
 	public void jailEvent(Tile tile, Player player) {
-		if (player.isPlayerInJail() == true && (player.getJailCounter()) < 2) {
+		if (player.isPlayerInJail() && (player.getJailCounter()) < 2) {
 			westPanel.append(player.getName() + " is in jail for " + (2 - player.getJailCounter()) + " more turns\n");
 			player.increaseJailCounter();
 			if (player.getBalance() > (player.getJailCounter() * 50)) {
@@ -314,7 +315,7 @@ public class ManageEvents {
 	 */
 	public void propertyDialog(Property property, Player player) {
 		int yesOrNo = JOptionPane.showConfirmDialog(null,
-				property.getName() + "\n" + "Do you want to purchase this property for " + property.getPrice() + " GC",
+				property.getName() + "\n" + "Do you want to purchase this property for " + property.getPrice() + " GC?",
 				"Decide your fate!", JOptionPane.YES_NO_OPTION);
 
 		if (yesOrNo == 0 && (property.getPrice() <= player.getBalance())) {
@@ -336,7 +337,7 @@ public class ManageEvents {
 	 * @param player, player who landed on the tavern.
 	 */
 	public void tavernDialog(Tavern tavern, Player player) {
-		int yesOrNo = JOptionPane.showConfirmDialog(null, "Do you want to purchase this property?", "JOption",
+		int yesOrNo = JOptionPane.showConfirmDialog(null, "Do you want to purchase this tavern for " + tavern.getPrice() + " GC?", "Make your choice",
 				JOptionPane.YES_NO_OPTION);
 
 		if (yesOrNo == 0 && (tavern.getPrice() <= player.getBalance())) {
@@ -414,7 +415,7 @@ public class ManageEvents {
 			tempCard.setIsBlessing(false);
 			tempCard.setFortune("CURSE");
 			control(player, pay);
-			if (player.isAlive() == true) {
+			if (player.isAlive()) {
 				westPanel.append(player.getName() + " paid " + pay + " GC\n");
 				player.decreaseBalace(pay);
 				player.decreaseNetWorth(pay);

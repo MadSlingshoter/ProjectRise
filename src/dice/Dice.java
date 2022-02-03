@@ -234,14 +234,14 @@ public class Dice extends JPanel implements ActionListener {
 			showPlayersTurn.uppdateGUI(playerList.getActivePlayer().getName(),
 					playerList.getActivePlayer().getPlayerColor());
 			
-			if (playerList.getActivePlayer().isPlayerInJail() == true) {
+			if (playerList.getActivePlayer().isPlayerInJail()) {
 				btnRollDice.setEnabled(false);
 				btnEndTurn.setEnabled(true);
 				manageEvents.newEvent(board.getDestinationTile(playerList.getActivePlayer().getPosition()),
 						playerList.getActivePlayer());
 			} 
 			
-			else if (playerList.getActivePlayer().isPlayerInJail() == false) {
+			else if (!playerList.getActivePlayer().isPlayerInJail()) {
 				btnRollDice.setEnabled(true);
 				btnEndTurn.setEnabled(false);
 			}
