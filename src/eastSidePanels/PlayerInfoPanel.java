@@ -33,18 +33,20 @@ public class PlayerInfoPanel extends JPanel {
 	private JPanel p3 = new JPanel();
 	private JPanel p4 = new JPanel();
 	
-	private PropertyWindow propertyWindow = new PropertyWindow();
+	private PropertyWindow propertyWindow;
 
 	private Font font = new Font("ALGERIAN", Font.PLAIN, 18);
 
 	/**
-	 * @param playerList
-	 * @param playernbr
-	 * 
-	 * player list is used to get the players to display correct information
-	 * playernbr is to specify what player
+	 * @param playerList player list is used to get the players to display correct information
+	 * @param playernbr playernbr is to specify what player
+	 * @param eastSidePanel --> ADDED 2022-02-03 by Marcus Juninger
+	 *                         to fix GUI updates when up-/downgrading properties.
+	 *                      Simply used as pass through because no controller class exists.
 	 */
-	public PlayerInfoPanel(PlayerList playerList, int playernbr) {
+	public PlayerInfoPanel(PlayerList playerList, int playernbr, EastSidePanel eastSidePanel) {
+
+		this.propertyWindow = new PropertyWindow(eastSidePanel);
 
 		setPreferredSize(new Dimension(345, 860));
 		p1.setBounds(10, 5, 330, 50);

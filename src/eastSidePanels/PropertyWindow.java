@@ -19,17 +19,20 @@ public class PropertyWindow extends JPanel {
 	private JTabbedPane tab;
 	private PlayerProperties playerProperties;
 
+	/**
+	 * Reference for updating GUI, only exists because of lackluster architecture overall.
+	 * Not used in this class, only passed on to PlayerProperties class.
+	 * Added 2022-02-03 by Marcus Juninger.
+	 */
+	private EastSidePanel eastSidePanel;
+
 	private int playerAt;
 
 	private int[] size;
-
-	/**
-	 * @param playerList
-	 * 
-	 *this method is used to update the panel
-	 */
 	
-	public PropertyWindow() {
+	public PropertyWindow(EastSidePanel eastSidePanel) {
+
+		this.eastSidePanel = eastSidePanel;
 
 		setPreferredSize(new Dimension(330, 600));
 		setOpaque(false);
@@ -67,8 +70,8 @@ public class PropertyWindow extends JPanel {
 
 		for (int i = 0; i < size.length; i++) {
 
-			new PropertyWindow();
-			playerProperties = new PlayerProperties(playerList, getPlayerAt(), i);
+			new PropertyWindow(eastSidePanel);
+			playerProperties = new PlayerProperties(playerList, getPlayerAt(), i, eastSidePanel);
 			tab.addTab("Property" + (i + 1), playerProperties);
 			tab.setBackgroundAt(i, playerList.getPlayerFromIndex(getPlayerAt()).getProperty(i).getColor());
 

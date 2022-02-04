@@ -1,6 +1,5 @@
 package startMenu;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -8,23 +7,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
+import javax.swing.*;
 
-import board.Board;
-import board.ColorIconMap;
 import combinedPanels.GamePanels;
-import dice.ShowPlayersTurn;
-import menu.Menu;
 import player.PlayerList;
 
 /**
@@ -39,7 +24,7 @@ public class StartingScreen extends JFrame {
 
 	private BackgroundMusic bgm = new BackgroundMusic();
 	private PlayerList playerList = new PlayerList();
-	private GamePanels mainWindow = new GamePanels();
+	private GamePanels mainWindow = new GamePanels(bgm);
 
 	private JButton btnConfirm = new JButton("Confirm");
 	private JButton btnStartGame = new JButton("Start Game");
@@ -87,8 +72,11 @@ public class StartingScreen extends JFrame {
 
 	/**
 	 * Mute button
+	 * Updated 2022-02-04 for better overall usability.
+	 * Changed from Checkbox to Toggle button.
+	 * /Marcus Juninger
 	 */
-	private JCheckBox mute = new JCheckBox("Music On");
+	private JToggleButton mute = new JToggleButton("Music: On");
 
 	/**
 	 * Integers
@@ -175,11 +163,11 @@ public class StartingScreen extends JFrame {
 
 		/**
 		 * Mute button
+		 * Updated 2022-02-04 for better overall usability.
+		 * Now looks more like a proper on/off toggle switch instead of a checkbox.
+		 * /Marcus Juninger.
 		 */
-		mute.setBounds(2, 740, 150, 35);
-		mute.setForeground(Color.white);
-		mute.setFont(fontRadioButtons);
-		mute.setOpaque(false);
+		mute.setBounds(10, 740, 100, 40);
 		mute.addActionListener(new ButtonListener());
 
 		/**
@@ -193,7 +181,6 @@ public class StartingScreen extends JFrame {
 		lblBackground.add(btnStartGame);
 		lblBackground.add(mute);
 		add(lblBackground);
-		new Menu(bgm);
 	}
 
 	public void createFrame() {
@@ -255,12 +242,12 @@ public class StartingScreen extends JFrame {
 			}
 
 			if (e.getSource() == mute) {
-				if (mute.getText().contains("n")) {
-					mute.setText("Music Off");
-					bgm.pauseMusic();
-				} else {
-					mute.setText("Music On");
+				if (mute.getText().equals("Music: Off")) {
+					mute.setText("Music: On");
 					bgm.startMusic();
+				} else {
+					mute.setText("Music: Off");
+					bgm.pauseMusic();
 				}
 			}
 
@@ -281,8 +268,11 @@ public class StartingScreen extends JFrame {
 
 			if (e.getSource() == btnStartGame) {
 
-				if(tfPlayer1.getText().length()==0 || tfPlayer2.getText().length()==0 || tfPlayer3.getText().length()==0 || tfPlayer4.getText().length()==0) {
-					JOptionPane.showMessageDialog(null, "All players must have a name");
+				/**
+				 * Updated 2022-02-04 by Marcus Juninger to handle whitespace usernames in bug B4.
+				 */
+				if(tfPlayer1.getText().isBlank() || tfPlayer2.getText().isBlank() || tfPlayer3.getText().isBlank() || tfPlayer4.getText().isBlank()) {
+					JOptionPane.showMessageDialog(null, "All players must have a name. Names can not be blank.");
 				} else {
 
 					switch(amountOfPlayers) {

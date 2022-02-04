@@ -47,15 +47,23 @@ public class PlayerProperties extends JPanel implements ActionListener {
 	private int playerAtI, propertyAtI;
 
 	/**
+	 * Reference for updating GUI, only exists because of lackluster architecture overall.
+	 * Added 2022-02-03 by Marcus Juninger.
+	 */
+	private EastSidePanel eastSidePanel;
+
+	/**
 	 * @param playerList
 	 * @param playerAtI
 	 * @param propertyAtI 
 	 */
-	public PlayerProperties(PlayerList playerList, int playerAtI, int propertyAtI) {
+	public PlayerProperties(PlayerList playerList, int playerAtI, int propertyAtI, EastSidePanel eastSidePanel) {
 
 		this.playerList = playerList;
 		this.playerAtI = playerAtI;
 		this.propertyAtI = propertyAtI;
+
+		this.eastSidePanel = eastSidePanel;
 
 		setBorder(null);
 
@@ -301,6 +309,7 @@ public class PlayerProperties extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Trade can not be done! The player you picked does not own any properties!");
 			}
 		}
+		eastSidePanel.addPlayerList(playerList);
 	}
 
 	/**
