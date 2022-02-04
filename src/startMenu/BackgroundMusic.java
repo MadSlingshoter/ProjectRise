@@ -16,7 +16,14 @@ public class BackgroundMusic extends Thread {
  
 	private Clip clip;
 	private Thread musicPlayer;
+
+	/**
+	 * Not sure if this actually works properly, seems to be implemented and used poorly.
+	 * Use clip.isActive() instead to get the current music status.
+	 * /Marcus Juninger 2022-02-04.
+	 */
 	public Boolean isPlaying;
+
 	private int musicPausedAt = 0;
 	
 	public BackgroundMusic() {
@@ -32,14 +39,13 @@ public class BackgroundMusic extends Thread {
 		if(clip!=null && isPlaying) {
 			clip.setFramePosition(musicPausedAt);
 			clip.start();
-			
 		
 		} else if(musicPlayer==null) {
 			musicPlayer = new Thread(this);
 			isPlaying=true;
 			musicPlayer.start();
 		}
-	}    
+	}
 
 	/**
 	 * Pauses music, music continues where it stopped when player asks for music again.
@@ -49,6 +55,16 @@ public class BackgroundMusic extends Thread {
 			musicPausedAt = clip.getFramePosition();
 			clip.stop();
 		}
+	}
+
+	/**
+	 * This method replaces the use of boolean "isPlaying" in updated methods.
+	 * Used to get current state of music by using clip.isActive().
+	 * @return the currently played music clip
+	 * @author Marcus Juninger, 2022-02-04.
+	 */
+	public Clip getClip() {
+		return clip;
 	}
 
 	/**
