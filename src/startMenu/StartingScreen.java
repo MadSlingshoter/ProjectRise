@@ -281,8 +281,11 @@ public class StartingScreen extends JFrame {
 
 			if (e.getSource() == btnStartGame) {
 
-				if(tfPlayer1.getText().length()==0 || tfPlayer2.getText().length()==0 || tfPlayer3.getText().length()==0 || tfPlayer4.getText().length()==0) {
-					JOptionPane.showMessageDialog(null, "All players must have a name");
+				/**
+				 * Updated 2022-02-04 by Marcus Juninger to handle whitespace usernames in bug B4.
+				 */
+				if(tfPlayer1.getText().isBlank() || tfPlayer2.getText().isBlank() || tfPlayer3.getText().isBlank() || tfPlayer4.getText().isBlank()) {
+					JOptionPane.showMessageDialog(null, "All players must have a name. Names can not be blank.");
 				} else {
 
 					switch(amountOfPlayers) {
