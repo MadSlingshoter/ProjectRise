@@ -20,7 +20,9 @@ import startMenu.StartingScreen;
  * This class displays the game board as well as what the players are called and
  * how much they own.
  * 
- * @autho Muhammad Hasan, Rohan Samandari
+ * @author Muhammad Hasan, Rohan Samandari
+ *
+ * Updated 2022-02-05 by Ali Albabily to fix bug B3 in order to restart the game properly.
  */
 public class Menu extends JPanel {
 	private BackgroundMusic music;
@@ -31,14 +33,18 @@ public class Menu extends JPanel {
 	private JMenuItem jmRestart = new JMenuItem("Restart Game");
 	private JMenuItem jmRules = new JMenuItem("Read Rules");
 	private Rules rules = new Rules();
+	private GamePanels gamePanels;
 	
 	/**
 	 * Constructor which draws the gui and sets music reference.
 	 * Updated 2022-02-04 by Marcus Juninger to fix bug B2 with music.
 	 * @param music
+	 * @param gamePanels
 	 */
-	public Menu(BackgroundMusic music) {
+	public Menu(BackgroundMusic music, GamePanels gamePanels) {
 		this.music = music;
+		this.gamePanels = gamePanels;
+
 		setOpaque(false);
 		setPreferredSize(new Dimension(400, 40));
 		setLayout(new BorderLayout());
@@ -74,16 +80,23 @@ public class Menu extends JPanel {
 					jmMusicController.setText("Pause Music");
 				}
 			} else if (e.getSource()==jmRestart) {
-				StartingScreen ss = new StartingScreen();
-				ss.initializeGUI();
-				GamePanels gp = new GamePanels(music);
-				gp.Dispose();
+				restartGame();
 			} else if (e.getSource()==jmExit) {
 				System.exit(0);
 			} else if (e.getSource()==jmRules) {
 				rules.showRules();
 			}
 		}
-		
+	}
+
+	/**
+	 * This method restarts the game
+	 * @author Ali Albabily, 2022-02-05.
+	 */
+	private void restartGame() {
+		gamePanels.Dispose(); // closes current GamePanels
+		music.pauseMusic(); // stops playing music
+		StartingScreen ss = new StartingScreen();
+		ss.initializeGUI();
 	}
 }

@@ -30,6 +30,7 @@ import westSidePanel.WestSidePanel;
  * 
  * @author Abdulkhuder Muhammad
  *
+ * Updated 2022-02-05 by Ali Albabily to fix bug B3 in order to restart the game properly.
  */
 public class GamePanels extends JPanel {
 
@@ -50,7 +51,7 @@ public class GamePanels extends JPanel {
 	 * adds the panels and sets the bounds
 	 */
 	public GamePanels(BackgroundMusic music) {
-		menu = new Menu(music);
+		menu = new Menu(music, this);
 		setBorder(new MatteBorder(2, 2, 2, 2, (Color) Color.BLACK));
 
 		setBackground(Color.DARK_GRAY);
