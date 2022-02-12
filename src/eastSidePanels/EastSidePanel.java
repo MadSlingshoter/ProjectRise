@@ -1,11 +1,11 @@
 package eastSidePanels;
 
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
 import player.PlayerList;
 
@@ -42,12 +42,24 @@ public class EastSidePanel extends JPanel {
 		setOpaque(false);
 		setLayout(null);
 		UIManager.put("TabbedPane.contentOpaque", false);
-		UIManager.put("TabbedPane.selected", Color.cyan);
+		UIManager.put("TabbedPane.selected", Color.black);
+		UIManager.put("TabbedPane.borderHightlightColor", Color.DARK_GRAY);
+		UIManager.put("TabbedPane.darkShadow", Color.DARK_GRAY);
+		UIManager.put("TabbedPane.light", Color.DARK_GRAY);
+		UIManager.put("TabbedPane.selectHighlight", Color.DARK_GRAY);
+		UIManager.put("TabbedPane.darkShadow", Color.DARK_GRAY);
+		UIManager.put("TabbedPane.focus", Color.DARK_GRAY);
+		UIManager.put("TabbedPane.contentBorderInsets", new Insets(0,0,0,0));
+		UIManager.put("TabbedPane.tabAreaInsets", new Insets(0,0,0,0));
+		UIManager.put("TabbedPane.tabInsets", new Insets(0,0,0,0));
+		UIManager.put("TabbedPane.tabsOverlapBorder", true);
 
 		tab = new JTabbedPane();
 
 		tab.setBounds(0, 0, 355, 860);
 		tab.setBackground(new Color(0, 0, 0));
+		setBorder(new EmptyBorder(0,0,0,0));
+
 
 		add(tab);
 
