@@ -1,6 +1,10 @@
 package player;
 
 import org.junit.Test;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
 
 import java.awt.*;
 
@@ -8,45 +12,55 @@ import static org.junit.Assert.*;
 
 public class PlayerTest {
 
+    /**
+     * Tests for the Player class
+     *
+     * Author: Bajram Gerbeshi
+     *
+     * Date: 2022-02-15
+     *
+     */
 
-    @Test
-    public void setName(){
 
-        Player p = new Player("Bajram", null, 1);
-        p.setName("John\n");
-        assertEquals("John\n", p.getName());
+    Player p = new Player("John", null, 1);
+
+    @ParameterizedTest
+    @ValueSource(strings = {"null", "[$&+,:;=?@#|'<>.-^*()%!]+-", "������", "\uD83D\uDE04", "并且当地政府也鼓励人些方言的人数还是逐渐减" } )
+    public void setNames(String fName) {
+
+        Player p = new Player(fName, null, 1);
+
+        assertEquals(fName, p.getName());
+
+        System.out.println(p.getName());
 
     }
 
     @Test
-    public void getName(){
+    public void getName() {
 
-        Player p = new Player("null", null, 1);
-        assertEquals("null", p.getName());
+        assertEquals("John", p.getName());
 
     }
 
 
     @Test
-    public void getPlayerIndex(){
+    public void getPlayerIndex() {
 
-        Player p = new Player(null, null, 1);
         assertEquals(1, p.getPlayerIndex());
 
     }
 
     @Test
-    public void setPlayerIndex(){
+    public void setPlayerIndex() {
 
-        Player p = new Player(null, null, 1);
         p.setPlayerIndex(2);
         assertEquals(2, p.getPlayerIndex());
 
     }
 
     @Test
-    public void setBalance(){
-        Player p = new Player(null, null, 1);
+    public void setBalance() {
 
         p.setBalance(3);
 
@@ -54,8 +68,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void IncreaseBalance(){
-        Player p = new Player(null, null, 1);
+    public void IncreaseBalance() {
 
         p.increaseBalance(5);
 
@@ -68,8 +81,7 @@ public class PlayerTest {
      * Decrease balance works as imagined, (if you add -balance, then it increases because minus minus is a plus in mathematics.
      */
     @Test
-    public void decreaseBalace(){
-        Player p = new Player(null, null, 1);
+    public void decreaseBalace() {
 
         p.decreaseBalace(-100);
 
@@ -78,8 +90,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void setAlive(){
-        Player p = new Player(null, null,1);
+    public void setAlive() {
 
         p.setIsAlive(true);
         assertTrue(p.isAlive());
@@ -90,15 +101,48 @@ public class PlayerTest {
     }
 
     @Test
-    public void color(){
+    public void color() {
+        Color c = p.getPlayerColor();
 
-        Player p = new Player("Bajram", null , null , 1);
-
-       Color c =  p.getPlayerColor();
-
-       assertEquals(null, c);
+        assertEquals(null, c);
 
     }
 
+    @Test
+    public void increaseJailCounter() {
 
+        p.increaseJailCounter();
+        assertEquals(1, p.getJailCounter());
+    }
+
+    @Test
+    public void setJailCounterToNumber() {
+
+        int counter = -4;
+        p.setJailCounter(counter);
+        p.increaseJailCounter();
+
+        System.out.println(p.getJailCounter());
+        System.out.println(p.isPlayerInJail());
+        assertEquals(-3, p.getJailCounter());
+    }
+
+    @Test
+    public void playerPos() {
+
+        p.setPosition(10);
+        assertEquals(10, p.getPosition());
+
+    }
+
+    @Test
+    public void Go(){
+        System.out.println(p.passedGo());
+    }
+
+    @Test
+    @DisplayName("Should be null (inialized as null")
+    public void Image(){
+        assertNull(p.getImage());
+    }
 }
