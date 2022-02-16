@@ -46,8 +46,8 @@ public class Dice extends JPanel implements ActionListener {
 	private ImageIcon faceToShow, showDice;
 	private Image resizedImage;
 
-	private int diceWidth = (screenSize.width) / 20;
-	private int diceHeight = (screenSize.height) / 10;
+	private int diceWidth = 100;
+	private int diceHeight = 100;
 	private int roll;
 
 	
@@ -97,7 +97,7 @@ public class Dice extends JPanel implements ActionListener {
 	 */
 	public void initializePanel() {
 		
-		setPreferredSize(new Dimension(650, 120));
+		setPreferredSize(new Dimension(650, 109));
 		setLayout(new FlowLayout());
 		setOpaque(false);
 		
@@ -197,7 +197,7 @@ public class Dice extends JPanel implements ActionListener {
 
 			if (faceValueDiceOne == faceValueDiceTwo) {
 				setRoll(((faceValueDiceOne + faceValueDiceTwo) * 2));
-				westSidePnl.append(playerList.getActivePlayer().getName() + " Rolled a dubble: " + getRoll() + "\n");
+				westSidePnl.append(playerList.getActivePlayer().getName() + " Rolled a double: " + getRoll() + "\n");
 			} else {
 				setRoll(((faceValueDiceOne + faceValueDiceTwo)));
 				westSidePnl.append(playerList.getActivePlayer().getName() + " Rolled a: " + getRoll() + "\n");

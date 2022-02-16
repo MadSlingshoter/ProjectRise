@@ -35,17 +35,23 @@ import westSidePanel.WestSidePanel;
 public class GamePanels extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private EastSidePanel tPanel = new EastSidePanel();
+	private EastSidePanel eastSidePanel = new EastSidePanel();
 	private WestSidePanel westPanel = new WestSidePanel();
 	private Board board = new Board(westPanel);
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	private PlayerList playerList;
-	private Dice dice = new Dice(board, playerList, westPanel, tPanel);
+	private Dice dice = new Dice(board, playerList, westPanel, eastSidePanel);
 	private JFrame frame = new JFrame();
 	private JLabel lblPic = new JLabel();
 	private Menu menu;
-	private int width = (int) screenSize.getWidth();
-	private int height = (int) screenSize.getHeight();
+	private int width = screenSize.width;
+	private int height = screenSize.height;
+	private int boardWidth = 750;
+	private int boardHeight = 750;
+	private int sidePanelsWidth = 345;
+	private int sidePanelsHeight = 860;
+	private int gamePosX = (width - ((sidePanelsWidth*2) + boardWidth))/2;
+	private int gamePosY = (height - sidePanelsHeight)/2;
 
 	/**
 	 * adds the panels and sets the bounds
@@ -56,18 +62,17 @@ public class GamePanels extends JPanel {
 
 		setBackground(Color.DARK_GRAY);
 		setPreferredSize(new Dimension(width, height));
-
 		setLayout(null);
-		tPanel.setOpaque(false);
-		tPanel.setBounds(1095, 0, 345, 860);
-		add(tPanel);
-		westPanel.setBounds(0, 0, 345, 860);
+		eastSidePanel.setOpaque(false);
+		eastSidePanel.setBounds(gamePosX+sidePanelsWidth+boardWidth, gamePosY, sidePanelsWidth, sidePanelsHeight);
+		add(eastSidePanel);
+		westPanel.setBounds(gamePosX, gamePosY, sidePanelsWidth, sidePanelsHeight);
 		add(westPanel);
-		board.setBounds(346, 0, 750, 750);
+		board.setBounds(gamePosX+sidePanelsWidth+1, gamePosY, boardWidth, boardHeight);
 		add(board);
-		dice.setBounds(346, 751, 750, 109);
+		dice.setBounds(gamePosX+sidePanelsWidth+1, gamePosY+boardHeight+1, boardWidth, 109);
 		add(dice);
-		menu.setBounds(0, 0, 50, 18);
+		menu.setBounds(gamePosX, gamePosY, 50, 18);
 		add(menu);
 
 		BufferedImage img = null;
@@ -107,7 +112,7 @@ public class GamePanels extends JPanel {
 
 		board.addPlayers(playerList);
 		board.setPlayers();
-		tPanel.addPlayerList(playerList);
+		eastSidePanel.addPlayerList(playerList);
 		dice.addPlayerList(playerList);
 
 	}

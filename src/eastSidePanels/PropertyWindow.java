@@ -1,10 +1,10 @@
 package eastSidePanels;
 
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
 import player.PlayerList;
 
@@ -33,16 +33,18 @@ public class PropertyWindow extends JPanel {
 	public PropertyWindow(EastSidePanel eastSidePanel) {
 
 		this.eastSidePanel = eastSidePanel;
-
-		setPreferredSize(new Dimension(330, 600));
+		setBorder(new EmptyBorder(0,0,0,0));
+		setPreferredSize(new Dimension(345, 600));
 		setOpaque(false);
 		setLayout(null);
 		UIManager.put("TabbedPane.contentOpaque", false);
 		UIManager.put("TabbedPane.selected", Color.cyan);
+		UIManager.getDefaults().put("TabbedPane.contentBorderInsets", new Insets(0,0,0,0));
+		UIManager.getDefaults().put("TabbedPane.tabsOverlapBorder", true);
 
 		tab = new JTabbedPane();
 		tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		tab.setBorder(null);
+
 		tab.setBounds(0, 0, 330, 600);
 		add(tab);
 

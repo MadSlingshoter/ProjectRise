@@ -17,7 +17,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.SwingConstants; 
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 
 import player.Player;
@@ -65,11 +66,11 @@ public class PlayerProperties extends JPanel implements ActionListener {
 
 		this.eastSidePanel = eastSidePanel;
 
-		setBorder(null);
+		setBorder(new EmptyBorder(0,0,0,0));
 
 		setOpaque(false);
 		setBackground(Color.DARK_GRAY);
-		setPreferredSize(new Dimension(330, 607));
+		setPreferredSize(new Dimension(345, 607));
 		setLayout(null);
 
 		lblRent.setForeground(Color.white);
