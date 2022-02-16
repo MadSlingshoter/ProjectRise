@@ -247,7 +247,6 @@ public class Dice extends JPanel implements ActionListener {
 			}
 			
 			eastSidePnl.addPlayerList(playerList);
-			eastSidePnl.setTab();
 		}
 
 	}
