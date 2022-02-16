@@ -1,11 +1,19 @@
 package eastSidePanels;
 
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
+
 import javax.swing.border.EmptyBorder;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 
 import player.PlayerList;
 
@@ -41,6 +49,7 @@ public class EastSidePanel extends JPanel {
 		setPreferredSize(new Dimension(345, 860));
 		setOpaque(false);
 		setLayout(null);
+
 		UIManager.put("TabbedPane.contentOpaque", false);
 		UIManager.put("TabbedPane.selected", Color.black);
 		UIManager.put("TabbedPane.borderHightlightColor", Color.DARK_GRAY);
@@ -53,6 +62,8 @@ public class EastSidePanel extends JPanel {
 		UIManager.put("TabbedPane.tabAreaInsets", new Insets(0,0,0,0));
 		UIManager.put("TabbedPane.tabInsets", new Insets(0,0,0,0));
 		UIManager.put("TabbedPane.tabsOverlapBorder", true);
+		UIManager.put("TabbedPane.selected",Color.BLACK);
+
 
 		tab = new JTabbedPane();
 
@@ -69,7 +80,6 @@ public class EastSidePanel extends JPanel {
 	 * this method adds tabs according to the amount of players
 	 */
 	public void addtabs() {
-
 		tab.removeAll();
 
 		for (int i = 0; i < playerList.getLength(); i++) {
@@ -78,43 +88,11 @@ public class EastSidePanel extends JPanel {
 			playerInfoPnl.setOpaque(false);
 			tab.addTab("Player " + (i + 1), playerInfoPnl);
 			tab.setOpaque(false);
-
-		}
-
-		tab.setSelectedIndex(currentPlayer);
-		tab.setForeground(Color.white);
-		tab.setBackground(new Color(157, 0, 0));
-		tab.setBackgroundAt(currentPlayer, new Color(0, 157, 0));
-
-	}
-
-	/**
-	 * this method is used to display the correct color
-	 * the active players turn should be green and the others should be red.
-	 */
-	public void setTab() {
-		tab.setBackgroundAt(currentPlayer, null);
-
-		currentPlayer++;
-		if (currentPlayer > playerList.getLength() - 1) {
-			currentPlayer = 0;
-
 			tab.setSelectedIndex(currentPlayer);
 			tab.setForeground(Color.white);
-			tab.setBackground(new Color(157, 0, 0));
-			tab.setBackgroundAt(currentPlayer, new Color(0, 157, 0));
+			tab.setBackgroundAt(i,playerList.getPlayerFromIndex(i).getPlayerColor());
+		}
 
-		} else
 
-			tab.setSelectedIndex(currentPlayer);
-		tab.setForeground(Color.white);
-		tab.setBackground(new Color(157, 0, 0));
-		tab.setBackgroundAt(currentPlayer, new Color(0, 157, 0));
 	}
-	
-
-	public int getTab() {
-		return currentPlayer;
-	}
-
 }
