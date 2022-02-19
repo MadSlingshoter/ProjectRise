@@ -99,8 +99,9 @@ public class StartingScreen extends JFrame {
 	 */
 	public void initializeGUI() {
 
-		bgm.startMusic();
 
+
+		bgm.startMusic();             // comment out this line if you want to remove music from playing.
 		createFrame();
 		bgm.startMusic();
 
@@ -139,7 +140,7 @@ public class StartingScreen extends JFrame {
 		/**
 		 * Confirm button
 		 */
-		btnConfirm.setBounds(375, 315, 150, 30);
+		btnConfirm.setBounds(375, 355, 150, 30);
 		btnConfirm.addActionListener(new ButtonListener());
 
 		/**
