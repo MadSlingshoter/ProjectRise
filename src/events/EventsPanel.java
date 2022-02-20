@@ -158,49 +158,49 @@ public class EventsPanel extends JPanel {
         yesProperty.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                deactivateAllButtons();
                 manageEvent.propertyBuy(property,player);
                 setVisible(false);
-                deactivateAllButtons();
             }
         });
         noProperty.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                deactivateAllButtons();
                 manageEvent.propertyNotBuy(property,player);
                 setVisible(false);
-                deactivateAllButtons();
             }
         });
         noPayJail.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                deactivateAllButtons();
                 manageEvent.noPayJail(player);
                 setVisible(false);
-                deactivateAllButtons();
             }
         });
         payJail.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                deactivateAllButtons();
                 manageEvent.payJail(player);
                 setVisible(false);
-                deactivateAllButtons();
             }
         });
         yesTavern.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                deactivateAllButtons();
                 manageEvent.buyTavern(tavern,player);
                 setVisible(false);
-                deactivateAllButtons();
             }
         });
         noTavern.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                deactivateAllButtons();
                 manageEvent.noBuyTavern(tavern,player);
                 setVisible(false);
-                deactivateAllButtons();
             }
         });
         reset.addActionListener(new ActionListener() {

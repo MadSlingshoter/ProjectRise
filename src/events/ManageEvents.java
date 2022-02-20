@@ -272,6 +272,7 @@ public class ManageEvents {
 	 */
 	public void jailEvent(Tile tile, Player player) {
 		if (player.isPlayerInJail() && (player.getJailCounter()) < 2) {
+			eventsPanel.setMessage(player.getName() + " is in jail for " + (2 - player.getJailCounter()) + " more turns\n", "Jail");
 			westPanel.append(player.getName() + " is in jail for " + (2 - player.getJailCounter()) + " more turns\n");
 			player.increaseJailCounter();
 			if (player.getBalance() > (player.getJailCounter() * 50)) {

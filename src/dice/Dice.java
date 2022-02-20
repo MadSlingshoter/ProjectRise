@@ -195,9 +195,10 @@ public class Dice extends JPanel implements ActionListener {
 			else if (!playerList.getActivePlayer().isPlayerInJail()) {
 				btnRollDice.setEnabled(true);
 				btnEndTurn.setEnabled(false);
+				manageEvents.hideEventPanels();
 			}
 
-			manageEvents.hideEventPanels();
+
 			eastSidePnl.updatePlayerList(playerList);
 		}
 
