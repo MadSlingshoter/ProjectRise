@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.border.MatteBorder;
 
 import board.Board;
+import cheat.CheatGui;
 import dice.Dice;
 import eastSidePanels.EastSidePanel;
 import menu.Menu;
@@ -40,10 +41,11 @@ public class GamePanels extends JPanel {
 	private Board board = new Board(westPanel);
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	private PlayerList playerList;
+	private Menu menu;
 	private Dice dice = new Dice(board, playerList, westPanel, eastSidePanel);
 	private JFrame frame = new JFrame();
 	private JLabel lblPic = new JLabel();
-	private Menu menu;
+	private CheatGui cheat = new CheatGui(dice);
 	private int width = screenSize.width;
 	private int height = screenSize.height;
 	private int boardWidth = 750;
@@ -52,6 +54,7 @@ public class GamePanels extends JPanel {
 	private int sidePanelsHeight = 860;
 	private int gamePosX = (width - ((sidePanelsWidth*2) + boardWidth))/2;
 	private int gamePosY = (height - sidePanelsHeight)/2;
+	private JFrame jframe;
 
 	/**
 	 * adds the panels and sets the bounds
@@ -59,7 +62,7 @@ public class GamePanels extends JPanel {
 	public GamePanels(BackgroundMusic music) {
 		menu = new Menu(music, this);
 		setBorder(new MatteBorder(2, 2, 2, 2, (Color) Color.BLACK));
-
+		dice.setMenu(menu);
 		setBackground(Color.DARK_GRAY);
 		setPreferredSize(new Dimension(width, height));
 		setLayout(null);
@@ -74,6 +77,10 @@ public class GamePanels extends JPanel {
 		add(dice);
 		menu.setBounds(gamePosX, gamePosY, 50, 18);
 		add(menu);
+		jframe = new JFrame();
+		jframe.add(cheat);
+		jframe.setVisible(true);
+		jframe.setSize(new Dimension(400,400));
 
 		BufferedImage img = null;
 		try {
@@ -112,7 +119,7 @@ public class GamePanels extends JPanel {
 
 		board.addPlayers(playerList);
 		board.setPlayers();
-		eastSidePanel.addPlayerList(playerList);
+		eastSidePanel.updatePlayerList(playerList);
 		dice.addPlayerList(playerList);
 
 	}

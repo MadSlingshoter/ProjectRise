@@ -99,10 +99,10 @@ public class StartingScreen extends JFrame {
 	 */
 	public void initializeGUI() {
 
-		bgm.startMusic();
+		//bgm.startMusic();
 
 		createFrame();
-		bgm.startMusic();
+		//bgm.startMusic();
 
 		/**
 		 * JPanel for information about players

@@ -6,20 +6,15 @@ import java.util.Random;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.swing.JOptionPane;
-
 import board.Board;
 import dice.Dice;
 import eastSidePanels.EastSidePanel;
 import messageGui.DeathGUI;
-import messageGui.FortuneTellerGUI;
-import messageGui.SecretGui;
-import messageGui.WinGui;
+
 import player.Player;
 import player.PlayerList;
 import player.PlayerRanks;
 import tiles.FortuneTeller;
-import tiles.Go;
 import tiles.GoToJail;
 import tiles.Jail;
 import tiles.Property;
@@ -40,12 +35,13 @@ public class ManageEvents {
 	private Board board;
 	private Dice dice;
 	private DeathGUI deathGUI;
-	private FortuneTellerGUI msgGUI;
 	private EastSidePanel eastPanel;
 	private Random rand = new Random();
 	private int roll;
 	private int taxCounter = 0;
 	private WestSidePanel westPanel;
+	private EventsPanel eventsPanel;
+
 
 	/**
 	 * Constructor initializes objects in the parameter. Creates Death -and MessageGUI.
@@ -61,8 +57,11 @@ public class ManageEvents {
 		this.board = board;
 		this.playerList = playerList;
 		this.eastPanel = eastPanel;
+
 		deathGUI = new DeathGUI();
-		msgGUI = new FortuneTellerGUI();
+		eventsPanel = new EventsPanel(dice, this);
+		board.add(eventsPanel);
+		board.moveToFront(eventsPanel);
 	}
 
 	/**
@@ -73,12 +72,9 @@ public class ManageEvents {
 	public void newEvent(Tile tile, Player player) {
 		player.checkPlayerRank();
 
-		if (player.getPlayerRank() == PlayerRanks.KINGS) {
-			new WinGui();
-		}
-
-		if (playerList.getLength() == 1) {
-			new WinGui();
+		if (player.getPlayerRank() == PlayerRanks.KINGS || playerList.getLength() == 1) {
+			eventsPanel.setMessage("You won!", player.getName());
+			eventsPanel.activateResetButton();
 		}
 
 		if (tile instanceof Property) {
@@ -112,12 +108,16 @@ public class ManageEvents {
 		if (tile instanceof FortuneTeller) {
 			fortuneTellerEvent(tile, player);
 		}
-		eastPanel.addPlayerList(playerList);
+		eastPanel.updatePlayerList(playerList);
+	}
+
+	public void hideEventPanels() {
+		eventsPanel.hideEventpanel();
 	}
 
 	/**
 	 * This method is supposed to be called from any class that requires the current
-	 * player to pay any amount, if the user does not have the amount required they
+	 * player to pay any amount, if athe user does not have the mount required they
 	 * should be removed from the game
 	 */
 	public void control(Player player, int amount) {
@@ -127,7 +127,7 @@ public class ManageEvents {
 			playerList.switchToNextPlayer();
 			playerList.eliminatePlayer(player);
 			playerList.updatePlayerList();
-			eastPanel.addPlayerList(playerList.getList());
+			eastPanel.updatePlayerList(playerList.getList());
 			dice.setPlayerList(playerList.getList());
 			board.removePlayer(player);
 			deathGUI.addGui();
@@ -137,8 +137,8 @@ public class ManageEvents {
 	/**
 	 * Method called when player lands on a property. Checks if it's availability and if the player has to pay rent or 
 	 * can purchase the property.
-	 * @param tile
-	 * @param player
+	 * @param tile tile
+	 * @param player player
 	 */
 	public void propertyEvent(Tile tile, Player player) {
 		Property tempProperty = (Property) tile;
@@ -147,7 +147,8 @@ public class ManageEvents {
 
 		if (purchasable) {
 			if (player.getBalance() < tempProperty.getPrice()) {
-				JOptionPane.showMessageDialog(null, "Not enough funds to purchase this property");
+				eventsPanel.setMessage("Not enough funds to purchase this property", "balle");
+
 			} else {
 				propertyDialog(tempProperty, player);
 			}
@@ -158,8 +159,9 @@ public class ManageEvents {
 
 				control(player, tempInt);
 				if (player.isAlive()) {
-					JOptionPane.showMessageDialog(null, player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
+					eventsPanel.setMessage( player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
 							+ tempProperty.getOwner().getName());
+
 					westPanel.append(player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
 							+ tempProperty.getOwner().getName() + "\n");
 					player.decreaseBalace(tempInt);
@@ -169,9 +171,10 @@ public class ManageEvents {
 			} else {
 				tempInt = tempProperty.getTotalRent();
 				control(player, tempInt);
-				if (player.isAlive()) {
-					JOptionPane.showMessageDialog(null, player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
+				if (player.isAlive() && !(player.equals(tempProperty.getOwner()))) {
+					eventsPanel.setMessage( player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
 							+ tempProperty.getOwner().getName());
+
 					westPanel.append(player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
 							+ tempProperty.getOwner().getName() + "\n");
 					player.decreaseBalace(tempInt);
@@ -183,8 +186,8 @@ public class ManageEvents {
 
 	/**
 	 * Method called when the player lands on a work tile.
-	 * @param tile
-	 * @param player
+	 * @param tile tile
+	 * @param player player
 	 */
 	public void workEvent(Tile tile, Player player) {
 
@@ -193,9 +196,7 @@ public class ManageEvents {
 		tempWorkObject.payPlayer(getRoll());
 
 		westPanel.append(player.getName() + " Got " + tempWorkObject.getPay() + " GC\n");
-		JOptionPane.showMessageDialog(null,
-				"The roll is " + roll + "\n" + "You got: " + tempWorkObject.getPay() + " GC for your hard work");
-
+		eventsPanel.setMessage("The roll is " + roll + "\n" + "You got: " + tempWorkObject.getPay() + " GC for your hard work");
 	}
 
 	/**
@@ -236,7 +237,8 @@ public class ManageEvents {
 
 		if (tempTavernObj.getPurchaseable()) {
 			if (player.getBalance() < tempTavernObj.getPrice()) {
-				JOptionPane.showMessageDialog(null, "Not enough funds to purchase this tavern");
+				eventsPanel.setMessage("Not enough funds to purchase this tavern");
+
 			} else {
 				tavernDialog(tempTavernObj, player);
 			}
@@ -250,9 +252,10 @@ public class ManageEvents {
 			}
 			
 			control(player, randomValue);
+
 			if (player.isAlive()) {
-				JOptionPane.showMessageDialog(null, player.getName() + " paid " + randomValue + " GC to " 
-						+ tempTavernObj.getOwner().getName());
+				eventsPanel.setMessage(player.getName() + " paid " + randomValue + " GC to " + tempTavernObj.getOwner().getName());
+
 				westPanel.append(player.getName() + " paid " + randomValue + " GC to "
 						+ tempTavernObj.getOwner().getName() + "\n");
 				tempTavernObj.getOwner().increaseBalance(randomValue);
@@ -274,13 +277,42 @@ public class ManageEvents {
 			if (player.getBalance() > (player.getJailCounter() * 50)) {
 				jailDialog(player);
 			} else {
-				JOptionPane.showMessageDialog(null, "You can not afford the bail");
+				eventsPanel.setMessage("You can not afford the bail","Jail");
+
 			}
 		} else if (player.getJailCounter() >= 2) {
 			player.setPlayerIsInJail(false);
 			player.setJailCounter(0);
 			dice.activateRollDice();
 		}
+	}
+
+	/**
+	 * Message for the prisoner to choose if the player wants to pay the bail and
+	 * get free
+	 * @param player in jail.
+	 */
+	public void jailDialog(Player player) {
+		eventsPanel.activeJailButtons();
+		eventsPanel.setMessage("Do you want to pay the bail \n Which is " + (player.getJailCounter() * 50) + " GC?", "Jail");
+		eventsPanel.setPlayer(player);
+
+	}
+
+	public void payJail(Player player) {
+		int totalBail = player.getJailCounter() * 50;
+		if ((totalBail <= player.getBalance())) {
+			player.setJailCounter(0);
+			player.setPlayerIsInJail(false);
+			westPanel.append(player.getName() + " paid the bail and\ngot free from jail\n");
+			dice.activateRollDice();
+		} else {
+			westPanel.append(player.getName() + " Could not pay tha bail\n and is still in jail\n");
+		}
+	}
+
+	public void noPayJail(Player player) {
+		westPanel.append(player.getName() + " Could not pay tha bail\n and is still in jail\n");
 	}
 
 	/**
@@ -293,9 +325,12 @@ public class ManageEvents {
 		board.removePlayer(player);
 		player.setPositionInSpecificIndex(10);
 		board.setPlayer(player);
-		JOptionPane.showMessageDialog(null, player.getName() + " got in jail.");
+
+		eventsPanel.setMessage(player.getName() + " got in jail.");
 		westPanel.append(player.getName() + " is in jail for " + (2 - player.getJailCounter()) + " more turns\n");
 	}
+
+
 
 	/**
 	 * Method called if the player lands on sunday church. Pays out all the collected tax then resets the counter.
@@ -314,11 +349,16 @@ public class ManageEvents {
 	 * @param player in question.
 	 */
 	public void propertyDialog(Property property, Player player) {
-		int yesOrNo = JOptionPane.showConfirmDialog(null,
-				property.getName() + "\n" + "Do you want to purchase this property for " + property.getPrice() + " GC?",
-				"Decide your fate!", JOptionPane.YES_NO_OPTION);
+		eventsPanel.activatePropertyButtons();
+		eventsPanel.setMessage(property.getName() + "\n" + "Do you want to purchase this property for " + property.getPrice() + " GC?", "Property");
 
-		if (yesOrNo == 0 && (property.getPrice() <= player.getBalance())) {
+		eventsPanel.setPlayer(player);
+		eventsPanel.setProperty(property);
+
+	}
+
+	public void propertyBuy(Property property, Player player){
+		if (property.getPrice() <= player.getBalance()) {
 			property.setOwner(player);
 			player.addNewProperty(property);
 			property.setPurchaseable(false);
@@ -327,8 +367,12 @@ public class ManageEvents {
 		}
 
 		else {
-			westPanel.append(player.getName() + " did not purchase " + property.getName() + "\n");
+			westPanel.append(player.getName() + " Did not have enough gold " + property.getName() + "\n");
 		}
+	}
+
+	public void propertyNotBuy(Property property, Player player) {
+		westPanel.append(player.getName() + " Did not want to buy the property " + property.getName() + "\n");
 	}
 
 	/**
@@ -337,18 +381,27 @@ public class ManageEvents {
 	 * @param player, player who landed on the tavern.
 	 */
 	public void tavernDialog(Tavern tavern, Player player) {
-		int yesOrNo = JOptionPane.showConfirmDialog(null, "Do you want to purchase this tavern for " + tavern.getPrice() + " GC?", "Make your choice",
-				JOptionPane.YES_NO_OPTION);
+		eventsPanel.setMessage("Do you want to purchase this tavern for " + tavern.getPrice() + " GC?", "Make your choice");
+		eventsPanel.activateTavernButtons();
 
-		if (yesOrNo == 0 && (tavern.getPrice() <= player.getBalance())) {
+		eventsPanel.setPlayer(player);
+		eventsPanel.setTavern(tavern);
+	}
+
+	public void buyTavern(Tavern tavern, Player player) {
+		if (tavern.getPrice() <= player.getBalance()) {
 			tavern.setOwner(player);
 			player.addNewTavern(tavern);
 			tavern.setPurchaseable(false);
 			player.decreaseBalace(tavern.getPrice());
 			westPanel.append(player.getName() + " purchased " + tavern.getName() + "\n");
 		} else {
-			westPanel.append(player.getName() + " did not purchase " + tavern.getName() + "\n");
+			westPanel.append(player.getName() + " Could not afford to not purchase " + tavern.getName() + "\n");
 		}
+	}
+
+	public void noBuyTavern(Tavern tavern, Player player) {
+		westPanel.append(player.getName() + " did not purchase " + tavern.getName() + "\n");
 	}
 
 	/**
@@ -366,25 +419,7 @@ public class ManageEvents {
 		this.roll = dice.getRoll();
 	}
 
-	/**
-	 * Message for the prisoner to choose if the player wants to pay the bail and
-	 * get free
-	 * @param player in jail.
-	 */
-	public void jailDialog(Player player) {
-		int yesOrNo = JOptionPane.showConfirmDialog(null,
-				"Do you want to pay the bail\nWhich is " + (player.getJailCounter() * 50) + " GC?", "JOption",
-				JOptionPane.YES_NO_OPTION);
-		int totalBail = player.getJailCounter() * 50;
-		if (yesOrNo == 0 && (totalBail <= player.getBalance())) {
-			player.setJailCounter(0);
-			player.setPlayerIsInJail(false);
-			westPanel.append(player.getName() + " paid the bail and\ngot free from jail\n");
-			dice.activateRollDice();
-		} else {
-			westPanel.append(player.getName() + " did not pay tha bail\n and is still in jail\n");
-		}
-	}
+
 	
 	/**
 	 * Method for FortuneTeller, small chance for a secret event to trigger.
@@ -394,9 +429,10 @@ public class ManageEvents {
 	private void fortuneTellerEvent(Tile tile, Player player) {
 		FortuneTeller tempCard = (FortuneTeller) tile;
 		if (rand.nextInt(10) == 0) {
-			new SecretGui();
+			//new SecretGui();
+
 			new Thread(new SecretSleeper(tempCard, player));
-			eastPanel.addPlayerList(playerList);
+			eastPanel.updatePlayerList(playerList);
 
 		} else {
 			fortune(tempCard, player);
@@ -419,7 +455,7 @@ public class ManageEvents {
 				westPanel.append(player.getName() + " paid " + pay + " GC\n");
 				player.decreaseBalace(pay);
 				player.decreaseNetWorth(pay);
-				msgGUI.newFortune(false, pay);
+				newFortune(false, pay);
 			}
 
 		} else {
@@ -428,10 +464,23 @@ public class ManageEvents {
 			player.increaseBalance(tempCard.getAmount());
 			player.increaseNetWorth(tempCard.getAmount());
 			westPanel.append(player.getName() + " received " + tempCard.getAmount() + " CG\n");
-			msgGUI.newFortune(true, tempCard.getAmount());
+			newFortune(true, tempCard.getAmount());
 		}
-	}	
-	
+	}
+
+	public void newFortune(boolean b, int amount) {
+		if(b) {
+			eventsPanel.setMessage("Fortune smiles upon you. \n"
+					+ "You recived " + amount + " GC","Blessing" );
+
+		} else {
+			eventsPanel.setMessage("You have been cursed! \n"
+					+ "You pay " + amount + " GC","Curse");
+		}
+	}
+
+
+
 	/**
 	 * This class is an easter egg. That gives the player 5 fortunes.
 	 * @author Sebastian viro ,Muhammad Abdulkhuder
@@ -457,6 +506,11 @@ public class ManageEvents {
 		
 		public void run() {
 			try {
+				eventsPanel.deactivateAllButtons();
+				dice.deactivateAllDiceBtn();
+				eventsPanel.setMessage("Draw 5 cards","Secret fortune");
+
+				Thread.sleep(4000);
 				for (int i = 0; i < 5; i++) {
 					File musicPath = new File("music/duraw.wav");				
 					AudioInputStream ais = AudioSystem.getAudioInputStream(musicPath);
@@ -464,13 +518,16 @@ public class ManageEvents {
 					clip.open(ais);
 					clip.start();
 					fortune(tempCard, player);
-					Thread.sleep(3000);
+					Thread.sleep(2500);
 				}
+
+
+
 
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
-
+				dice.activateEndTurnDice();
 			}
 		}
 	}
