@@ -99,7 +99,7 @@ public class StartingScreen extends JFrame {
 	 */
 	public void initializeGUI() {
 
-		//bgm.startMusic();
+		bgm.startMusic();   // comment out this line if you dont want the music to be playing.
 
 		createFrame();
 		//bgm.startMusic();
@@ -139,7 +139,7 @@ public class StartingScreen extends JFrame {
 		/**
 		 * Confirm button
 		 */
-		btnConfirm.setBounds(375, 315, 150, 30);
+		btnConfirm.setBounds(375, 345, 150, 30);
 		btnConfirm.addActionListener(new ButtonListener());
 
 		/**
@@ -252,6 +252,8 @@ public class StartingScreen extends JFrame {
 			}
 
 			if (e.getSource() == btnConfirm) {
+
+				btnConfirm.setVisible(false);
 
 				if (radioButtons[0].isSelected()) {
 					btnPressed(2, true);
