@@ -310,7 +310,7 @@ public class PlayerProperties extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Trade can not be done! The player you picked does not own any properties!");
 			}
 		}
-		eastSidePanel.addPlayerList(playerList);
+		eastSidePanel.updatePlayerList(playerList);
 	}
 
 	/**

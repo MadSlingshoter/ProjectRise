@@ -6,11 +6,12 @@ import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
+import menu.Menu;
 import player.Player;
 import player.PlayerList;
 import tiles.Tile;
@@ -21,10 +22,10 @@ import westSidePanel.WestSidePanel;
 
 
 /**
- * @author Muhammad Abdulkhuder, Seth Öberg, Rohan Samandari
+ * @author Muhammad Abdulkhuder, Seth Oberg, Rohan Samandari
  *
  */
-public class Board extends JPanel {
+public class Board extends JLayeredPane {
 	
 	private WestSidePanel pnlWest;
 	private TileInfo info = new TileInfo();
@@ -78,6 +79,8 @@ public class Board extends JPanel {
 	private JPanel p39 = new JPanel();
 	private JPanel p40 = new JPanel();
 
+
+
 	private JPanel[] panelarray = { p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20,
 			p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p32, p33, p34, p35, p36, p37, p38, p39, p40 };
 
@@ -90,7 +93,8 @@ public class Board extends JPanel {
 	public Board(WestSidePanel wp) {
 		this.pnlWest = wp;
 		initializeAllPanels();	
-		initializeGUI(); 
+		initializeGUI();
+
 	}
 	
 	/**
@@ -297,12 +301,15 @@ public class Board extends JPanel {
 		p40.setOpaque(false);
 		p40.setBounds(649, 587, 101, 62);
 		add(p40);
+
+		Border border = BorderFactory.createLineBorder(Color.black);
 		
 		/**
 		 * Adds mouselistener
 		 */
 		for (int i=0; i<panelarray.length; i++) {
 			panelarray[i].addMouseListener(listener);
+
 		}
 
 		lblNewLabel.setBounds(0, -136, 1050, 1022);

@@ -4,14 +4,12 @@ package eastSidePanels;
 import java.awt.*;
 import java.util.ArrayList;
 
+
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 
 import javax.swing.border.EmptyBorder;
-
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 
 import player.PlayerList;
@@ -35,7 +33,7 @@ public class EastSidePanel extends JPanel {
 	 * @param playerList
 	 * this method is also used to update the information displayed
 	 */
-	public void addPlayerList(PlayerList playerList) {
+	public void updatePlayerList(PlayerList playerList) {
 		this.playerList = playerList;
 		addtabs();
 	}

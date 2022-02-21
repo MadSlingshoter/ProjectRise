@@ -102,7 +102,7 @@ public class StartingScreen extends JFrame {
 		bgm.startMusic();   // comment out this line if you dont want the music to be playing.
 
 		createFrame();
-		bgm.startMusic();
+		//bgm.startMusic();
 
 		/**
 		 * JPanel for information about players

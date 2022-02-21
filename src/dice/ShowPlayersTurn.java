@@ -47,7 +47,7 @@ public class ShowPlayersTurn extends JPanel{
 	 * @param color
 	 * Updates the label
 	 */
-	public void uppdateGUI(String playerName, Color color) {
+	public void updateGUI(String playerName, Color color) {
 		lblPlayer.setOpaque(true);
 		lblPlayer.setBackground(color);
 		lblPlayer.setText(playerName+"'s turn");	

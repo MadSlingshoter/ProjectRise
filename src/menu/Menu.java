@@ -93,7 +93,7 @@ public class Menu extends JPanel {
 	 * This method restarts the game
 	 * @author Ali Albabily, 2022-02-05.
 	 */
-	private void restartGame() {
+	public void restartGame() {
 		gamePanels.Dispose(); // closes current GamePanels
 		music.pauseMusic(); // stops playing music
 		StartingScreen ss = new StartingScreen();

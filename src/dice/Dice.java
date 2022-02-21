@@ -14,9 +14,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import board.Board;
-import cheat.CheatGui; //May be needed for testing in future 
 import eastSidePanels.EastSidePanel;
 import events.ManageEvents;
+import menu.Menu;
 import player.PlayerList;
 import westSidePanel.WestSidePanel;
 
@@ -45,6 +45,7 @@ public class Dice extends JPanel implements ActionListener {
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	private ImageIcon faceToShow, showDice;
 	private Image resizedImage;
+	private Menu menu;
 
 	private int diceWidth = 100;
 	private int diceHeight = 100;
@@ -59,7 +60,7 @@ public class Dice extends JPanel implements ActionListener {
 
 		this.playerList = playerList;
 		
-		showPlayersTurn.uppdateGUI(playerList.getActivePlayer().getName(),
+		showPlayersTurn.updateGUI(playerList.getActivePlayer().getName(),
 				playerList.getActivePlayer().getPlayerColor());
 		
 		manageEvents = new ManageEvents(board, playerList, westSidePnl, this, eastSidePnl);
@@ -78,6 +79,7 @@ public class Dice extends JPanel implements ActionListener {
 		this.playerList = playerList;
 		this.westSidePnl = westSidePanel;
 		this.eastSidePnl = eastSidePnl;
+
 
 		initializePanel();
 
@@ -139,61 +141,13 @@ public class Dice extends JPanel implements ActionListener {
 			int faceValueDiceOne = (int) (Math.random() * (7 - 1) + 1);
 			int faceValueDiceTwo = (int) (Math.random() * (7 - 1) + 1);
 
-			switch (faceValueDiceOne) {
-			case 1:
-				faceToShow = new ImageIcon("DicePictures/faceValue1White.png");
-				break;
-
-			case 2:
-				faceToShow = new ImageIcon("DicePictures/faceValue2White.png");
-				break;
-
-			case 3:
-				faceToShow = new ImageIcon("DicePictures/faceValue3White.png");
-				break;
-
-			case 4:
-				faceToShow = new ImageIcon("DicePictures/faceValue4White.png");
-				break;
-
-			case 5:
-				faceToShow = new ImageIcon("DicePictures/faceValue5White.png");
-				break;
-
-			case 6:
-				faceToShow = new ImageIcon("DicePictures/faceValue6White.png");
-				break;
-			}
-
-			resizedImage = faceToShow.getImage().getScaledInstance(diceWidth, diceHeight, Image.SCALE_SMOOTH);
+			resizedImage = faceToShow(faceValueDiceOne).getImage().getScaledInstance(diceWidth, diceHeight, Image.SCALE_SMOOTH);
 			showDice = new ImageIcon(resizedImage);
 			lblDice1.setIcon(showDice);
 
-			switch (faceValueDiceTwo) {
-			case 1:
-				faceToShow = new ImageIcon("DicePictures/faceValue1White.png");
-				break;
-
-			case 2:
-				faceToShow = new ImageIcon("DicePictures/faceValue2White.png");
-				break;
-
-			case 3:
-				faceToShow = new ImageIcon("DicePictures/faceValue3White.png");
-				break;
-
-			case 4:
-				faceToShow = new ImageIcon("DicePictures/faceValue4White.png");
-				break;
-
-			case 5:
-				faceToShow = new ImageIcon("DicePictures/faceValue5White.png");
-				break;
-
-			case 6:
-				faceToShow = new ImageIcon("DicePictures/faceValue6White.png");
-				break;
-			}
+			resizedImage = faceToShow(faceValueDiceTwo).getImage().getScaledInstance(diceWidth, diceHeight, Image.SCALE_SMOOTH);
+			showDice = new ImageIcon(resizedImage);
+			lblDice2.setIcon(showDice);
 
 			if (faceValueDiceOne == faceValueDiceTwo) {
 				setRoll(((faceValueDiceOne + faceValueDiceTwo) * 2));
@@ -202,9 +156,6 @@ public class Dice extends JPanel implements ActionListener {
 				setRoll(((faceValueDiceOne + faceValueDiceTwo)));
 				westSidePnl.append(playerList.getActivePlayer().getName() + " Rolled a: " + getRoll() + "\n");
 			}
-			resizedImage = faceToShow.getImage().getScaledInstance(diceWidth, diceHeight, Image.SCALE_SMOOTH);
-			showDice = new ImageIcon(resizedImage);
-			lblDice2.setIcon(showDice);
 
 			playerList.getActivePlayer().checkPlayerRank();
 			manageEvents.setRoll(this);
@@ -214,7 +165,7 @@ public class Dice extends JPanel implements ActionListener {
 
 			goEvent();
 
-			eastSidePnl.addPlayerList(playerList);
+			eastSidePnl.updatePlayerList(playerList);
 
 			btnRollDice.setEnabled(false);
 
@@ -231,7 +182,7 @@ public class Dice extends JPanel implements ActionListener {
 
 			playerList.switchToNextPlayer();
 			
-			showPlayersTurn.uppdateGUI(playerList.getActivePlayer().getName(),
+			showPlayersTurn.updateGUI(playerList.getActivePlayer().getName(),
 					playerList.getActivePlayer().getPlayerColor());
 			
 			if (playerList.getActivePlayer().isPlayerInJail()) {
@@ -244,9 +195,11 @@ public class Dice extends JPanel implements ActionListener {
 			else if (!playerList.getActivePlayer().isPlayerInJail()) {
 				btnRollDice.setEnabled(true);
 				btnEndTurn.setEnabled(false);
+				manageEvents.hideEventPanels();
 			}
-			
-			eastSidePnl.addPlayerList(playerList);
+
+
+			eastSidePnl.updatePlayerList(playerList);
 		}
 
 	}
@@ -268,7 +221,48 @@ public class Dice extends JPanel implements ActionListener {
 		goEvent();
 		manageEvents.newEvent(board.getDestinationTile(playerList.getActivePlayer().getPosition()),
 				playerList.getActivePlayer());
-		eastSidePnl.addPlayerList(playerList);
+		eastSidePnl.updatePlayerList(playerList);
+	}
+
+	public void manageEventGrej() {
+		manageEvents.newEvent(board.getDestinationTile(playerList.getActivePlayer().getPosition()),
+				playerList.getActivePlayer());
+		eastSidePnl.updatePlayerList(playerList);
+		btnEndTurn.setEnabled(true);
+	}
+
+	public ImageIcon faceToShow(int faceValue) {
+		ImageIcon faceToShow = new ImageIcon();
+		switch (faceValue) {
+			case 1:
+				faceToShow = new ImageIcon("DicePictures/faceValue1White.png");
+				break;
+
+			case 2:
+				faceToShow = new ImageIcon("DicePictures/faceValue2White.png");
+				break;
+
+			case 3:
+				faceToShow = new ImageIcon("DicePictures/faceValue3White.png");
+				break;
+
+			case 4:
+				faceToShow = new ImageIcon("DicePictures/faceValue4White.png");
+				break;
+
+			case 5:
+				faceToShow = new ImageIcon("DicePictures/faceValue5White.png");
+				break;
+
+			case 6:
+				faceToShow = new ImageIcon("DicePictures/faceValue6White.png");
+				break;
+		}
+		return faceToShow;
+	}
+
+	public void resetGame() {
+		menu.restartGame();
 	}
 
 
@@ -277,6 +271,15 @@ public class Dice extends JPanel implements ActionListener {
 	 */
 	public void activateRollDice() {
 		btnRollDice.setEnabled(true);
+		btnEndTurn.setEnabled(false);
+	}
+
+	public void activateEndTurnDice() {
+		btnEndTurn.setEnabled(true);
+	}
+
+	public void deactivateAllDiceBtn() {
+		btnRollDice.setEnabled(false);
 		btnEndTurn.setEnabled(false);
 	}
 
@@ -309,6 +312,11 @@ public class Dice extends JPanel implements ActionListener {
 		this.roll = roll;
 	}
 
+	public void setMenu(Menu menu) {
+		this.menu = menu;
+	}
+
+
 	/**
 	 * @author Seth �berg, Muhammad Abdulkhuder
 	 * Moves the player with a thread.
@@ -326,14 +334,8 @@ public class Dice extends JPanel implements ActionListener {
 				playerList.getActivePlayer().setPosition(1);
 				board.setPlayer(playerList.getActivePlayer());
 
-				if (i == (getRoll() - 1)) {
-					manageEvents.newEvent(board.getDestinationTile(playerList.getActivePlayer().getPosition()),
-							playerList.getActivePlayer());
-					eastSidePnl.addPlayerList(playerList);
-					btnEndTurn.setEnabled(true);
-
-				}
-
+				if(i == (getRoll() -1))
+				manageEventGrej();
 				try {
 					Thread.sleep(250);
 				} catch (InterruptedException e) {
