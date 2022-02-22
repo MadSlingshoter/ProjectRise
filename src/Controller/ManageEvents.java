@@ -148,7 +148,7 @@ public class ManageEvents {
 
 		if (purchasable) {
 			if (player.getBalance() < tempProperty.getPrice()) {
-				eventsPanel.setMessage("Not enough funds to purchase this property", "balle");
+				eventsPanel.setMessage("Not enough funds to purchase this property", "Sorry...");
 
 			} else {
 				propertyDialog(tempProperty, player);
@@ -294,11 +294,10 @@ public class ManageEvents {
 	 * get free
 	 * @param player in jail.
 	 */
-	public void jailDialog(Player player) {
+	public void jailDialog(Player player) { //TODO flytta hela metoden till EventsPanel?
 		eventsPanel.activeJailButtons();
 		eventsPanel.setMessage("Do you want to pay the bail \n Which is " + (player.getJailCounter() * 50) + " GC?", "Jail");
 		eventsPanel.setPlayer(player);
-
 	}
 
 	public void payJail(Player player) {
@@ -356,7 +355,6 @@ public class ManageEvents {
 
 		eventsPanel.setPlayer(player);
 		eventsPanel.setProperty(property);
-
 	}
 
 	public void propertyBuy(Property property, Player player){
@@ -398,7 +396,7 @@ public class ManageEvents {
 			player.decreaseBalace(tavern.getPrice());
 			westPanel.append(player.getName() + " purchased " + tavern.getName() + "\n");
 		} else {
-			westPanel.append(player.getName() + " Could not afford to not purchase " + tavern.getName() + "\n");
+			westPanel.append(player.getName() + " could not afford to not purchase " + tavern.getName() + "\n");
 		}
 	}
 
@@ -522,10 +520,6 @@ public class ManageEvents {
 					fortune(tempCard, player);
 					Thread.sleep(2500);
 				}
-
-
-
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {

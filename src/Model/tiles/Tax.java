@@ -19,7 +19,7 @@ public class Tax implements Tile {
 	public Tax() {
 		
 	}
-	public void onLanding() {
+	public void onLanding() { //TODO this needs to be set somewhere?
 		taxToPay =  player.getPlayerRank().calculateTax();
 	}
 	

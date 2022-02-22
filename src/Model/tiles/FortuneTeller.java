@@ -38,6 +38,7 @@ public class FortuneTeller implements Tile{
 	 * @param amount, amount to pay or be paid.
 	 */
 	public FortuneTeller(Boolean isBlessing, String description, int amount) {
+		//TODO remove this if we prefer the existing logic behind getting blessing or curse?
 		
 		if(isBlessing) {
 			setFortune("BLESSING");

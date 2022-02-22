@@ -12,7 +12,7 @@ import javax.swing.border.Border;
 import Model.player.Player;
 import Model.player.PlayerList;
 import Model.tiles.Tile;
-import Model.tileCollection.TileCollection;
+import Model.tiles.TileCollection;
 import Model.tiles.TileInfo;
 import View.WestSidePanel;
 
@@ -28,10 +28,10 @@ public class Board extends JLayeredPane {
 	private TileInfo info = new TileInfo();
 	
 	private GUITile[] guiTiles = new GUITile[40]; //Creates empty tile objects with a background.  
-	private PlayerList playerList = new PlayerList();
+	private PlayerList playerList = new PlayerList(); //TODO a controller class should have this object?
 	private Listener listener = new Listener();
 	
-	private TileCollection tileCollection = new TileCollection();
+	private TileCollection tileCollection = new TileCollection(); //TODO a controller class should have this object?
 		
 	private static final long serialVersionUID = 1L;
 	
@@ -91,7 +91,6 @@ public class Board extends JLayeredPane {
 		this.pnlWest = wp;
 		initializeAllPanels();	
 		initializeGUI();
-
 	}
 	
 	/**

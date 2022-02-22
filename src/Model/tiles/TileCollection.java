@@ -1,4 +1,4 @@
-package Model.tileCollection;
+package Model.tiles;
 
 import java.awt.Color;
 
@@ -67,14 +67,12 @@ public class TileCollection {
 		tileArray[36] = new FortuneTeller();
 		tileArray[37] = new Property("Church", 350, 35, 300, new Color(4,74,159, 255),200, new ImageIcon("tilePics/churchp.png"));
 		tileArray[38] = new Tax(); 
-		tileArray[39] = new Property("The Castle", 400, 50, 400, new Color(4,74,159, 255),200, new ImageIcon("tilePics/castle.png"));		
-
+		tileArray[39] = new Property("The Castle", 400, 50, 400, new Color(4,74,159, 255),200, new ImageIcon("tilePics/castle.png"));
 	}
 	
 	 
 	public Tile getTileAtIndex(int index) {
 		return tileArray[index];
 	}
-	
-	
+
 }

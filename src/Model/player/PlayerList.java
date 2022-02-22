@@ -11,7 +11,6 @@ import View.eastSidePanels.EastSidePanel;
 /**
  * A class that holds all active players 
  * @author Seth Oberg
- *
  */
 
 public class PlayerList {
@@ -29,8 +28,7 @@ public class PlayerList {
 	 * @param p
 	 */
 	public PlayerList(EastSidePanel p) {
-		currentPlayer = 0;  
-		
+		currentPlayer = 0;
 	}
 	
 	/**
@@ -45,7 +43,7 @@ public class PlayerList {
 	 * @param name the chosen name for a Model.player
 	 * @param icon the chosen image for a Model.player
 	 */
-	public void addNewPlayer(String name, ImageIcon icon) {
+	public void addNewPlayer(String name, ImageIcon icon) {//TODO remove? The method below is used instead?
 		activePlayers.add(new Player(name, icon, playerListLength)); 
 		playerListLength++;
 	} 
@@ -102,7 +100,6 @@ public class PlayerList {
 	 * Update amount of players after a Model.player has been removed
 	 */
 	public void updatePlayerList() {
-		
 		for(int i = 0; i < activePlayers.size(); i++) {
 			activePlayers.get(i).setPlayerIndex(i);
 		}	
@@ -112,7 +109,6 @@ public class PlayerList {
 	 * Used to switch to the current Model.player to the next one
 	 */
 	public void switchToNextPlayer() {
-		
 		if(currentPlayer < (activePlayers.size() - 1) ) {
 			currentPlayer = currentPlayer + 1;
 		}

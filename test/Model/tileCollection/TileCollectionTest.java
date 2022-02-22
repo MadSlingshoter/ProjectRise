@@ -1,5 +1,6 @@
 package Model.tileCollection;
 
+import Model.tiles.TileCollection;
 import org.junit.Test;
 
 public class TileCollectionTest {
