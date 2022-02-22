@@ -1,8 +1,8 @@
 package dice;
 
+import View.Dice;
 import org.junit.Test;
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.params.ParameterizedTest;
 
 import static org.junit.Assert.*;
 

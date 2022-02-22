@@ -9,11 +9,13 @@ import java.awt.event.MouseListener;
 
 import javax.swing.*;
 
-import combinedPanels.GamePanels;
-import player.PlayerList;
+import Model.BackgroundMusic;
+import View.CombineGamePanels;
+import Model.player.PlayerList;
+import View.Introduction;
 
 /**
- * First screen which player sees, here he is able to choose the amount of players and
+ * First screen which Model.player sees, here he is able to choose the amount of players and
  * what names and colors the players will have during the game.
  * @author Aevan Dino
  *
@@ -24,7 +26,7 @@ public class StartingScreen extends JFrame {
 
 	private BackgroundMusic bgm = new BackgroundMusic();
 	private PlayerList playerList = new PlayerList();
-	private GamePanels mainWindow = new GamePanels(bgm);
+	private CombineGamePanels mainWindow = new CombineGamePanels(bgm);
 
 	private JButton btnConfirm = new JButton("Confirm");
 	private JButton btnStartGame = new JButton("Start Game");
@@ -78,9 +80,6 @@ public class StartingScreen extends JFrame {
 	 */
 	private JToggleButton mute = new JToggleButton("Music: On");
 
-	/**
-	 * Integers
-	 */
 	private int amountOfPlayers;
 
 	/**
@@ -90,7 +89,6 @@ public class StartingScreen extends JFrame {
 	public static void main(String[] args) {
 		StartingScreen su = new StartingScreen();
 		su.initializeGUI();
-
 	}
 
 	
@@ -98,11 +96,8 @@ public class StartingScreen extends JFrame {
 	 * Method to initilize the GUI.
 	 */
 	public void initializeGUI() {
-
 		bgm.startMusic();   // comment out this line if you dont want the music to be playing.
-
 		createFrame();
-		//bgm.startMusic();
 
 		/**
 		 * JPanel for information about players
@@ -119,7 +114,7 @@ public class StartingScreen extends JFrame {
 		lblBackground.setLayout(null);
 
 		/**
-		 *  Header reading "RISE"
+		 * Header reading "RISE"
 		 */
 		lblRise.setFont(fontHeader);
 		lblRise.setBounds(375, 125, 175, 200);
@@ -311,7 +306,7 @@ public class StartingScreen extends JFrame {
 		}
 
 		/**
-		 * Method called when player clicks start game
+		 * Method called when Model.player clicks start game
 		 */
 		public void startUpGame() {
 			createNewUsers();
@@ -337,7 +332,7 @@ public class StartingScreen extends JFrame {
 		}
 		
 		/**
-		 * Whenever player chooses to reset the start screen
+		 * Whenever Model.player chooses to reset the start screen
 		 * @param amountOfPlayers, how many players to draw
 		 * @param bool, boolean indicating whether or not components should be visible.
 		 */
@@ -355,7 +350,7 @@ public class StartingScreen extends JFrame {
 	}
 
 	/**
-	 * MouseClickedListener for the name inserting so the text disappear when the player clicks.  
+	 * MouseClickedListener for the name inserting so the text disappear when the Model.player clicks.
 	 */
 	private class MouseAction implements MouseListener{
 		int counter1 = 0, counter2 = 0, counter3 =0, counter4=0;
