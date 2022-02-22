@@ -1,4 +1,4 @@
-package startMenu;
+package Model;
 
 import java.io.File;
 
@@ -19,7 +19,7 @@ public class BackgroundMusic extends Thread {
 
 	/**
 	 * Not sure if this actually works properly, seems to be implemented and used poorly.
-	 * Use clip.isActive() instead to get the current music status.
+	 * TODO Use clip.isActive() instead to get the current music status.
 	 * /Marcus Juninger 2022-02-04.
 	 */
 	public Boolean isPlaying;

@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import javax.swing.ImageIcon;
 
-import View.Board.ColorIconMap;
+import Model.ColorIconMap;
 import Model.StringColorMap;
 import View.eastSidePanels.EastSidePanel;
 

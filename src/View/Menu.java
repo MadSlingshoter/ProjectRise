@@ -12,8 +12,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import View.Board.Rules;
-import View.CombineGamePanels;
-import startMenu.BackgroundMusic;
+import Model.BackgroundMusic;
 import startMenu.StartingScreen;
 
 /**

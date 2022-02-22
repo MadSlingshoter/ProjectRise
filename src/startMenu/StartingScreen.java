@@ -9,8 +9,10 @@ import java.awt.event.MouseListener;
 
 import javax.swing.*;
 
+import Model.BackgroundMusic;
 import View.CombineGamePanels;
 import Model.player.PlayerList;
+import View.Introduction;
 
 /**
  * First screen which Model.player sees, here he is able to choose the amount of players and
@@ -78,9 +80,6 @@ public class StartingScreen extends JFrame {
 	 */
 	private JToggleButton mute = new JToggleButton("Music: On");
 
-	/**
-	 * Integers
-	 */
 	private int amountOfPlayers;
 
 	/**
@@ -90,7 +89,6 @@ public class StartingScreen extends JFrame {
 	public static void main(String[] args) {
 		StartingScreen su = new StartingScreen();
 		su.initializeGUI();
-
 	}
 
 	
@@ -98,11 +96,8 @@ public class StartingScreen extends JFrame {
 	 * Method to initilize the GUI.
 	 */
 	public void initializeGUI() {
-
 		bgm.startMusic();   // comment out this line if you dont want the music to be playing.
-
 		createFrame();
-		//bgm.startMusic();
 
 		/**
 		 * JPanel for information about players
@@ -119,7 +114,7 @@ public class StartingScreen extends JFrame {
 		lblBackground.setLayout(null);
 
 		/**
-		 *  Header reading "RISE"
+		 * Header reading "RISE"
 		 */
 		lblRise.setFont(fontHeader);
 		lblRise.setBounds(375, 125, 175, 200);

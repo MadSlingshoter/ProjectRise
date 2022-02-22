@@ -1,4 +1,4 @@
-package View.Board;
+package Model;
 
 import java.util.HashMap;
 import javax.swing.ImageIcon;

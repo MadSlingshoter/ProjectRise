@@ -19,7 +19,7 @@ import javax.swing.border.MatteBorder;
 import View.Board.Board;
 import View.eastSidePanels.EastSidePanel;
 import Model.player.PlayerList;
-import startMenu.BackgroundMusic;
+import Model.BackgroundMusic;
 
 /**
  * This class combines most of the panels in the game and adds appropriate
