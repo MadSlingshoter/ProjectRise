@@ -8,7 +8,7 @@ import javax.sound.sampled.Clip;
 
 /**
  * This class is used to select a music file. The chosen music file
- * can be player and stopped via the GUI.
+ * can be Model.player and stopped via the GUI.
  * 
  * @author AevanDino
  */
@@ -48,7 +48,7 @@ public class BackgroundMusic extends Thread {
 	}
 
 	/**
-	 * Pauses music, music continues where it stopped when player asks for music again.
+	 * Pauses music, music continues where it stopped when Model.player asks for music again.
 	 */
 	public void pauseMusic() {
 		if(clip!=null) {

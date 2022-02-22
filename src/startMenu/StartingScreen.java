@@ -9,11 +9,11 @@ import java.awt.event.MouseListener;
 
 import javax.swing.*;
 
-import combinedPanels.GamePanels;
-import player.PlayerList;
+import View.CombineGamePanels;
+import Model.player.PlayerList;
 
 /**
- * First screen which player sees, here he is able to choose the amount of players and
+ * First screen which Model.player sees, here he is able to choose the amount of players and
  * what names and colors the players will have during the game.
  * @author Aevan Dino
  *
@@ -24,7 +24,7 @@ public class StartingScreen extends JFrame {
 
 	private BackgroundMusic bgm = new BackgroundMusic();
 	private PlayerList playerList = new PlayerList();
-	private GamePanels mainWindow = new GamePanels(bgm);
+	private CombineGamePanels mainWindow = new CombineGamePanels(bgm);
 
 	private JButton btnConfirm = new JButton("Confirm");
 	private JButton btnStartGame = new JButton("Start Game");
@@ -311,7 +311,7 @@ public class StartingScreen extends JFrame {
 		}
 
 		/**
-		 * Method called when player clicks start game
+		 * Method called when Model.player clicks start game
 		 */
 		public void startUpGame() {
 			createNewUsers();
@@ -337,7 +337,7 @@ public class StartingScreen extends JFrame {
 		}
 		
 		/**
-		 * Whenever player chooses to reset the start screen
+		 * Whenever Model.player chooses to reset the start screen
 		 * @param amountOfPlayers, how many players to draw
 		 * @param bool, boolean indicating whether or not components should be visible.
 		 */
@@ -355,7 +355,7 @@ public class StartingScreen extends JFrame {
 	}
 
 	/**
-	 * MouseClickedListener for the name inserting so the text disappear when the player clicks.  
+	 * MouseClickedListener for the name inserting so the text disappear when the Model.player clicks.
 	 */
 	private class MouseAction implements MouseListener{
 		int counter1 = 0, counter2 = 0, counter3 =0, counter4=0;

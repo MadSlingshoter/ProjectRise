@@ -49,7 +49,7 @@ public class Introduction extends JPanel {
 		lblTitel.setHorizontalAlignment(SwingConstants.CENTER);
 		taText.setText("Salutations adventurers and welcome to Rise! The people you see next to you are no longer your friends. This is a race to the top where only one will triumph as king! \r\n" + 
 				"\r\n" + 
-				"You start as peasants and will rise through the ranks when your total wealth reaches a certain number. Player one will now begin by rolling the dice and then after that the player will press the end turn button to let the next player begin his turn. To know more press the info button in the menu tab. Now good luck on your adventures!  \r\n" + 
+				"You start as peasants and will rise through the ranks when your total wealth reaches a certain number. Player one will now begin by rolling the dice and then after that the Model.player will press the end turn button to let the next Model.player begin his turn. To know more press the info button in the menu tab. Now good luck on your adventures!  \r\n" +
 				"");
 		
 		taText.setEditable(false);
