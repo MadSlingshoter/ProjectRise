@@ -1,5 +1,7 @@
 package view;
 
+import controller.GameLogic;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -18,17 +20,17 @@ public class CheatGui extends JPanel implements ActionListener {
 
 	private JTextField inputTF = new JTextField("");
 	private JButton btnTeleport = new JButton("Teleport");
-	private Dice betterDice;
+	private GameLogic controller;
 	private int index;
 
 	/**
-	 * @param betterDice
+	 * @param controller
 	 * 
 	 *                   Calls the method that starts the gui and gets a reference
 	 *                   from dice
 	 */
-	public CheatGui(Dice dice) {
-		this.betterDice = dice;
+	public CheatGui(GameLogic controller) {
+		this.controller = controller;
 		startGUI();
 	}
 
@@ -53,7 +55,7 @@ public class CheatGui extends JPanel implements ActionListener {
 		if (e.getSource() == btnTeleport) {
 			try {
 				setIndex(Integer.parseInt(inputTF.getText()));
-				betterDice.moveWCheat(getIndex());
+				controller.moveWithCheat(getIndex());
 
 			} catch (NumberFormatException ex) {
 				ex.printStackTrace();
