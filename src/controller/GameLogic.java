@@ -120,7 +120,7 @@ public class GameLogic {
         movePlayerThread = new Thread(new LoopThread());
         movePlayerThread.start();
 
-//        mainWindow.getEastPanel().updatePlayerList(playerList); // tror att denna är onödig
+//        updatePlayerList(); // tror att denna är onödig
 
         return diceRoll;
     }
@@ -129,7 +129,7 @@ public class GameLogic {
         goEvent();
         manageEvents.newEvent(mainWindow.getBoard().getDestinationTile(playerList.getActivePlayer().getPosition()),
                 playerList.getActivePlayer());
-        mainWindow.getEastPanel().updatePlayerList(playerList);
+        updatePlayerList();
         mainWindow.getDice().enableBtnEndTurn(true);
     }
 
@@ -165,7 +165,7 @@ public class GameLogic {
             manageEvents.hideEventPanels();
         }
 
-        mainWindow.getEastPanel().updatePlayerList(playerList);
+        updatePlayerList();
     }
 
     /**
@@ -183,11 +183,15 @@ public class GameLogic {
         goEvent();
         manageEvents.newEvent(mainWindow.getBoard().getDestinationTile(playerList.getActivePlayer().getPosition()),
                 playerList.getActivePlayer());
-        mainWindow.getEastPanel().updatePlayerList(playerList);
+        updatePlayerList();
     }
 
     public void updateHistory(String str) {
         mainWindow.getWestPanel().append(str);
+    }
+
+    public void updatePlayerList() {
+        mainWindow.getEastPanel().updatePlayerList(playerList);
     }
 
     public PlayerList getPlayerList() {

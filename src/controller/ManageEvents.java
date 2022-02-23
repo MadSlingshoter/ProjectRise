@@ -95,7 +95,7 @@ public class ManageEvents {
 		if (tile instanceof FortuneTeller) {
 			fortuneTellerEvent(tile, player);
 		}
-		controller.getMainWindow().getEastPanel().updatePlayerList(controller.getPlayerList());
+		controller.updatePlayerList();
 	}
 
 	public void hideEventPanels() {
@@ -114,7 +114,7 @@ public class ManageEvents {
 			controller.getPlayerList().switchToNextPlayer();
 			controller.getPlayerList().eliminatePlayer(player);
 			controller.getPlayerList().updatePlayerList();
-			controller.getMainWindow().getEastPanel().updatePlayerList(controller.getPlayerList());
+			controller.updatePlayerList();
 			controller.getMainWindow().getBoard().removePlayer(player);
 			deathGUI.addGui();
 		}
@@ -171,7 +171,7 @@ public class ManageEvents {
 	}
 
 	/**
-	 * Method called when the Model.player lands on a work tile.
+	 * Method called when the player lands on a work tile.
 	 * @param tile tile
 	 * @param player Model.player
 	 */
@@ -201,6 +201,7 @@ public class ManageEvents {
 			player.decreaseBalace(chargePlayer);
 			player.decreaseNetWorth(chargePlayer);
 			taxCounter++;
+			eventsPanel.setMessage("You paid 200 CG in taxes to the church. The pot is " + getChurchTax() + ".");
 		}
 	}
 
@@ -209,8 +210,7 @@ public class ManageEvents {
 	 * @return total tax
 	 */
 	public int getChurchTax() {
-		int totalTax = taxCounter * 200;
-		return totalTax;
+		return taxCounter * 200;
 	}
 
 	/**
@@ -324,9 +324,9 @@ public class ManageEvents {
 	 * @param player
 	 */
 	public void churchEvent(Player player) {
-		player.increaseBalance(200 * taxCounter);
-		player.increaseNetWorth(200 * taxCounter);
-		controller.getMainWindow().getWestPanel().append(player.getName() + " got " + taxCounter * 200 + " GC from the church\n");
+		player.increaseBalance(getChurchTax());
+		player.increaseNetWorth(getChurchTax());
+		controller.getMainWindow().getWestPanel().append(player.getName() + " got " + getChurchTax() + " GC from the church\n");
 		taxCounter = 0;
 	}
 
@@ -351,6 +351,7 @@ public class ManageEvents {
 			property.setPurchaseable(false);
 			player.decreaseBalace(property.getPrice());
 			controller.getMainWindow().getWestPanel().append(player.getName() + " purchased " + property.getName() + "\n");
+			controller.updatePlayerList();
 		}
 
 		else {
@@ -382,6 +383,7 @@ public class ManageEvents {
 			tavern.setPurchaseable(false);
 			player.decreaseBalace(tavern.getPrice());
 			controller.getMainWindow().getWestPanel().append(player.getName() + " purchased " + tavern.getName() + "\n");
+			controller.updatePlayerList();
 		} else {
 			controller.getMainWindow().getWestPanel().append(player.getName() + " Could not afford to not purchase " + tavern.getName() + "\n");
 		}
@@ -402,7 +404,7 @@ public class ManageEvents {
 			//new SecretGui();
 
 			new Thread(new SecretSleeper(tempCard, player));
-			controller.getMainWindow().getEastPanel().updatePlayerList(controller.getPlayerList());
+			controller.updatePlayerList();
 
 		} else {
 			fortune(tempCard, player);

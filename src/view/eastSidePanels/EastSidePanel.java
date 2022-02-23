@@ -17,24 +17,31 @@ import model.player.PlayerList;
  * this class add tabs that displays informations about the players
  * in tabs
  * @author Abdulkhuder Muhammad, Sebastian Viro.
- *
+ * Updated 2022-02-23 by Mattias Bengtsson: Removed unneeded
  */
 public class EastSidePanel extends JPanel {
 
 	private static final long serialVersionUID = 3397908521882247649L;
-	private PlayerList playerList;
 	private JTabbedPane tab;
 	private PlayerInfoPanel playerInfoPnl;
-
-	private int currentPlayer = 0;
 
 	/**
 	 * @param playerList
 	 * this method is also used to update the information displayed
 	 */
 	public void updatePlayerList(PlayerList playerList) {
-		this.playerList = playerList;
-		addtabs();
+		tab.removeAll();
+
+		for (int i = 0; i < playerList.getLength(); i++) {
+			new EastSidePanel();
+			playerInfoPnl = new PlayerInfoPanel(playerList, i, this);
+			playerInfoPnl.setOpaque(false);
+			tab.addTab("Player " + (i + 1), playerInfoPnl);
+			tab.setOpaque(false);
+			tab.setForeground(Color.white);
+			tab.setBackgroundAt(i,playerList.getPlayerFromIndex(i).getPlayerColor());
+		}
+		tab.setSelectedIndex(playerList.getActivePlayer().getPlayerIndex());
 	}
 
 	/**
@@ -69,26 +76,6 @@ public class EastSidePanel extends JPanel {
 
 
 		add(tab);
-
-	}
-
-	/**
-	 * this method adds tabs according to the amount of players
-	 */
-	public void addtabs() {
-		tab.removeAll();
-
-		for (int i = 0; i < playerList.getLength(); i++) {
-			new EastSidePanel();
-			playerInfoPnl = new PlayerInfoPanel(playerList, i, this);
-			playerInfoPnl.setOpaque(false);
-			tab.addTab("Player " + (i + 1), playerInfoPnl);
-			tab.setOpaque(false);
-			tab.setSelectedIndex(currentPlayer);
-			tab.setForeground(Color.white);
-			tab.setBackgroundAt(i,playerList.getPlayerFromIndex(i).getPlayerColor());
-		}
-
 
 	}
 }
