@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
  * and each card is picked randomly.
  * @author AevanDino
  */
-public class ChanceCardTest {
+public class ChanceCardTest { //TODO remove class? It is not used at all?
 
 	private String[] chanceCard = {"Det h�r �r ett chanskort, hur ser det ut?", "2", "3", "4", "5", "6", "7"};
 	

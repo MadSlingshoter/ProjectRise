@@ -25,7 +25,6 @@ public class Tavern implements Tile{
 	}
 	public void onLanding() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	public String getName() {

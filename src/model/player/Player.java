@@ -180,9 +180,7 @@ public class Player {
 	 * @param amountOfStepsToMove
 	 */
 	public void setPosition(int amountOfStepsToMove) {
-
 		for (int i = 0; i < amountOfStepsToMove; i++) {
-
 			if (counter < 39) {
 				counter++;
 			} else {
@@ -255,8 +253,7 @@ public class Player {
 		this.isAlive = playerIsAlive;
 	}
 
-	public String isAliveString() {
-
+	public String isAliveString() { //TODO remove? Plague not in the game?
 		if (isAlive == true) {
 			return "This Model.player is alive and well";
 		} else
@@ -322,7 +319,6 @@ public class Player {
 	}
 
 	public void sellProperty(Property property) {
-
 		int total = (property.getPrice() + (property.getLevel() * property.getLevelPrice()));
 
 		int res = JOptionPane.showConfirmDialog(null,
@@ -359,7 +355,6 @@ public class Player {
 	public void clearPlayer() {
 		for (int i = 0; i < propertiesOwned.size(); i++) {
 			propertiesOwned.get(i).clearProperty();
-
 		}
 		for (int i = 0; i < tavernsOwned.size(); i++) {
 			tavernsOwned.get(i).clearTavern();
@@ -411,7 +406,7 @@ public class Player {
 
 	/**
 	 * Returns the players color
-	 * 
+	 *
 	 * @return playerColor
 	 */
 	public Color getPlayerColor() {

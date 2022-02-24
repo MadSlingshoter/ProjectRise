@@ -133,7 +133,7 @@ public class ManageEvents {
 
 		if (purchasable) {
 			if (player.getBalance() < tempProperty.getPrice()) {
-				eventsPanel.setMessage("Not enough funds to purchase this property", "balle");
+				eventsPanel.setMessage("Not enough funds to purchase this property", "Sorry...");
 
 			} else {
 				propertyDialog(tempProperty, player);
@@ -279,11 +279,10 @@ public class ManageEvents {
 	 * get free
 	 * @param player in jail.
 	 */
-	public void jailDialog(Player player) {
+	public void jailDialog(Player player) { //TODO flytta hela metoden till EventsPanel?
 		eventsPanel.activeJailButtons();
 		eventsPanel.setMessage("Do you want to pay the bail \n Which is " + (player.getJailCounter() * 50) + " GC?", "Jail");
 		eventsPanel.setPlayer(player);
-
 	}
 
 	public void payJail(Player player) {
@@ -294,12 +293,12 @@ public class ManageEvents {
 			controller.getMainWindow().getWestPanel().append(player.getName() + " paid the bail and\ngot free from jail\n");
 			controller.getMainWindow().getDice().activateRollDice();
 		} else {
-			controller.getMainWindow().getWestPanel().append(player.getName() + " Could not pay tha bail\n and is still in jail\n");
+			controller.getMainWindow().getWestPanel().append(player.getName() + " could not pay the bail\n and is still in jail\n");
 		}
 	}
 
 	public void noPayJail(Player player) {
-		controller.getMainWindow().getWestPanel().append(player.getName() + " Could not pay tha bail\n and is still in jail\n");
+		controller.getMainWindow().getWestPanel().append(player.getName() + " could not pay the bail\n and is still in jail\n");
 	}
 
 	/**
@@ -341,7 +340,6 @@ public class ManageEvents {
 
 		eventsPanel.setPlayer(player);
 		eventsPanel.setProperty(property);
-
 	}
 
 	public void propertyBuy(Property property, Player player){
@@ -355,12 +353,12 @@ public class ManageEvents {
 		}
 
 		else {
-			controller.getMainWindow().getWestPanel().append(player.getName() + " Did not have enough gold " + property.getName() + "\n");
+			controller.getMainWindow().getWestPanel().append(player.getName() + " did not have enough gold " + property.getName() + "\n");
 		}
 	}
 
 	public void propertyNotBuy(Property property, Player player) {
-		controller.getMainWindow().getWestPanel().append(player.getName() + " Did not want to buy the property " + property.getName() + "\n");
+		controller.getMainWindow().getWestPanel().append(player.getName() + " did not want to buy the property " + property.getName() + "\n");
 	}
 
 	/**
@@ -385,7 +383,7 @@ public class ManageEvents {
 			controller.getMainWindow().getWestPanel().append(player.getName() + " purchased " + tavern.getName() + "\n");
 			controller.updatePlayerList();
 		} else {
-			controller.getMainWindow().getWestPanel().append(player.getName() + " Could not afford to not purchase " + tavern.getName() + "\n");
+			westPanel.append(player.getName() + " could not afford to not purchase " + tavern.getName() + "\n");
 		}
 	}
 
@@ -492,10 +490,6 @@ public class ManageEvents {
 					fortune(tempCard, player);
 					Thread.sleep(2500);
 				}
-
-
-
-
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
