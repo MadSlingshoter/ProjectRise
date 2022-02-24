@@ -21,14 +21,14 @@ public class DiceTest {
     @Test
     @RepeatedTest(value = 10, name = "Repeating rolling dice test {currentRepetition} of {totalRepetitions}")
     public void rollDice(){
-
-        Dice dice = new Dice();
-
-        int rollamnt = 10;
-
-        dice.setRoll(rollamnt);
-
-        assertEquals(rollamnt, dice.getRoll());
+//
+//        Dice dice = new Dice();
+//
+//        int rollamnt = 10;
+//
+//        dice.setRoll(rollamnt);
+//
+//        assertEquals(rollamnt, dice.getRoll());
 
     }
 

@@ -20,7 +20,6 @@ import controller.GameLogic;
 import view.board.Board;
 import view.eastSidePanels.EastSidePanel;
 import model.player.PlayerList;
-import model.BackgroundMusic;
 
 /**
  * This class combines most of the panels in the game and adds appropriate
@@ -33,7 +32,7 @@ import model.BackgroundMusic;
 public class CombineGamePanels extends JPanel {
 	GameLogic controller;
 	private static final long serialVersionUID = 1L;
-	private EastSidePanel eastSidePanel = new EastSidePanel();
+	private EastSidePanel eastPanel = new EastSidePanel();
 	private WestSidePanel westPanel = new WestSidePanel();
 	private Board board = new Board(westPanel);
 	private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -41,7 +40,7 @@ public class CombineGamePanels extends JPanel {
 	private Dice dice;
 	private JFrame frame = new JFrame();
 	private JLabel lblPic = new JLabel();
-	private CheatGui cheat = new CheatGui(dice);
+	private CheatGui cheat;
 	private int width = screenSize.width;
 	private int height = screenSize.height;
 	private int boardWidth = 750;
@@ -58,15 +57,16 @@ public class CombineGamePanels extends JPanel {
 	public CombineGamePanels(GameLogic controller) {
 		this.controller = controller;
 		menu = new Menu(controller);
-		dice  = new Dice(board, controller.getPlayerList(), westPanel, eastSidePanel);
+		dice  = new Dice(controller, board, westPanel, eastPanel);
+		cheat = new CheatGui(controller);
 		setBorder(new MatteBorder(2, 2, 2, 2, (Color) Color.BLACK));
 		dice.setMenu(menu);
 		setBackground(Color.DARK_GRAY);
 		setPreferredSize(new Dimension(width, height));
 		setLayout(null);
-		eastSidePanel.setOpaque(false);
-		eastSidePanel.setBounds(gamePosX+sidePanelsWidth+boardWidth, gamePosY, sidePanelsWidth, sidePanelsHeight);
-		add(eastSidePanel);
+		eastPanel.setOpaque(false);
+		eastPanel.setBounds(gamePosX+sidePanelsWidth+boardWidth, gamePosY, sidePanelsWidth, sidePanelsHeight);
+		add(eastPanel);
 		westPanel.setBounds(gamePosX, gamePosY, sidePanelsWidth, sidePanelsHeight);
 		add(westPanel);
 		board.setBounds(gamePosX+sidePanelsWidth+1, gamePosY, boardWidth, boardHeight);
@@ -117,8 +117,7 @@ public class CombineGamePanels extends JPanel {
 
 		board.addPlayers(playerList);
 		board.setPlayers();
-		eastSidePanel.updatePlayerList(playerList);
-		dice.addPlayerList(playerList);
+		eastPanel.updatePlayerList(playerList);
 
 	}
 
@@ -129,4 +128,23 @@ public class CombineGamePanels extends JPanel {
 		frame.dispose();
 	}
 
+	public Dice getDice() {
+		return dice;
+	}
+
+	public EastSidePanel getEastPanel() {
+		return eastPanel;
+	}
+
+	public WestSidePanel getWestPanel() {
+		return westPanel;
+	}
+
+	public Board getBoard() {
+		return board;
+	}
+
+	public CheatGui getCheat() {
+		return cheat;
+	}
 }

@@ -24,7 +24,7 @@ public class PlayerList {
 	
 	
 	/**
-	 * Constructor that sets the active Model.player to 0 immediately at the start of a game
+	 * Constructor that sets the active player to 0 immediately at the start of a game
 	 * @param p
 	 */
 	public PlayerList(EastSidePanel p) {
@@ -40,8 +40,8 @@ public class PlayerList {
 	
 	/**
 	 * Add new Model.player
-	 * @param name the chosen name for a Model.player
-	 * @param icon the chosen image for a Model.player
+	 * @param name the chosen name for a player
+	 * @param icon the chosen image for a player
 	 */
 	public void addNewPlayer(String name, ImageIcon icon) {//TODO remove? The method below is used instead?
 		activePlayers.add(new Player(name, icon, playerListLength)); 
@@ -49,7 +49,7 @@ public class PlayerList {
 	} 
 		
 	/**
-	 * Adds new Model.player with the use of the ColorIconMap
+	 * Adds new player with the use of the ColorIconMap
 	 * @param name chosen name
 	 * @param icon string containing a color used to get a color from the ColorIconMap
 	 */
@@ -67,7 +67,7 @@ public class PlayerList {
 	}
 	
 	/**
-	 * @param index get specific Model.player
+	 * @param index get specific player
 	 * @return Model.player at chosen index
 	 */
 	public Player getPlayerFromIndex(int index) {
@@ -75,7 +75,7 @@ public class PlayerList {
 	}
 	
 	/**
-	 * @return the current Model.player
+	 * @return the current player
 	 */
 	public Player getActivePlayer() {
 		return activePlayers.get(currentPlayer); 
@@ -97,7 +97,7 @@ public class PlayerList {
 	}
 		
 	/**
-	 * Update amount of players after a Model.player has been removed
+	 * Update amount of players after a player has been removed
 	 */
 	public void updatePlayerList() {
 		for(int i = 0; i < activePlayers.size(); i++) {
@@ -106,7 +106,7 @@ public class PlayerList {
 	}
 	
 	/**
-	 * Used to switch to the current Model.player to the next one
+	 * Used to switch to the current player to the next one
 	 */
 	public void switchToNextPlayer() {
 		if(currentPlayer < (activePlayers.size() - 1) ) {
