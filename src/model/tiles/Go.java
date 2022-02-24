@@ -48,7 +48,7 @@ public class Go implements Tile {
 	 * Returns info about tile
 	 */
 	public String getTileInfo() {
-		info = name + "\n" + "Every time a Model.player passes by, he or she \nis rewarded 200 gold coins";
+		info = name + "\n" + "Every time a player passes by, he or she \nis rewarded 200 gold coins";
 		return info;
 	}
 	

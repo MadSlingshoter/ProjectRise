@@ -1,4 +1,4 @@
-package model.tileCollection;
+package model.tiles;
 
 import java.awt.Color;
 
@@ -17,7 +17,7 @@ import model.tiles.Work;
 
 
 /** 
- * Informtion about each Model.tiles.
+ * Information about each tile.
  * Price, Title, 
  * @author Rohan, Sebastian, Muhammad Abdulkhuder
  */

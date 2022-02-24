@@ -36,23 +36,6 @@ public class GUITile extends JLabel {
 	private Border tileBorder = BorderFactory.createLineBorder(Color.decode("#ff7723"));
 
 	/**
-	 * Initializes the gui
-	 */
-	public GUITile() {
-		setPreferredSize(new Dimension(200, 300));
-		setLayout(new BorderLayout());
-		setBorder(tileBorder);
-
-		labelArray.setLayout(new GridLayout(2, 2));
-		labelArray.setOpaque(true);
-		labelArray.setBackground(Color.decode("#ffe9c6"));
-
-		styleAndAddInfoLabel();
-		addLabelsToArray();
-		addLabelsToGrid();
-	}
-
-	/**
 	 * Constructor receiving an int gets the location of the info JLabel object
 	 * 
 	 * @param SouthWestNorthEast either 1, 2, 3, 4
@@ -122,11 +105,10 @@ public class GUITile extends JLabel {
 	}
 
 	/**
-	 * Each gui tile has 4 places where a Model.player can be placed
+	 * Each gui tile has 4 places where a player can be placed
 	 * 
 	 * @param
 	 */
-
 	public void setPlayer(Player player) {
 		labels[player.getPlayerIndex()].setIcon(player.getImage());
 		labels[player.getPlayerIndex()].setHorizontalAlignment(CENTER);

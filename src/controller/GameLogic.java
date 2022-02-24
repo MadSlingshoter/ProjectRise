@@ -1,6 +1,7 @@
 package controller;
 
 import model.BackgroundMusic;
+import model.Dice;
 import model.player.PlayerList;
 import view.CombineGamePanels;
 import view.Introduction;
@@ -19,8 +20,7 @@ public class GameLogic {
     private CombineGamePanels mainWindow;
     private ManageEvents manageEvents;
     private Thread movePlayerThread;
-
-    private int roll;
+    private Dice dice;
 
     /**
      * Constructor for GameLogic class.
@@ -49,6 +49,7 @@ public class GameLogic {
         for (int i = 0; i < playerNames.length; i++) {
             playerList.addNewPlayer(playerNames[i], playerColors[i]);
         }
+        dice = new Dice();
         mainWindow = new CombineGamePanels(this);
         mainWindow.addPlayer(playerList);
         mainWindow.startboard();
@@ -96,22 +97,17 @@ public class GameLogic {
      * @return two dice rolls of random integers from 1 to 6.
      */
     public int[] rollDice() {
-        int[] diceRoll = new int[2];
-        roll = 0;
-        for (int i = 0; i < 2; i++) {
-            diceRoll[i] = (int) (Math.random() * (6) + 1);
-            roll += diceRoll[i];
-        }
+        int[] diceRoll = dice.rollDice();
 
         String historyStr = playerList.getActivePlayer().getName();
 
         if (diceRoll[0] == diceRoll[1]) {
-            roll *= 2;
+            dice.doubleRoll();
             historyStr += " Rolled a double: ";
         } else {
             historyStr += " Rolled a: ";
         }
-        historyStr += roll + "\n";
+        historyStr += dice.getTotalRoll() + "\n";
 
         updateHistory(historyStr);
 
@@ -125,7 +121,7 @@ public class GameLogic {
         return diceRoll;
     }
 
-    private void manageEventGrej() {
+    private void landOnTile() {
         goEvent();
         manageEvents.newEvent(mainWindow.getBoard().getDestinationTile(playerList.getActivePlayer().getPosition()),
                 playerList.getActivePlayer());
@@ -174,7 +170,7 @@ public class GameLogic {
      * it moves the player to a specific index
      */
     public void moveWithCheat(int i) {
-        roll = i;
+        dice.setTotalRoll(i);
         playerList.getActivePlayer().checkPlayerRank();
         mainWindow.getBoard().removePlayer(playerList.getActivePlayer());
         playerList.getActivePlayer().setPosition(getRoll());
@@ -199,7 +195,7 @@ public class GameLogic {
     }
 
     public int getRoll() {
-        return roll;
+        return dice.getTotalRoll();
     }
 
     public CombineGamePanels getMainWindow() {
@@ -220,7 +216,7 @@ public class GameLogic {
                 mainWindow.getBoard().setPlayer(playerList.getActivePlayer());
 
                 if(i == (getRoll() -1))
-                    manageEventGrej();
+                    landOnTile();
                 try {
                     Thread.sleep(250);
                 } catch (InterruptedException e) {

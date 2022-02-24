@@ -15,7 +15,6 @@ public class PropertyWindow extends JPanel {
 
 	
 	private static final long serialVersionUID = 1L;
-	private PlayerList playerList;
 	private JTabbedPane tab;
 	private PlayerProperties playerProperties;
 
@@ -52,18 +51,6 @@ public class PropertyWindow extends JPanel {
 	
 	public void addPlayerList(PlayerList playerList) {
 
-		this.playerList = playerList;
-		addtabs();
-
-	}
-
-
-	/**
-	 * this method loops the amount of players and adds tabs according to the number of 
-	 * properties
-	 */
-	public void addtabs() {
-
 		tab.removeAll();
 
 		tab.setForeground(Color.white);
@@ -80,6 +67,7 @@ public class PropertyWindow extends JPanel {
 		}
 
 	}
+
 
 	/**
 	 * @return playerAT

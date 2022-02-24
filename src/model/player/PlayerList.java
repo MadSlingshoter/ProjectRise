@@ -22,31 +22,12 @@ public class PlayerList {
 	private int currentPlayer = 0; 
 	private int playerListLength = 0;
 	
-	
 	/**
 	 * Constructor that sets the active player to 0 immediately at the start of a game
-	 * @param p
-	 */
-	public PlayerList(EastSidePanel p) {
-		currentPlayer = 0;
-	}
-	
-	/**
-	 * Constructor that sets the active Model.player to 0 immediately at the start of a game
 	 */
 	public PlayerList() {
 		currentPlayer = 0; 
 	}
-	
-	/**
-	 * Add new Model.player
-	 * @param name the chosen name for a player
-	 * @param icon the chosen image for a player
-	 */
-	public void addNewPlayer(String name, ImageIcon icon) {//TODO remove? The method below is used instead?
-		activePlayers.add(new Player(name, icon, playerListLength)); 
-		playerListLength++;
-	} 
 		
 	/**
 	 * Adds new player with the use of the ColorIconMap
