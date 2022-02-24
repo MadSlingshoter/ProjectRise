@@ -9,10 +9,11 @@ import java.awt.event.MouseListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import controller.GameLogic;
 import model.player.Player;
 import model.player.PlayerList;
 import model.tiles.Tile;
-import model.tileCollection.TileCollection;
+import model.tiles.TileCollection;
 import model.tiles.TileInfo;
 import view.WestSidePanel;
 
@@ -23,112 +24,39 @@ import view.WestSidePanel;
  *
  */
 public class Board extends JLayeredPane {
-	
-	private WestSidePanel pnlWest;
+	GameLogic controller;
+
 	private TileInfo info = new TileInfo();
 	
-	private GUITile[] guiTiles = new GUITile[40]; //Creates empty tile objects with a background.  
-	private PlayerList playerList = new PlayerList();
+	private GUITile[] guiTiles = new GUITile[40]; //Creates empty tile objects with a background.
 	private Listener listener = new Listener();
 	
 	private TileCollection tileCollection = new TileCollection();
 		
 	private static final long serialVersionUID = 1L;
-	
-	private JPanel p1 = new JPanel();
-	private JPanel p2 = new JPanel();
-	private JPanel p3 = new JPanel();
-	private JPanel p4 = new JPanel();
-	private JPanel p5 = new JPanel();
-	private JPanel p6 = new JPanel();
-	private JPanel p7 = new JPanel();
-	private JPanel p8 = new JPanel();
-	private JPanel p9 = new JPanel();
-	private JPanel p10 = new JPanel();
-	private JPanel p11 = new JPanel();
-	private JPanel p12 = new JPanel();
-	private JPanel p13 = new JPanel();
-	private JPanel p14 = new JPanel();
-	private JPanel p15 = new JPanel();
-	private JPanel p16 = new JPanel();
-	private JPanel p17 = new JPanel();
-	private JPanel p18 = new JPanel();
-	private JPanel p19 = new JPanel();
-	private JPanel p20 = new JPanel();
-	private JPanel p21 = new JPanel();
-	private JPanel p22 = new JPanel();
-	private JPanel p23 = new JPanel();
-	private JPanel p24 = new JPanel();
-	private JPanel p25 = new JPanel();
-	private JPanel p26 = new JPanel();
-	private JPanel p27 = new JPanel();
-	private JPanel p28 = new JPanel();
-	private JPanel p29 = new JPanel();
-	private JPanel p30 = new JPanel();
-	private JPanel p31 = new JPanel();
-	private JPanel p32 = new JPanel();
-	private JPanel p33 = new JPanel();
-	private JPanel p34 = new JPanel();
-	private JPanel p35 = new JPanel();
-	private JPanel p36 = new JPanel();
-	private JPanel p37 = new JPanel();
-	private JPanel p38 = new JPanel();
-	private JPanel p39 = new JPanel();
-	private JPanel p40 = new JPanel();
 
-
-
-	private JPanel[] panelarray = { p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20,
-			p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p32, p33, p34, p35, p36, p37, p38, p39, p40 };
+	private JPanel[] panels;
 
 	JLabel lblNewLabel = new JLabel();
 
 	/**
 	 * 
-	 * @param wp, WestSidePanel
+	 * @param controller the controller class
 	 */
-	public Board(WestSidePanel wp) {
-		this.pnlWest = wp;
+	public Board(GameLogic controller) {
+		this.controller = controller;
+
 		initializeAllPanels();	
 		initializeGUI();
 
 	}
-	
-	/**
-	 * 
-	 * @param playerList, list of players
-	 */
-	public Board(PlayerList playerList) {
-		initializeAllPanels();	
-		this.playerList = playerList; 
-		
-	}
 
-	/**
-	 * 
-	 * @param playerList, list of players
-	 * @param wp, WestSidePanel
-	 */
-	public Board(PlayerList playerList,WestSidePanel wp) {
-		initializeAllPanels();	
-		this.playerList = playerList;  
-		
-	}
-
-	/**
-	 * Sets the list of players.
-	 * @param playerList
-	 */
-	public void addPlayers(PlayerList playerList) {
-		this.playerList = playerList;
-	}
 	/**
 	 * Sets players
 	 */
 	public void setPlayers() {
-		
-		for(int i = 0; i < playerList.getLength(); i++) {
-			setPlayer(playerList.getPlayerFromIndex(i));
+		for(int i = 0; i < controller.getPlayerList().getLength(); i++) {
+			setPlayer(controller.getPlayerList().getPlayerFromIndex(i));
 		}
 	}
 	
@@ -136,176 +64,181 @@ public class Board extends JLayeredPane {
 	 * Initilizes all panels
 	 */
 	public void initializeAllPanels() {
+		panels = new JPanel[40];
+		for (int i = 0; i < 40; i++) {
+			panels[i] = new JPanel();
+		}
+
 		setPreferredSize(new Dimension(750, 750));
 		setLayout(null);
 
-		p1.setOpaque(false);
-		p1.setBounds(649, 650, 101, 100);
-		add(p1);
+		panels[0].setOpaque(false);
+		panels[0].setBounds(649, 650, 101, 100);
+		add(panels[0]);
 
-		p2.setOpaque(false);
-		p2.setBounds(587, 651, 60, 99);
-		add(p2);
+		panels[1].setOpaque(false);
+		panels[1].setBounds(587, 651, 60, 99);
+		add(panels[1]);
 
-		p3.setOpaque(false);
-		p3.setBounds(525, 650, 60, 100);
-		add(p3);
+		panels[2].setOpaque(false);
+		panels[2].setBounds(525, 650, 60, 100);
+		add(panels[2]);
 
-		p4.setOpaque(false);
-		p4.setBounds(467, 650, 60, 100);
-		add(p4);
+		panels[3].setOpaque(false);
+		panels[3].setBounds(467, 650, 60, 100);
+		add(panels[3]);
 
-		p5.setOpaque(false);
-		p5.setBounds(412, 650, 53, 100);
-		add(p5);
+		panels[4].setOpaque(false);
+		panels[4].setBounds(412, 650, 53, 100);
+		add(panels[4]);
 
-		p6.setOpaque(false);
-		p6.setBounds(346, 650, 66, 100);
-		add(p6);
+		panels[5].setOpaque(false);
+		panels[5].setBounds(346, 650, 66, 100);
+		add(panels[5]);
 
-		p7.setOpaque(false);
-		p7.setBounds(283, 650, 66, 100);
-		add(p7);
+		panels[6].setOpaque(false);
+		panels[6].setBounds(283, 650, 66, 100);
+		add(panels[6]);
 
-		p8.setOpaque(false);
-		p8.setBounds(225, 651, 60, 99);
-		add(p8);
+		panels[7].setOpaque(false);
+		panels[7].setBounds(225, 651, 60, 99);
+		add(panels[7]);
 
-		p9.setOpaque(false);
-		p9.setBounds(163, 651, 66, 99);
-		add(p9);
+		panels[8].setOpaque(false);
+		panels[8].setBounds(163, 651, 66, 99);
+		add(panels[8]);
 
-		p10.setOpaque(false);
-		p10.setBounds(103, 650, 60, 100);
-		add(p10);
+		panels[9].setOpaque(false);
+		panels[9].setBounds(103, 650, 60, 100);
+		add(panels[9]);
 
-		p11.setOpaque(false);
-		p11.setBounds(0, 650, 101, 100);
-		add(p11);
+		panels[10].setOpaque(false);
+		panels[10].setBounds(0, 650, 101, 100);
+		add(panels[10]);
 
-		p12.setOpaque(false);
-		p12.setBounds(0, 587, 101, 62);
-		add(p12);
+		panels[11].setOpaque(false);
+		panels[11].setBounds(0, 587, 101, 62);
+		add(panels[11]);
 
-		p13.setOpaque(false);
-		p13.setBounds(0, 527, 101, 62);
-		add(p13);
+		panels[12].setOpaque(false);
+		panels[12].setBounds(0, 527, 101, 62);
+		add(panels[12]);
 
-		p14.setOpaque(false);
-		p14.setBounds(0, 465, 101, 62);
-		add(p14);
+		panels[13].setOpaque(false);
+		panels[13].setBounds(0, 465, 101, 62);
+		add(panels[13]);
 
-		p15.setOpaque(false);
-		p15.setBounds(0, 407, 101, 62);
-		add(p15);
+		panels[14].setOpaque(false);
+		panels[14].setBounds(0, 407, 101, 62);
+		add(panels[14]);
 
-		p16.setOpaque(false);
-		p16.setBounds(0, 345, 101, 62);
-		add(p16);
+		panels[15].setOpaque(false);
+		panels[15].setBounds(0, 345, 101, 62);
+		add(panels[15]);
 
-		p17.setOpaque(false);
-		p17.setBounds(0, 281, 101, 62);
-		add(p17);  
+		panels[16].setOpaque(false);
+		panels[16].setBounds(0, 281, 101, 62);
+		add(panels[16]);
 
-		p18.setOpaque(false);
-		p18.setBounds(0, 218, 101, 62);
-		add(p18);
+		panels[17].setOpaque(false);
+		panels[17].setBounds(0, 218, 101, 62);
+		add(panels[17]);
 
-		p19.setOpaque(false);
-		p19.setBounds(0, 162, 101, 62);
-		add(p19);
+		panels[18].setOpaque(false);
+		panels[18].setBounds(0, 162, 101, 62);
+		add(panels[18]);
 
-		p20.setOpaque(false);
-		p20.setBounds(0, 103, 101, 62);
-		add(p20);
+		panels[19].setOpaque(false);
+		panels[19].setBounds(0, 103, 101, 62);
+		add(panels[19]);
 
-		p21.setOpaque(false);
-		p21.setBounds(0, 0, 101, 100);
-		add(p21);
+		panels[20].setOpaque(false);
+		panels[20].setBounds(0, 0, 101, 100);
+		add(panels[20]);
 
-		p22.setOpaque(false);
-		p22.setBounds(103, 0, 60, 100);
-		add(p22);
+		panels[21].setOpaque(false);
+		panels[21].setBounds(103, 0, 60, 100);
+		add(panels[21]);
 
-		p23.setOpaque(false);
-		p23.setBounds(163, 0, 60, 100);
-		add(p23);
+		panels[22].setOpaque(false);
+		panels[22].setBounds(163, 0, 60, 100);
+		add(panels[22]);
 
-		p24.setOpaque(false);
-		p24.setBounds(225, 0, 60, 100);
-		add(p24);
+		panels[23].setOpaque(false);
+		panels[23].setBounds(225, 0, 60, 100);
+		add(panels[23]);
 
-		p25.setOpaque(false);
-		p25.setBounds(283, 0, 66, 100);
-		add(p25);
+		panels[24].setOpaque(false);
+		panels[24].setBounds(283, 0, 66, 100);
+		add(panels[24]);
 
-		p26.setOpaque(false);
-		p26.setBounds(346, 0, 60, 100);
-		add(p26);
+		panels[25].setOpaque(false);
+		panels[25].setBounds(346, 0, 60, 100);
+		add(panels[25]);
 
-		p27.setOpaque(false);
-		p27.setBounds(407, 0, 60, 100);
-		add(p27);
+		panels[26].setOpaque(false);
+		panels[26].setBounds(407, 0, 60, 100);
+		add(panels[26]);
 
-		p28.setOpaque(false);
-		p28.setBounds(467, 0, 60, 100);
-		add(p28);
+		panels[27].setOpaque(false);
+		panels[27].setBounds(467, 0, 60, 100);
+		add(panels[27]);
 
-		p29.setOpaque(false);
-		p29.setBounds(525, 0, 60, 100);
-		add(p29);
+		panels[28].setOpaque(false);
+		panels[28].setBounds(525, 0, 60, 100);
+		add(panels[28]);
 
-		p30.setOpaque(false);
-		p30.setBounds(587, 0, 60, 100);
-		add(p30);
+		panels[29].setOpaque(false);
+		panels[29].setBounds(587, 0, 60, 100);
+		add(panels[29]);
 
-		p31.setOpaque(false);
-		p31.setBounds(649, 0, 101, 100);
-		add(p31);
+		panels[30].setOpaque(false);
+		panels[30].setBounds(649, 0, 101, 100);
+		add(panels[30]);
 
-		p32.setOpaque(false);
-		p32.setBounds(649, 103, 101, 62);
-		add(p32);
+		panels[31].setOpaque(false);
+		panels[31].setBounds(649, 103, 101, 62);
+		add(panels[31]);
 
-		p33.setOpaque(false);
-		p33.setBounds(649, 162, 101, 62);
-		add(p33);
+		panels[32].setOpaque(false);
+		panels[32].setBounds(649, 162, 101, 62);
+		add(panels[32]);
 
-		p34.setOpaque(false);
-		p34.setBounds(649, 228, 101, 62);
-		add(p34);
+		panels[33].setOpaque(false);
+		panels[33].setBounds(649, 228, 101, 62);
+		add(panels[33]);
 
-		p35.setOpaque(false);
-		p35.setBounds(649, 281, 101, 62);
-		add(p35);
+		panels[34].setOpaque(false);
+		panels[34].setBounds(649, 281, 101, 62);
+		add(panels[34]);
 
-		p36.setOpaque(false);
-		p36.setBounds(649, 345, 101, 62);
-		add(p36);
+		panels[35].setOpaque(false);
+		panels[35].setBounds(649, 345, 101, 62);
+		add(panels[35]);
 
-		p37.setOpaque(false);
-		p37.setBounds(649, 407, 101, 62);
-		add(p37);
+		panels[36].setOpaque(false);
+		panels[36].setBounds(649, 407, 101, 62);
+		add(panels[36]);
 
-		p38.setOpaque(false);
-		p38.setBounds(649, 465, 101, 62);
-		add(p38);
+		panels[37].setOpaque(false);
+		panels[37].setBounds(649, 465, 101, 62);
+		add(panels[37]);
 
-		p39.setOpaque(false); 
-		p39.setBounds(649, 527, 101, 62);
-		add(p39);
+		panels[38].setOpaque(false);
+		panels[38].setBounds(649, 527, 101, 62);
+		add(panels[38]);
 
-		p40.setOpaque(false);
-		p40.setBounds(649, 587, 101, 62);
-		add(p40);
+		panels[39].setOpaque(false);
+		panels[39].setBounds(649, 587, 101, 62);
+		add(panels[39]);
 
 		Border border = BorderFactory.createLineBorder(Color.black);
 		
 		/**
 		 * Adds mouselistener
 		 */
-		for (int i=0; i<panelarray.length; i++) {
-			panelarray[i].addMouseListener(listener);
+		for (int i = 0; i< panels.length; i++) {
+			panels[i].addMouseListener(listener);
 
 		}
 
@@ -313,8 +246,8 @@ public class Board extends JLayeredPane {
 		lblNewLabel.setIcon(new ImageIcon("images/RiseBoard750.png"));
 		add(lblNewLabel);
 		
-		for (int i = 0; i < panelarray.length; i++) {
-			panelarray[i].setLayout(new BorderLayout());
+		for (int i = 0; i < panels.length; i++) {
+			panels[i].setLayout(new BorderLayout());
 		}
 	}
 	
@@ -323,7 +256,7 @@ public class Board extends JLayeredPane {
 	 */
 	public void initializeGUI() {
 		addEmptyGridPanels();
-		paintNewBoard(guiTiles); //Requires a array with all 40 Model.tiles to be sent to paintNewBoard.
+		paintNewBoard(guiTiles); //Requires a array with all 40 tiles to be sent to paintNewBoard.
 		
 	}
 	
@@ -337,7 +270,7 @@ public class Board extends JLayeredPane {
 	
 	
 	/**
-	 * Tile objects are created with an int depending on their position on the View.board.
+	 * Tile objects are created with an int depending on their position on the board.
 	 */
 	public void addEmptyGridPanels() {
 		for (int i = 0; i < guiTiles.length; i++) {
@@ -373,7 +306,7 @@ public class Board extends JLayeredPane {
 	}
 		
 	/**
-	 * Sets a Model.player on a certain position.
+	 * Sets a player on a certain position.
 	 * @param player
 	 */
 	public void setPlayer(Player player) {
@@ -381,7 +314,7 @@ public class Board extends JLayeredPane {
 	}
 	
 	/**
-	 * Removes a Model.player from a certain position.
+	 * Removes a player from a certain position.
 	 * @param player
 	 */
 	public void removePlayer(Player player) {
@@ -399,18 +332,18 @@ public class Board extends JLayeredPane {
 	}
 	 
 	/**
-	 * Used to initilize all the Model.tiles.
+	 * Used to initialize all the tiles.
 	 * @param spaces, receives a array with all 40 tile objects.
 	 */
 	public void paintNewBoard(GUITile[] spaces) {
 
-		for(int i = 0; i < panelarray.length; i ++) {
-			panelarray[i].add(spaces[i]);
+		for(int i = 0; i < panels.length; i ++) {
+			panels[i].add(spaces[i]);
 		}	
 	}
 	
 	/**
-	 * Listener class for interactive Model.tiles
+	 * Listener class for interactive tiles
 	 */
 	public class Listener implements MouseListener {
 
@@ -421,26 +354,26 @@ public class Board extends JLayeredPane {
 
 		}
 		/**
-		 * Method for when hovering over Model.tiles.
+		 * Method for when hovering over tiles.
 		 */
 		public void mouseEntered(MouseEvent e) {
-			for (int i=0; i<panelarray.length; i++) {
-				if (e.getSource()==panelarray[i]) {
+			for (int i = 0; i< panels.length; i++) {
+				if (e.getSource()== panels[i]) {
 					if (i == 0 || i == 2 || i == 4 || i == 5 ||i == 7 || 
 							i == 10 || i == 15 ||i == 17 || 
 							i == 20 ||i == 22 || i == 25 || i == 30 ||
 							i == 33 ||i == 35 || i == 36 || i == 38){
-							pnlWest.setTitleText(info.getInfo(i), info.getTitle(i), Color.DARK_GRAY, Color.white);
+							controller.getMainWindow().getWestPanel().setTitleText(info.getInfo(i), info.getTitle(i), Color.DARK_GRAY, Color.white);
 					}else if(i==26 || i==27 || i==29) {
-						pnlWest.setTitleText(tileCollection.getTileAtIndex(i).getTileInfo(),
+						controller.getMainWindow().getWestPanel().setTitleText(tileCollection.getTileAtIndex(i).getTileInfo(),
 								tileCollection.getTileAtIndex(i).getTitle(), new Color(254,231,11, 255), Color.black);
 					}
 					else if(i == 12 || i == 28) {
-						pnlWest.setTitleText(tileCollection.getTileAtIndex(i).getTileInfo(), 
+						controller.getMainWindow().getWestPanel().setTitleText(tileCollection.getTileAtIndex(i).getTileInfo(),
 								tileCollection.getTileAtIndex(i).getName(), Color.DARK_GRAY, Color.white);
 					}
-					else {						
-						pnlWest.setTitleText(tileCollection.getTileAtIndex(i).getTileInfo(),
+					else {
+						controller.getMainWindow().getWestPanel().setTitleText(tileCollection.getTileAtIndex(i).getTileInfo(),
 							tileCollection.getTileAtIndex(i).getTitle(), tileCollection.getTileAtIndex(i).getColor(), Color.white );
 					}
 				}
@@ -451,7 +384,7 @@ public class Board extends JLayeredPane {
 			 * Calls method to set default text when mouse leaves a tile.
 			 */
 			public void mouseExited(MouseEvent e) {
-				pnlWest.setTextDefault();
+				controller.getMainWindow().getWestPanel().setTextDefault();
 			}
 
 			/**

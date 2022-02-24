@@ -6,14 +6,12 @@ import java.util.Random;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import view.board.Board;
-import view.Dice;
-import view.eastSidePanels.EastSidePanel;
+
+import model.ChurchTax;
 import view.EventsPanel;
 import view.messageGui.DeathGUI;
 
 import model.player.Player;
-import model.player.PlayerList;
 import model.player.PlayerRanks;
 import model.tiles.FortuneTeller;
 import model.tiles.GoToJail;
@@ -24,18 +22,18 @@ import model.tiles.Tavern;
 import model.tiles.Tax;
 import model.tiles.Tile;
 import model.tiles.Work;
-import view.WestSidePanel;
 
 /**
  * The class handles all the events that occur when a Model.player lands on a tile.
  * @author Seth Oberg, Rohan Samandari,Muhammad Abdulkhuder ,Sebastian Viro, Aevan Dino.
+ * Updated 2022-02-22 by Mattias Bengtsson: Moved controller methods to GameLogic
  */
 
 public class ManageEvents {
 	private GameLogic controller;
 	private DeathGUI deathGUI;
+	private ChurchTax churchTax;
 	private Random rand = new Random();
-	private int taxCounter = 0;
 	private EventsPanel eventsPanel;
 
 	/**
@@ -45,8 +43,9 @@ public class ManageEvents {
 	public ManageEvents(GameLogic controller) {
 		this.controller = controller;
 
+		churchTax = new ChurchTax();
 		deathGUI = new DeathGUI();
-		eventsPanel = new EventsPanel(controller.getMainWindow().getDice(), this);
+		eventsPanel = new EventsPanel(this);
 		controller.getMainWindow().getBoard().add(eventsPanel);
 		controller.getMainWindow().getBoard().moveToFront(eventsPanel);
 	}
@@ -148,7 +147,7 @@ public class ManageEvents {
 					eventsPanel.setMessage( player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
 							+ tempProperty.getOwner().getName());
 
-					controller.getMainWindow().getWestPanel().append(player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
+					controller.updateHistory(player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
 							+ tempProperty.getOwner().getName() + "\n");
 					player.decreaseBalace(tempInt);
 					player.decreaseNetWorth(tempInt);
@@ -161,7 +160,7 @@ public class ManageEvents {
 					eventsPanel.setMessage( player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
 							+ tempProperty.getOwner().getName());
 
-					controller.getMainWindow().getWestPanel().append(player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
+					controller.updateHistory(player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
 							+ tempProperty.getOwner().getName() + "\n");
 					player.decreaseBalace(tempInt);
 					tempProperty.getOwner().increaseBalance(tempInt);
@@ -181,7 +180,7 @@ public class ManageEvents {
 		tempWorkObject.setPlayer(player);
 		tempWorkObject.payPlayer(controller.getRoll());
 
-		controller.getMainWindow().getWestPanel().append(player.getName() + " Got " + tempWorkObject.getPay() + " GC\n");
+		controller.updateHistory(player.getName() + " Got " + tempWorkObject.getPay() + " GC\n");
 		eventsPanel.setMessage("The roll is " + controller.getRoll() + "\n" + "You got: " + tempWorkObject.getPay() + " GC for your hard work");
 	}
 
@@ -197,10 +196,10 @@ public class ManageEvents {
 		control(player, chargePlayer);
 
 		if (player.isAlive()) {
-			controller.getMainWindow().getWestPanel().append(player.getName() + " paid 200 GC in tax\n");
+			controller.updateHistory(player.getName() + " paid 200 GC in tax\n");
 			player.decreaseBalace(chargePlayer);
 			player.decreaseNetWorth(chargePlayer);
-			taxCounter++;
+			churchTax.increaseCounter();
 			eventsPanel.setMessage("You paid 200 CG in taxes to the church. The pot is " + getChurchTax() + ".");
 		}
 	}
@@ -210,7 +209,7 @@ public class ManageEvents {
 	 * @return total tax
 	 */
 	public int getChurchTax() {
-		return taxCounter * 200;
+		return churchTax.getPot();
 	}
 
 	/**
@@ -242,7 +241,7 @@ public class ManageEvents {
 			if (player.isAlive()) {
 				eventsPanel.setMessage(player.getName() + " paid " + randomValue + " GC to " + tempTavernObj.getOwner().getName());
 
-				controller.getMainWindow().getWestPanel().append(player.getName() + " paid " + randomValue + " GC to "
+				controller.updateHistory(player.getName() + " paid " + randomValue + " GC to "
 						+ tempTavernObj.getOwner().getName() + "\n");
 				tempTavernObj.getOwner().increaseBalance(randomValue);
 				tempTavernObj.getOwner().increaseNetWorth(randomValue);
@@ -259,7 +258,7 @@ public class ManageEvents {
 	public void jailEvent(Tile tile, Player player) {
 		if (player.isPlayerInJail() && (player.getJailCounter()) < 2) {
 			eventsPanel.setMessage(player.getName() + " is in jail for " + (2 - player.getJailCounter()) + " more turns\n", "Jail");
-			controller.getMainWindow().getWestPanel().append(player.getName() + " is in jail for " + (2 - player.getJailCounter()) + " more turns\n");
+			controller.updateHistory(player.getName() + " is in jail for " + (2 - player.getJailCounter()) + " more turns\n");
 			player.increaseJailCounter();
 			if (player.getBalance() > (player.getJailCounter() * 50)) {
 				jailDialog(player);
@@ -275,7 +274,7 @@ public class ManageEvents {
 	}
 
 	/**
-	 * Message for the prisoner to choose if the Model.player wants to pay the bail and
+	 * Message for the prisoner to choose if the player wants to pay the bail and
 	 * get free
 	 * @param player in jail.
 	 */
@@ -290,19 +289,19 @@ public class ManageEvents {
 		if ((totalBail <= player.getBalance())) {
 			player.setJailCounter(0);
 			player.setPlayerIsInJail(false);
-			controller.getMainWindow().getWestPanel().append(player.getName() + " paid the bail and\ngot free from jail\n");
+			controller.updateHistory(player.getName() + " paid the bail and\ngot free from jail\n");
 			controller.getMainWindow().getDice().activateRollDice();
 		} else {
-			controller.getMainWindow().getWestPanel().append(player.getName() + " could not pay the bail\n and is still in jail\n");
+			controller.updateHistory(player.getName() + " could not pay the bail\n and is still in jail\n");
 		}
 	}
 
 	public void noPayJail(Player player) {
-		controller.getMainWindow().getWestPanel().append(player.getName() + " could not pay the bail\n and is still in jail\n");
+		controller.updateHistory(player.getName() + " could not pay the bail\n and is still in jail\n");
 	}
 
 	/**
-	 * Method to jail a Model.player.
+	 * Method to jail a player.
 	 * @param tile
 	 * @param player
 	 */
@@ -313,24 +312,24 @@ public class ManageEvents {
 		controller.getMainWindow().getBoard().setPlayer(player);
 
 		eventsPanel.setMessage(player.getName() + " got in jail.");
-		controller.getMainWindow().getWestPanel().append(player.getName() + " is in jail for " + (2 - player.getJailCounter()) + " more turns\n");
+		controller.updateHistory(player.getName() + " is in jail for " + (2 - player.getJailCounter()) + " more turns\n");
 	}
 
 
 
 	/**
-	 * Method called if the Model.player lands on sunday church. Pays out all the collected tax then resets the counter.
+	 * Method called if the player lands on sunday church. Pays out all the collected tax then resets the counter.
 	 * @param player
 	 */
 	public void churchEvent(Player player) {
-		player.increaseBalance(getChurchTax());
-		player.increaseNetWorth(getChurchTax());
-		controller.getMainWindow().getWestPanel().append(player.getName() + " got " + getChurchTax() + " GC from the church\n");
-		taxCounter = 0;
+		int payout = churchTax.payout();
+		player.increaseBalance(payout);
+		player.increaseNetWorth(payout);
+		controller.updateHistory(player.getName() + " got " + getChurchTax() + " GC from the church\n");
 	}
 
 	/**
-	 * Method for a dialog if the Model.player is able to purchase a property.
+	 * Method for a dialog if the player is able to purchase a property.
 	 * @param property in question.
 	 * @param player in question.
 	 */
@@ -348,21 +347,21 @@ public class ManageEvents {
 			player.addNewProperty(property);
 			property.setPurchaseable(false);
 			player.decreaseBalace(property.getPrice());
-			controller.getMainWindow().getWestPanel().append(player.getName() + " purchased " + property.getName() + "\n");
+			controller.updateHistory(player.getName() + " purchased " + property.getName() + "\n");
 			controller.updatePlayerList();
 		}
 
 		else {
-			controller.getMainWindow().getWestPanel().append(player.getName() + " did not have enough gold " + property.getName() + "\n");
+			controller.updateHistory(player.getName() + " did not have enough gold " + property.getName() + "\n");
 		}
 	}
 
 	public void propertyNotBuy(Property property, Player player) {
-		controller.getMainWindow().getWestPanel().append(player.getName() + " did not want to buy the property " + property.getName() + "\n");
+		controller.updateHistory(player.getName() + " did not want to buy the property " + property.getName() + "\n");
 	}
 
 	/**
-	 * Method for a dialog if the Model.player wants to purchase a tavern.
+	 * Method for a dialog if the player wants to purchase a tavern.
 	 * @param tavern, the to buy.
 	 * @param player, Model.player who landed on the tavern.
 	 */
@@ -380,21 +379,21 @@ public class ManageEvents {
 			player.addNewTavern(tavern);
 			tavern.setPurchaseable(false);
 			player.decreaseBalace(tavern.getPrice());
-			controller.getMainWindow().getWestPanel().append(player.getName() + " purchased " + tavern.getName() + "\n");
+			controller.updateHistory(player.getName() + " purchased " + tavern.getName() + "\n");
 			controller.updatePlayerList();
 		} else {
-			westPanel.append(player.getName() + " could not afford to not purchase " + tavern.getName() + "\n");
+			controller.updateHistory(player.getName() + " could not afford to not purchase " + tavern.getName() + "\n");
 		}
 	}
 
 	public void noBuyTavern(Tavern tavern, Player player) {
-		controller.getMainWindow().getWestPanel().append(player.getName() + " did not purchase " + tavern.getName() + "\n");
+		controller.updateHistory(player.getName() + " did not purchase " + tavern.getName() + "\n");
 	}
 	
 	/**
 	 * Method for FortuneTeller, small chance for a secret event to trigger.
-	 * @param tile, tile the Model.player landed on.
-	 * @param player, Model.player in question.
+	 * @param tile, tile the player landed on.
+	 * @param player, player in question.
 	 */
 	private void fortuneTellerEvent(Tile tile, Player player) {
 		FortuneTeller tempCard = (FortuneTeller) tile;
@@ -412,7 +411,7 @@ public class ManageEvents {
 	/**
 	 * Method that either withdraws or adds gold coins to a Model.player depending on the type of fortune.
 	 * @param tempCard, instance of FortuneTeller 
-	 * @param player, Model.player who landed on the tile
+	 * @param player, player who landed on the tile
 	 */
 	public void fortune(FortuneTeller tempCard, Player player) {
 		tempCard.setAmount(rand.nextInt(600) - 300);
@@ -422,7 +421,7 @@ public class ManageEvents {
 			tempCard.setFortune("CURSE");
 			control(player, pay);
 			if (player.isAlive()) {
-				controller.getMainWindow().getWestPanel().append(player.getName() + " paid " + pay + " GC\n");
+				controller.updateHistory(player.getName() + " paid " + pay + " GC\n");
 				player.decreaseBalace(pay);
 				player.decreaseNetWorth(pay);
 				newFortune(false, pay);
@@ -433,7 +432,7 @@ public class ManageEvents {
 			tempCard.setFortune("BLESSING");
 			player.increaseBalance(tempCard.getAmount());
 			player.increaseNetWorth(tempCard.getAmount());
-			controller.getMainWindow().getWestPanel().append(player.getName() + " received " + tempCard.getAmount() + " CG\n");
+			controller.updateHistory(player.getName() + " received " + tempCard.getAmount() + " CG\n");
 			newFortune(true, tempCard.getAmount());
 		}
 	}
@@ -460,7 +459,7 @@ public class ManageEvents {
 
 		private FortuneTeller tempCard;
 		private Player player;
-		private Clip clip;
+//		private Clip clip;
 			
 		/**
 		 * @param tempCard
@@ -482,11 +481,11 @@ public class ManageEvents {
 
 				Thread.sleep(4000);
 				for (int i = 0; i < 5; i++) {
-					File musicPath = new File("music/duraw.wav");				
-					AudioInputStream ais = AudioSystem.getAudioInputStream(musicPath);
-					clip = AudioSystem.getClip();
-					clip.open(ais);
-					clip.start();
+//					File musicPath = new File("music/duraw.wav");
+//					AudioInputStream ais = AudioSystem.getAudioInputStream(musicPath);
+//					clip = AudioSystem.getClip();
+//					clip.open(ais);
+//					clip.start();
 					fortune(tempCard, player);
 					Thread.sleep(2500);
 				}

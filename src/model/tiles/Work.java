@@ -15,10 +15,6 @@ public class Work implements Tile {
 	private String info;
 	private int roll;
 
-	public Work(Player player) { //TODO remove? Right now this is set in ManageEvent when player lands on Work
-		this.player = player;
-	}
-
 	public Work() {
 
 	}

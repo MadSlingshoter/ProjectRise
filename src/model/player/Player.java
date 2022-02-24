@@ -11,7 +11,7 @@ import model.tiles.Tavern;
 import model.tiles.Tile;
 
 /**
- * Player class deals with everything that has to do with a Model.player.
+ * Player class deals with everything that has to do with a player.
  * 
  * @author AevanDino, Seth �berg, Muhammad Hasan, Sebastian Viro
  */
@@ -34,18 +34,17 @@ public class Player {
 	private boolean playerPassedgo = false;
 
 	private ArrayList<Property> propertiesOwned;
-	private ArrayList<Tile> tilesOwned;
 
 	private ArrayList<Tavern> tavernsOwned;
 
 	/**
-	 * Constructor for adding a new Model.player, new players are created by the
-	 * playerList class and are automatically set at index 0 on the View.board with the
+	 * Constructor for adding a new player, new players are created by the
+	 * playerList class and are automatically set at index 0 on the board with the
 	 * counter variable set to 0
 	 * 
 	 * @param inPlayerName chosen Name
 	 * @param playerIcon   imageIcon from ColorIconMap
-	 * @param playerIndex  index of Model.player (for example if second Model.player the
+	 * @param playerIndex  index of player (for example for second player the
 	 *                     playerIndex is 1)
 	 */
 
@@ -84,7 +83,7 @@ public class Player {
 	}
 
 	/**
-	 * Keep track of how many turns a user has been in jail, if 3 the Model.player gets
+	 * Keep track of how many turns a user has been in jail, if 3 the player gets
 	 * out of jail if less than 3 the "roll dice" button is to be inactivated and
 	 * the end turn activated
 	 * 
@@ -95,7 +94,7 @@ public class Player {
 	}
 
 	/**
-	 * method used for increasing or resetting the jailCounter of a Model.player
+	 * method used for increasing or resetting the jailCounter of a player
 	 * 
 	 * @param amount
 	 */
@@ -111,7 +110,7 @@ public class Player {
 	}
 
 	/**
-	 * @param isInJail if Model.player is sent to jail send true, if Model.player is not in jail
+	 * @param isInJail if player is sent to jail send true, if player is not in jail
 	 *                 anymore set to false
 	 */
 	public void setPlayerIsInJail(boolean isInJail) {
@@ -119,7 +118,7 @@ public class Player {
 	}
 
 	/**
-	 * @return Return either true or false if Model.player in in jail or not
+	 * @return Return either true or false if player in in jail or not
 	 */
 	public Boolean isPlayerInJail() {
 		return this.playerIsInJail;
@@ -133,14 +132,14 @@ public class Player {
 	}
 
 	/**
-	 * @param playerName, the Model.player name to set
+	 * @param playerName, the player name to set
 	 */
 	public void setName(String playerName) {
 		this.name = playerName;
 	}
 
 	/**
-	 * Set the playerIndex of the Model.player (the index the user has in the playerList
+	 * Set the playerIndex of the player (the index the user has in the playerList
 	 * array)
 	 * 
 	 * @param index
@@ -150,14 +149,14 @@ public class Player {
 	}
 
 	/**
-	 * @return the playerIndex of a Model.player
+	 * @return the playerIndex of a player
 	 */
 	public int getPlayerIndex() {
 		return playerIndex;
 	}
 
 	/**
-	 * Get the position a Model.player has on the View.board from 0-39
+	 * Get the position a player has on the View.board from 0-39
 	 * 
 	 * @return counter
 	 */
@@ -175,7 +174,7 @@ public class Player {
 	}
 
 	/**
-	 * method used to move the Model.player by either one or many steps
+	 * method used to move the player by either one or many steps
 	 * 
 	 * @param amountOfStepsToMove
 	 */
@@ -205,14 +204,14 @@ public class Player {
 	}
 
 	/**
-	 * @return balance, the Model.player balance
+	 * @return balance, the player balance
 	 */
 	public int getBalance() {
 		return this.balance;
 	}
 
 	/**
-	 * @return playerIcon, the image of a Model.player
+	 * @return playerIcon, the image of a player
 	 */
 	public ImageIcon getImage() {
 		return playerIcon;
@@ -253,22 +252,15 @@ public class Player {
 		this.isAlive = playerIsAlive;
 	}
 
-	public String isAliveString() { //TODO remove? Plague not in the game?
-		if (isAlive == true) {
-			return "This Model.player is alive and well";
-		} else
-			return "The plauge has taken another soul";
-	}
-
 	/**
-	 * @return playerRank the rank of the Model.player
+	 * @return playerRank the rank of the player
 	 */
 	public PlayerRanks getPlayerRank() {
 		return this.playerRank;
 	}
 
 	/**
-	 * @param playerRank set the rank of this Model.player
+	 * @param playerRank set the rank of this player
 	 */
 	public void setPlayerRank(PlayerRanks playerRank) {
 		this.playerRank = playerRank;
@@ -398,7 +390,7 @@ public class Player {
 	}
 
 	/**
-	 * @return all taverns owned by Model.player
+	 * @return all taverns owned by player
 	 */
 	public ArrayList<Tavern> getTaverns() {
 		return this.tavernsOwned;

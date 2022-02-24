@@ -21,17 +21,14 @@ import model.player.PlayerList;
 
 /**
  * @author Muhammad Abdulkhuder, Aevan Dino, Sebastian Viro, Seth Oberg
- *
+ * Updated 2022-02-22 by Mattias Bengtsson: Moved controller methods to GameLogic
  */
-public class Dice extends JPanel implements ActionListener {
+public class DicePanel extends JPanel implements ActionListener {
 	
 	private static final long serialVersionUID = 1L;
 	private GameLogic controller;
 
 	private ShowPlayersTurn showPlayersTurn;
-	private Board board;
-	private WestSidePanel westSidePnl;
-	private EastSidePanel eastSidePnl = new EastSidePanel();
 
 	private JButton btnEndTurn = new JButton("End Turn");
 	private JButton btnRollDice = new JButton("Roll Dice");
@@ -50,27 +47,12 @@ public class Dice extends JPanel implements ActionListener {
 
 	/**
 	 * @param controller the main controller class
-	 * @param board The board object
-	 * @param westSidePanel panel containing all the information about the tiles and the history of all the events
-	 * @param eastSidePnl panel containing all the information about the players and their properties 
 	 */
-	public Dice(GameLogic controller, Board board, WestSidePanel westSidePanel, EastSidePanel eastSidePnl) {
+	public DicePanel(GameLogic controller) {
 		this.controller = controller;
-		this.board = board;
-		this.westSidePnl = westSidePanel;
-		this.eastSidePnl = eastSidePnl;
 
 		initializePanel();
 
-	}
-
-	/**
-	 * calls the method that initializes the panel
-	 */
-	public Dice() {
-
-		initializePanel();
-		
 	}
 
 	/**

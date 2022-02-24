@@ -36,8 +36,8 @@ public class PlayerInfoPanel extends JPanel {
 	private Font font = new Font("ALGERIAN", Font.PLAIN, 18);
 
 	/**
-	 * @param playerList Model.player list is used to get the players to display correct information
-	 * @param playernbr playernbr is to specify what Model.player
+	 * @param playerList player list is used to get the players to display correct information
+	 * @param playernbr playernbr is to specify what player
 	 * @param eastSidePanel --> ADDED 2022-02-03 by Marcus Juninger
 	 *                         to fix GUI updates when up-/downgrading properties.
 	 *                      Simply used as pass through because no controller class exists.

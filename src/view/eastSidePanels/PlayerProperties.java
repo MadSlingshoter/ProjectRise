@@ -21,6 +21,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 
+import controller.GameLogic;
 import model.player.Player;
 import model.player.PlayerList;
 import model.tiles.Property;
@@ -43,7 +44,7 @@ public class PlayerProperties extends JPanel implements ActionListener {
 	private JButton btnSell = new JButton("Sell");
 	private Font font = new Font("ALGERIAN", Font.BOLD, 22);
 	private Font fontLevel = new Font("ALGERIAN", Font.BOLD, 50);
-	private String plus = "+";
+	private GameLogic controller;
 	private PlayerList playerList;
 	private int playerAtI, propertyAtI;
 
@@ -173,7 +174,7 @@ public class PlayerProperties extends JPanel implements ActionListener {
 			String tempRes = taLevel.getText();
 
 			if (tempRes.length() < tempProperty.getLevel()) {
-				taLevel.append(plus);
+				taLevel.append("+");
 
 			}
 
@@ -194,7 +195,7 @@ public class PlayerProperties extends JPanel implements ActionListener {
 
 		}
 
-		// trade with a certain Model.player
+		// trade with a certain player
 		if (e.getSource() == btnTrade) {
 			int otherPlayerInt = 0;
 			int whichPropertyToGive = 0;
@@ -206,7 +207,7 @@ public class PlayerProperties extends JPanel implements ActionListener {
 			do {
 			otherPlayerInt = (Integer
 					.parseInt(JOptionPane.showInputDialog(null,
-							"Which Model.player do you want to trade with?\n 1 for Model.player 1 \n 2 for Model.player 2 and so on..."))
+							"Which player do you want to trade with?\n 1 for player 1 \n 2 for player 2 and so on..."))
 					- 1);
 			  
 	
@@ -280,7 +281,7 @@ public class PlayerProperties extends JPanel implements ActionListener {
 					otherPlayersProperty.setOwner(activePlayer);
 					otherPlayer.addNewProperty(activePlayerProperty);
 
-					JOptionPane.showMessageDialog(null, "Trade Complete! Omedato gosaimasu!!!");
+					JOptionPane.showMessageDialog(null, "Trade Complete! Omedetou gozaimasu!!!");
 
 				}
 
@@ -301,13 +302,13 @@ public class PlayerProperties extends JPanel implements ActionListener {
 
 					otherPlayer.increaseBalance(offer);
 					otherPlayer.increaseNetWorth(offer);
-					JOptionPane.showMessageDialog(null, "Trade Complete! Omedato gosaimasu!!!");
+					JOptionPane.showMessageDialog(null, "Trade Complete! Omedetou gozaimasu!!!");
 
 				}
 			}
 		}
 			else {
-				JOptionPane.showMessageDialog(null, "Trade can not be done! The Model.player you picked does not own any properties!");
+				JOptionPane.showMessageDialog(null, "Trade can not be done! The player you picked does not own any properties!");
 			}
 		}
 		eastSidePanel.updatePlayerList(playerList);
@@ -323,7 +324,7 @@ public class PlayerProperties extends JPanel implements ActionListener {
 
 		for (int i = 0; i < lvl; i++) {
 
-			taLevel.append(plus);
+			taLevel.append("+");
 		}
 
 	}
@@ -336,7 +337,7 @@ public class PlayerProperties extends JPanel implements ActionListener {
 
 		for (int i = 0; i < lvl; i++) {
 
-			taLevel.append(plus);
+			taLevel.append("+");
 
 		}
 

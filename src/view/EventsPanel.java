@@ -31,8 +31,6 @@ public class EventsPanel extends JPanel {
     public JButton noTavern = new JButton();
     public JButton reset = new JButton();
     private FlowLayout layout = new FlowLayout();
-    private boolean bool = false;
-    private Dice dice;
     private Player player;
     private ManageEvents manageEvent;
     private Property property;
@@ -40,7 +38,7 @@ public class EventsPanel extends JPanel {
 
 
 
-    public EventsPanel(Dice dice, ManageEvents manageEvents) {
+    public EventsPanel(ManageEvents manageEvents) {
         setPreferredSize(new Dimension(400,300));
         setLayout(layout);
         setBackground(Color.gray);
@@ -67,7 +65,6 @@ public class EventsPanel extends JPanel {
         add(noProperty);
 
         this.manageEvent = manageEvents;
-        this.dice = dice;
 
         initializeButtons();
         addListeners();

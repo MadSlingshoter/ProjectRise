@@ -1,10 +1,7 @@
 package dice;
 
-import view.Dice;
 import org.junit.Test;
 import org.junit.jupiter.api.RepeatedTest;
-
-import static org.junit.Assert.*;
 
 public class DiceTest {
 

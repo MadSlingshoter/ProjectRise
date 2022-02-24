@@ -17,32 +17,13 @@ import model.player.PlayerList;
  * this class add tabs that displays informations about the players
  * in tabs
  * @author Abdulkhuder Muhammad, Sebastian Viro.
- * Updated 2022-02-23 by Mattias Bengtsson: Removed unneeded
+ * Updated 2022-02-23 by Mattias Bengtsson: Moved controller methods to GameLogic
  */
 public class EastSidePanel extends JPanel {
 
 	private static final long serialVersionUID = 3397908521882247649L;
 	private JTabbedPane tab;
 	private PlayerInfoPanel playerInfoPnl;
-
-	/**
-	 * @param playerList
-	 * this method is also used to update the information displayed
-	 */
-	public void updatePlayerList(PlayerList playerList) {
-		tab.removeAll();
-
-		for (int i = 0; i < playerList.getLength(); i++) {
-			new EastSidePanel();
-			playerInfoPnl = new PlayerInfoPanel(playerList, i, this);
-			playerInfoPnl.setOpaque(false);
-			tab.addTab("Player " + (i + 1), playerInfoPnl);
-			tab.setOpaque(false);
-			tab.setForeground(Color.white);
-			tab.setBackgroundAt(i,playerList.getPlayerFromIndex(i).getPlayerColor());
-		}
-		tab.setSelectedIndex(playerList.getActivePlayer().getPlayerIndex());
-	}
 
 	/**
 	 * Draws the GUI
@@ -67,15 +48,36 @@ public class EastSidePanel extends JPanel {
 		UIManager.put("TabbedPane.tabsOverlapBorder", true);
 		UIManager.put("TabbedPane.selected",Color.BLACK);
 
-
 		tab = new JTabbedPane();
 
 		tab.setBounds(0, 0, 355, 860);
 		tab.setBackground(new Color(0, 0, 0));
 		setBorder(new EmptyBorder(0,0,0,0));
 
-
 		add(tab);
+	}
+
+	/**
+	 * @param playerList
+	 * this method is also used to update the information displayed
+	 */
+	public void updatePlayerList(PlayerList playerList) {
+		tab.removeAll();
+
+		for (int i = 0; i < playerList.getLength(); i++) {
+//			new EastSidePanel(); // Mattias: this shouldn't be needed, but I'm leaving it here in case it fixes some unknown bug
+			playerInfoPnl = new PlayerInfoPanel(playerList, i, this);
+			playerInfoPnl.setOpaque(false);
+			tab.addTab("Player " + (i + 1), playerInfoPnl);
+			tab.setOpaque(false);
+			tab.setForeground(Color.white);
+			tab.setBackgroundAt(i,playerList.getPlayerFromIndex(i).getPlayerColor());
+		}
+		tab.setSelectedIndex(playerList.getActivePlayer().getPlayerIndex());
+	}
+
+	private void addInfoPanel(PlayerList playerList) {
 
 	}
+
 }
