@@ -1,10 +1,6 @@
 package view;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -87,11 +83,7 @@ public class DicePanel extends JPanel implements ActionListener {
 		btnEndTurn.addActionListener(this);
 
 		add(btnEndTurn);
-//		add(cheat); //Enable for testing with cheater.
 		btnEndTurn.setEnabled(false);
-
-		showPlayersTurn.updateGUI(controller.getPlayerList().getActivePlayer().getName(),
-				controller.getPlayerList().getActivePlayer().getPlayerColor());
 	}
 
 	
@@ -122,9 +114,6 @@ public class DicePanel extends JPanel implements ActionListener {
 		 * If the player is not in jail they can roll the dice
 		 */
 		if (e.getSource() == btnEndTurn) {
-			showPlayersTurn.updateGUI(controller.getPlayerList().getActivePlayer().getName(),
-					controller.getPlayerList().getActivePlayer().getPlayerColor());
-			
 			controller.endTurn();
 		}
 
@@ -202,5 +191,8 @@ public class DicePanel extends JPanel implements ActionListener {
 		this.menu = menu;
 	}
 
+	public void updateShownPlayer(String playerName, Color color) {
+		showPlayersTurn.updateGUI(playerName, color);
+	}
 
 }

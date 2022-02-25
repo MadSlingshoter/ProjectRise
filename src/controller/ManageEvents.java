@@ -1,11 +1,6 @@
 package controller;
 
-import java.io.File;
 import java.util.Random;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 
 import model.ChurchTax;
 import view.EventsPanel;
@@ -94,7 +89,7 @@ public class ManageEvents {
 		if (tile instanceof FortuneTeller) {
 			fortuneTellerEvent(tile, player);
 		}
-		controller.updatePlayerList();
+		controller.updatePlayerInfo();
 	}
 
 	public void hideEventPanels() {
@@ -113,7 +108,7 @@ public class ManageEvents {
 			controller.getPlayerList().switchToNextPlayer();
 			controller.getPlayerList().eliminatePlayer(player);
 			controller.getPlayerList().updatePlayerList();
-			controller.updatePlayerList();
+			controller.updatePlayerInfo();
 			controller.getMainWindow().getBoard().removePlayer(player);
 			deathGUI.addGui();
 		}
@@ -149,7 +144,7 @@ public class ManageEvents {
 
 					controller.updateHistory(player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
 							+ tempProperty.getOwner().getName() + "\n");
-					player.decreaseBalace(tempInt);
+					player.decreaseBalance(tempInt);
 					player.decreaseNetWorth(tempInt);
 					tempProperty.getOwner().increaseBalance(tempInt);
 				}
@@ -162,7 +157,7 @@ public class ManageEvents {
 
 					controller.updateHistory(player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
 							+ tempProperty.getOwner().getName() + "\n");
-					player.decreaseBalace(tempInt);
+					player.decreaseBalance(tempInt);
 					tempProperty.getOwner().increaseBalance(tempInt);
 				}
 			}
@@ -197,7 +192,7 @@ public class ManageEvents {
 
 		if (player.isAlive()) {
 			controller.updateHistory(player.getName() + " paid 200 GC in tax\n");
-			player.decreaseBalace(chargePlayer);
+			player.decreaseBalance(chargePlayer);
 			player.decreaseNetWorth(chargePlayer);
 			churchTax.increaseCounter();
 			eventsPanel.setMessage("You paid 200 CG in taxes to the church. The pot is " + getChurchTax() + ".");
@@ -245,7 +240,7 @@ public class ManageEvents {
 						+ tempTavernObj.getOwner().getName() + "\n");
 				tempTavernObj.getOwner().increaseBalance(randomValue);
 				tempTavernObj.getOwner().increaseNetWorth(randomValue);
-				player.decreaseBalace(randomValue);
+				player.decreaseBalance(randomValue);
 			}
 		}
 	}
@@ -269,7 +264,7 @@ public class ManageEvents {
 		} else if (player.getJailCounter() >= 2) {
 			player.setPlayerIsInJail(false);
 			player.setJailCounter(0);
-			controller.getMainWindow().getDice().activateRollDice();
+			controller.getMainWindow().getDicePanel().activateRollDice();
 		}
 	}
 
@@ -290,7 +285,7 @@ public class ManageEvents {
 			player.setJailCounter(0);
 			player.setPlayerIsInJail(false);
 			controller.updateHistory(player.getName() + " paid the bail and\ngot free from jail\n");
-			controller.getMainWindow().getDice().activateRollDice();
+			controller.getMainWindow().getDicePanel().activateRollDice();
 		} else {
 			controller.updateHistory(player.getName() + " could not pay the bail\n and is still in jail\n");
 		}
@@ -346,9 +341,9 @@ public class ManageEvents {
 			property.setOwner(player);
 			player.addNewProperty(property);
 			property.setPurchaseable(false);
-			player.decreaseBalace(property.getPrice());
+			player.decreaseBalance(property.getPrice());
 			controller.updateHistory(player.getName() + " purchased " + property.getName() + "\n");
-			controller.updatePlayerList();
+			controller.updatePlayerInfo();
 		}
 
 		else {
@@ -378,9 +373,9 @@ public class ManageEvents {
 			tavern.setOwner(player);
 			player.addNewTavern(tavern);
 			tavern.setPurchaseable(false);
-			player.decreaseBalace(tavern.getPrice());
+			player.decreaseBalance(tavern.getPrice());
 			controller.updateHistory(player.getName() + " purchased " + tavern.getName() + "\n");
-			controller.updatePlayerList();
+			controller.updatePlayerInfo();
 		} else {
 			controller.updateHistory(player.getName() + " could not afford to not purchase " + tavern.getName() + "\n");
 		}
@@ -401,7 +396,7 @@ public class ManageEvents {
 			//new SecretGui();
 
 			new Thread(new SecretSleeper(tempCard, player));
-			controller.updatePlayerList();
+			controller.updatePlayerInfo();
 
 		} else {
 			fortune(tempCard, player);
@@ -422,7 +417,7 @@ public class ManageEvents {
 			control(player, pay);
 			if (player.isAlive()) {
 				controller.updateHistory(player.getName() + " paid " + pay + " GC\n");
-				player.decreaseBalace(pay);
+				player.decreaseBalance(pay);
 				player.decreaseNetWorth(pay);
 				newFortune(false, pay);
 			}
@@ -476,7 +471,7 @@ public class ManageEvents {
 		public void run() {
 			try {
 				eventsPanel.deactivateAllButtons();
-				controller.getMainWindow().getDice().deactivateAllDiceBtn();
+				controller.getMainWindow().getDicePanel().deactivateAllDiceBtn();
 				eventsPanel.setMessage("Draw 5 cards","Secret fortune");
 
 				Thread.sleep(4000);
@@ -492,7 +487,7 @@ public class ManageEvents {
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
-				controller.getMainWindow().getDice().activateEndTurnDice();
+				controller.getMainWindow().getDicePanel().activateEndTurnDice();
 			}
 		}
 	}

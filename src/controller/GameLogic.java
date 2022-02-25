@@ -2,8 +2,10 @@ package controller;
 
 import model.BackgroundMusic;
 import model.Dice;
+import model.player.Player;
 import model.player.PlayerList;
-import view.CombineGamePanels;
+import model.tiles.Property;
+import view.MainWindow;
 import view.Introduction;
 import view.startMenu.StartingScreen;
 
@@ -17,10 +19,11 @@ public class GameLogic {
     StartingScreen startingScreen;
     private BackgroundMusic bgm;
     private PlayerList playerList;
-    private CombineGamePanels mainWindow;
+    private MainWindow mainWindow;
     private ManageEvents manageEvents;
     private Thread movePlayerThread;
     private Dice dice;
+    private ManageTrade manageTrade;
 
     /**
      * Constructor for GameLogic class.
@@ -50,10 +53,13 @@ public class GameLogic {
             playerList.addNewPlayer(playerNames[i], playerColors[i]);
         }
         dice = new Dice();
-        mainWindow = new CombineGamePanels(this);
-        mainWindow.addPlayer(playerList);
+        mainWindow = new MainWindow(this);
+        mainWindow.addPlayer();
         mainWindow.startboard();
+        mainWindow.getDicePanel().updateShownPlayer(getPlayerList().getActivePlayer().getName(),
+                getPlayerList().getActivePlayer().getPlayerColor());
         manageEvents = new ManageEvents(this);
+        manageTrade = new ManageTrade(this);
 
         Introduction intro = new Introduction();
     }
@@ -125,8 +131,8 @@ public class GameLogic {
         goEvent();
         manageEvents.newEvent(mainWindow.getBoard().getDestinationTile(playerList.getActivePlayer().getPosition()),
                 playerList.getActivePlayer());
-        updatePlayerList();
-        mainWindow.getDice().enableBtnEndTurn(true);
+        updatePlayerInfo();
+        mainWindow.getDicePanel().enableBtnEndTurn(true);
     }
 
     /**
@@ -151,21 +157,22 @@ public class GameLogic {
         playerList.switchToNextPlayer();
 
         if (playerList.getActivePlayer().isPlayerInJail()) {
-            mainWindow.getDice().enableBtnRollDice(false);
-            mainWindow.getDice().enableBtnEndTurn(true);
+            mainWindow.getDicePanel().enableBtnRollDice(false);
+            mainWindow.getDicePanel().enableBtnEndTurn(true);
             manageEvents.newEvent(mainWindow.getBoard().getDestinationTile(playerList.getActivePlayer().getPosition()),
                     playerList.getActivePlayer());
         } else if (!playerList.getActivePlayer().isPlayerInJail()) {
-            mainWindow.getDice().enableBtnRollDice(true);
-            mainWindow.getDice().enableBtnEndTurn(false);
+            mainWindow.getDicePanel().enableBtnRollDice(true);
+            mainWindow.getDicePanel().enableBtnEndTurn(false);
             manageEvents.hideEventPanels();
         }
 
-        updatePlayerList();
+        mainWindow.getDicePanel().updateShownPlayer(getPlayerList().getActivePlayer().getName(), getPlayerList().getActivePlayer().getPlayerColor());
+        updatePlayerInfo();
     }
 
     /**
-     * @param i
+     * @param i number of steps to move
      * Cheat method used for Testing
      * it moves the player to a specific index
      */
@@ -179,15 +186,101 @@ public class GameLogic {
         goEvent();
         manageEvents.newEvent(mainWindow.getBoard().getDestinationTile(playerList.getActivePlayer().getPosition()),
                 playerList.getActivePlayer());
-        updatePlayerList();
+        updatePlayerInfo();
+        mainWindow.getDicePanel().enableBtnRollDice(false);
+        mainWindow.getDicePanel().enableBtnEndTurn(true);
     }
 
+    /**
+     * Handles the selling of a selected property.
+     * @param playerIndex the index of the player
+     * @param propertyIndex the index of the property
+     */
+    public void sellProperty(int playerIndex, int propertyIndex) {
+        Player currPlayer = playerList.getPlayerFromIndex(playerIndex);
+        Property currProperty = currPlayer.getPropertyAt(propertyIndex);
+
+        int total = (currProperty.getPrice() + (currProperty.getLevel() * currProperty.getLevelPrice()));
+
+        int res = mainWindow.showConfirmDialog("Do you really want to sell " + currProperty.getName() + " for: " +
+                total + "?");
+        if (res == 0) {
+            currPlayer.sellProperty(currProperty, total);
+            updateHistory(currPlayer.getName() + " sold " + currProperty.getName());
+            updatePlayerInfo();
+        }
+    }
+
+    /**
+     * Handles the upgrading of a selected property.
+     * @param playerIndex the index of the player
+     * @param propertyIndex the index of the property
+     */
+    public void upgradeProperty(int playerIndex, int propertyIndex) {
+        Player currPlayer = playerList.getPlayerFromIndex(playerIndex);
+        Property currProperty = currPlayer.getPropertyAt(propertyIndex);
+
+        if (currPlayer.getBalance()>= currProperty.getLevelPrice()) {
+            int res = mainWindow.showConfirmDialog("Do you want to upgrade " + currProperty.getName() + " for: "
+                    + currProperty.getLevelPrice());
+            if (res == 0) {
+                if (currProperty.increaseLevel()) {
+                    currPlayer.decreaseBalance(currProperty.getLevelPrice());
+                    mainWindow.getEastPanel().getPropertyWindowAt(playerIndex).getPlayerPropertyPanelAt(propertyIndex).upgradeUpdate();
+                    updateHistory(currPlayer.getName() + " upgraded " + currProperty.getName());
+                    updatePlayerInfo();
+                } else {
+                    mainWindow.showMessage("You need to increase your rank to upgrade this property more.");
+                }
+            }
+        } else {
+            mainWindow.showMessage("You do not have enough gold to upgrade this property.");
+        }
+    }
+
+    /**
+     * Handles the downgrading of a selected property.
+     * @param playerIndex the index of the player
+     * @param propertyIndex the index of the property
+     */
+    public void downgradeProperty(int playerIndex, int propertyIndex) {
+        Player currPlayer = playerList.getPlayerFromIndex(playerIndex);
+        Property currProperty = currPlayer.getPropertyAt(propertyIndex);
+
+        int res = mainWindow.showConfirmDialog("Do you really want to downgrade " + currProperty.getName() +
+                " for: " + currProperty.getLevelPrice() + "?");
+        if (res == 0) {
+            if (currProperty.decreaseLevel()) {
+                currPlayer.increaseBalance(currProperty.getLevelPrice());
+                mainWindow.getEastPanel().getPropertyWindowAt(playerIndex).getPlayerPropertyPanelAt(propertyIndex).downgradeUpdate();
+                updateHistory(currPlayer.getName() + " downgraded " + currProperty.getName());
+                updatePlayerInfo();
+            } else {
+                mainWindow.showMessage("You cannot downgrade this property more.");
+            }
+        }
+    }
+
+    /**
+     * Starts the trade dialog.
+     */
+    public void trade() {
+        manageTrade.startTrade();
+    }
+
+    /**
+     * Adds a new string to the Game History panel.
+     * @param str the string to add.
+     */
     public void updateHistory(String str) {
         mainWindow.getWestPanel().append(str);
     }
 
-    public void updatePlayerList() {
-        mainWindow.getEastPanel().updatePlayerList(playerList);
+    /**
+     * Refreshes the player information panels.
+     */
+    public void updatePlayerInfo() {
+        mainWindow.getEastPanel().updatePlayerList();
     }
 
     public PlayerList getPlayerList() {
@@ -198,7 +291,7 @@ public class GameLogic {
         return dice.getTotalRoll();
     }
 
-    public CombineGamePanels getMainWindow() {
+    public MainWindow getMainWindow() {
         return mainWindow;
     }
 
