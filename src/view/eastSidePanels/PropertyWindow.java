@@ -6,32 +6,19 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import model.player.PlayerList;
+import controller.GameLogic;
 
 /**
  * @author Muhammad Abdulkhuder, Aevan Dino.
+ * Updated 2022-02-05 by Mattias Bengtsson: MVC architecture restructuring
  */
 public class PropertyWindow extends JPanel {
-
 	
 	private static final long serialVersionUID = 1L;
 	private JTabbedPane tab;
-	private PlayerProperties playerProperties;
+	private PlayerPropertyPanel[] playerPropertyPanels;
 
-	/**
-	 * Reference for updating GUI, only exists because of lackluster architecture overall.
-	 * Not used in this class, only passed on to PlayerProperties class.
-	 * Added 2022-02-03 by Marcus Juninger.
-	 */
-	private EastSidePanel eastSidePanel;
-
-	private int playerAt;
-
-	private int[] size;
-	
-	public PropertyWindow(EastSidePanel eastSidePanel) {
-
-		this.eastSidePanel = eastSidePanel;
+	public PropertyWindow(GameLogic controller, int playerNbr) {
 		setBorder(new EmptyBorder(0,0,0,0));
 		setPreferredSize(new Dimension(345, 600));
 		setOpaque(false);
@@ -47,40 +34,46 @@ public class PropertyWindow extends JPanel {
 		tab.setBounds(0, 0, 330, 600);
 		add(tab);
 
+		addPropertyPanels(controller, playerNbr);
 	}
 	
-	public void addPlayerList(PlayerList playerList) {
+	private void addPropertyPanels(GameLogic controller, int playerNbr) {
 
 		tab.removeAll();
 
 		tab.setForeground(Color.white);
 
-		size = new int[playerList.getPlayerFromIndex(getPlayerAt()).getProperties().size()];
+		int size = controller.getPlayerList().getPlayerFromIndex(playerNbr).getProperties().size();
 
-		for (int i = 0; i < size.length; i++) {
+		playerPropertyPanels = new PlayerPropertyPanel[size];
 
-			new PropertyWindow(eastSidePanel);
-			playerProperties = new PlayerProperties(playerList, getPlayerAt(), i, eastSidePanel);
-			tab.addTab("Property" + (i + 1), playerProperties);
-			tab.setBackgroundAt(i, playerList.getPlayerFromIndex(getPlayerAt()).getProperty(i).getColor());
+		for (int i = 0; i < size; i++) {
+			//new PropertyWindow(eastSidePanel); // Mattias: this shouldn't be needed, but I'm leaving it here in case it fixes some unknown bug
+			playerPropertyPanels[i] = new PlayerPropertyPanel(controller, playerNbr, i);
+			tab.addTab("Property" + (i + 1), playerPropertyPanels[i]);
+			tab.setBackgroundAt(i, controller.getPlayerList().getPlayerFromIndex(playerNbr).getProperty(i).getColor());
 
 		}
 
 	}
 
+	/**
+	 * Sets which property to show.
+	 * @param index the index of the property.
+	 */
+	public void setSelectedTab(int index) {
+		if (index < tab.getTabCount()) {
+			tab.setSelectedIndex(index);
+		}
+	}
 
 	/**
-	 * @return playerAT
+	 * Returns the PlayerPropertyPanel at a given index.
+	 * @param index the index of the property.
+	 * @return the PlayerPropertyPanel at the given index.
 	 */
-	public int getPlayerAt() {
-		return playerAt;
-	} 
-
-	/**
-	 * @param playerAt
-	 */
-	public void setPlayerAt(int playerAt) {
-		this.playerAt = playerAt;
+	public PlayerPropertyPanel getPlayerPropertyPanelAt(int index) {
+		return playerPropertyPanels[index];
 	}
 
 }

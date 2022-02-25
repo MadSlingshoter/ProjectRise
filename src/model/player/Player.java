@@ -14,6 +14,7 @@ import model.tiles.Tile;
  * Player class deals with everything that has to do with a player.
  * 
  * @author AevanDino, Seth �berg, Muhammad Hasan, Sebastian Viro
+ * Updated 2022-02-05 by Mattias Bengtsson: MVC architecture restructuring. Moved controller methods to GameLogic.
  */
 public class Player {
 
@@ -227,7 +228,7 @@ public class Player {
 	/**
 	 * @param decrease amount to decrease players balance by
 	 */
-	public void decreaseBalace(int decrease) {
+	public void decreaseBalance(int decrease) {
 		this.balance -= decrease;
 	}
 
@@ -310,18 +311,10 @@ public class Player {
 
 	}
 
-	public void sellProperty(Property property) {
-		int total = (property.getPrice() + (property.getLevel() * property.getLevelPrice()));
-
-		int res = JOptionPane.showConfirmDialog(null,
-				"Do you really want to sell " + property.getName() + " for: " + total);
-
-		if (res == 0) {
-			increaseBalance(total);
-			this.propertiesOwned.remove(property);
-			property.setOwner(null);
-		}
-
+	public void sellProperty(Property property, int price) {
+		increaseBalance(price);
+		this.propertiesOwned.remove(property);
+		property.setOwner(null);
 	}
 
 	/**

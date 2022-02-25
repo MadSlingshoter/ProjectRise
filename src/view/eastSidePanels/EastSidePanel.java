@@ -11,7 +11,7 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 
-import model.player.PlayerList;
+import controller.GameLogic;
 
 /**
  * this class add tabs that displays informations about the players
@@ -20,15 +20,18 @@ import model.player.PlayerList;
  * Updated 2022-02-23 by Mattias Bengtsson: Moved controller methods to GameLogic
  */
 public class EastSidePanel extends JPanel {
+	private GameLogic controller;
+	PlayerInfoPanel[] playerInfoPnls;
+	PropertyWindow[] propertyWindows;
 
 	private static final long serialVersionUID = 3397908521882247649L;
 	private JTabbedPane tab;
-	private PlayerInfoPanel playerInfoPnl;
 
 	/**
 	 * Draws the GUI
 	 */
-	public EastSidePanel() {
+	public EastSidePanel(GameLogic controller) {
+		this.controller = controller;
 
 		setPreferredSize(new Dimension(345, 860));
 		setOpaque(false);
@@ -58,26 +61,50 @@ public class EastSidePanel extends JPanel {
 	}
 
 	/**
-	 * @param playerList
+	 *
 	 * this method is also used to update the information displayed
 	 */
-	public void updatePlayerList(PlayerList playerList) {
+	public void updatePlayerList() {
 		tab.removeAll();
 
-		for (int i = 0; i < playerList.getLength(); i++) {
+		int length = controller.getPlayerList().getLength();
+
+		playerInfoPnls = new PlayerInfoPanel[length];
+		propertyWindows = new PropertyWindow[length];
+
+		for (int i = 0; i < length; i++) {
 //			new EastSidePanel(); // Mattias: this shouldn't be needed, but I'm leaving it here in case it fixes some unknown bug
-			playerInfoPnl = new PlayerInfoPanel(playerList, i, this);
-			playerInfoPnl.setOpaque(false);
-			tab.addTab("Player " + (i + 1), playerInfoPnl);
+			playerInfoPnls[i] = new PlayerInfoPanel(controller, i);
+			playerInfoPnls[i].setOpaque(false);
+			tab.addTab("Player " + (i + 1), playerInfoPnls[i]);
 			tab.setOpaque(false);
 			tab.setForeground(Color.white);
-			tab.setBackgroundAt(i,playerList.getPlayerFromIndex(i).getPlayerColor());
+			tab.setBackgroundAt(i,controller.getPlayerList().getPlayerFromIndex(i).getPlayerColor());
+
+			propertyWindows[i] = new PropertyWindow(controller, i);
+			propertyWindows[i].setBounds(10, 210, 335, 626);
+
+			playerInfoPnls[i].add(propertyWindows[i]);
 		}
-		tab.setSelectedIndex(playerList.getActivePlayer().getPlayerIndex());
+		tab.setSelectedIndex(controller.getPlayerList().getActivePlayer().getPlayerIndex());
 	}
 
-	private void addInfoPanel(PlayerList playerList) {
+	/**
+	 * Returns the PlayerInfoPanel at a given index.
+	 * @param index the index of the property.
+	 * @return the PlayerInfoPanel at the given index.
+	 */
+	public PlayerInfoPanel getPlayerInfoPanelAt(int index) {
+		return playerInfoPnls[index];
+	}
 
+	/**
+	 * Returns the PropertyWindow at a given index.
+	 * @param index the index of the property.
+	 * @return the PropertyWindow at the given index.
+	 */
+	public PropertyWindow getPropertyWindowAt(int index) {
+		return propertyWindows[index];
 	}
 
 }

@@ -10,10 +10,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.MatteBorder;
 
 import controller.GameLogic;
@@ -29,7 +26,7 @@ import model.player.PlayerList;
  *
  * Updated 2022-02-05 by Ali Albabily to fix bug B3 in order to restart the game properly.
  */
-public class CombineGamePanels extends JPanel {
+public class MainWindow extends JPanel {
 	GameLogic controller;
 	private static final long serialVersionUID = 1L;
 	private EastSidePanel eastPanel;
@@ -54,9 +51,9 @@ public class CombineGamePanels extends JPanel {
 	/**
 	 * adds the panels and sets the bounds
 	 */
-	public CombineGamePanels(GameLogic controller) {
+	public MainWindow(GameLogic controller) {
 		this.controller = controller;
-		eastPanel = new EastSidePanel();
+		eastPanel = new EastSidePanel(controller);
 		westPanel = new WestSidePanel();
 		board = new Board(controller);
 		menu = new Menu(controller);
@@ -114,13 +111,28 @@ public class CombineGamePanels extends JPanel {
 	}
 
 	/**
-	 * @param playerList
+	 *
 	 */
-	public void addPlayer(PlayerList playerList) {
-
+	public void addPlayer() {
 		board.setPlayers();
-		eastPanel.updatePlayerList(playerList);
+		eastPanel.updatePlayerList();
+	}
 
+	/**
+	 * Shows a dialog message to the user.
+	 * @param str the String to show to the user.
+	 */
+	public void showMessage(String str) {
+		JOptionPane.showMessageDialog(null, str);
+	}
+
+	/**
+	 * Shows a confirm dialog message to the user.
+	 * @param str the String to show to the user.
+	 * @return the answer from the user.
+	 */
+	public int showConfirmDialog(String str) {
+		return JOptionPane.showConfirmDialog(null, str);
 	}
 
 	/**
@@ -130,7 +142,7 @@ public class CombineGamePanels extends JPanel {
 		frame.dispose();
 	}
 
-	public DicePanel getDice() {
+	public DicePanel getDicePanel() {
 		return dicePanel;
 	}
 

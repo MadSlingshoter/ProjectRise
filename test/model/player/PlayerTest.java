@@ -83,7 +83,7 @@ public class PlayerTest {
     @Test
     public void decreaseBalace() {
 
-        p.decreaseBalace(-100);
+        p.decreaseBalance(-100);
 
         assertEquals(1600, p.getBalance());
 

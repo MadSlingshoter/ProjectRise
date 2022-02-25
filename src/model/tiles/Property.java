@@ -10,6 +10,7 @@ import model.player.Player;
 /**
  * Class for property.
  * @author Sebastian Viro, Aevan Dino, Muhammad Abdulkhuder
+ * Updated 2022-02-05 by Mattias Bengtsson: MVC architecture restructuring. Moved controller methods to GameLogic.
  */
 public class Property implements Tile {
 
@@ -143,22 +144,22 @@ public class Property implements Tile {
 		this.levelPrice = levelPrice;
 	}
 	
-	public void increaseLevel() {
-		
-		int res = JOptionPane.showConfirmDialog(null, "Do you want to upgrade " + getName() + " for: " + getLevelPrice());
-		if (res == 0 && player.getPlayerRank().nbrOfLevels() > levels && player.getBalance()>= getLevelPrice()) {
-			this.levels+=1;
-
-			player.decreaseBalace(getLevelPrice());
+	public boolean increaseLevel() {
+		if (player.getPlayerRank().nbrOfLevels() > levels) {
+			levels+=1;
+			return true;
+		} else {
+			return false;
 		}
 		
 	}
 	
-	public void decreaseLevel() {
-		int res = JOptionPane.showConfirmDialog(null, "Do you really want to downgrade " + getName() + " for: " + getLevelPrice());
-		if (levels>0 && res == 0) {	
-			this.levels-=1;
-			player.increaseBalance(getLevelPrice());
+	public boolean decreaseLevel() {
+		if (levels > 0) {
+			levels -= 1;
+			return true;
+		} else {
+			return false;
 		}
 	}
 		
