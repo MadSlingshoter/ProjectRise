@@ -40,7 +40,7 @@ public class GameLogic {
         startingScreen = new StartingScreen(this);
         startingScreen.initializeGUI();
         playerList = new PlayerList();
-        //startMusic();
+        startMusic();
     }
 
     /**
