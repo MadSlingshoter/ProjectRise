@@ -215,6 +215,7 @@ public class StartingScreen extends JFrame {
 	}
 
 	/**
+	 *
 	 * Buttonlistener class, listens for clicks.
 	 * @author Aevan Dino
 	 */
@@ -222,7 +223,7 @@ public class StartingScreen extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 
 			if (e.getSource() == btnReset) {
-				btnPressed(3, false);
+				btnPressed(4, false);
 			}
 
 			if (e.getSource() == mute) {
@@ -234,11 +235,11 @@ public class StartingScreen extends JFrame {
 					controller.pauseMusic();
 				}
 			}
+			/**
+			 * Updated 2022-03-01 by Susanne Vikström, to show the Confirm button when player Reset players
+			 */
 
 			if (e.getSource() == btnConfirm) {
-
-				btnConfirm.setVisible(false);
-
 				if (radioButtons[0].isSelected()) {
 					btnPressed(2, true);
 					amountOfPlayers = 2;
@@ -332,6 +333,7 @@ public class StartingScreen extends JFrame {
 		}
 		
 		/**
+		 * Updated 2022-03-01 by Susanne Vikström, to show the Confirm button when player Reset players (B25)
 		 * Whenever Model.player chooses to reset the start screen
 		 * @param amountOfPlayers, how many players to draw
 		 * @param bool, boolean indicating whether or not components should be visible.
@@ -344,8 +346,7 @@ public class StartingScreen extends JFrame {
 			}
 			btnStartGame.setVisible(bool);
 			btnReset.setVisible(bool);
-			btnConfirm.setEnabled(!bool);
-
+			btnConfirm.setVisible(!bool);
 		}
 	}
 
