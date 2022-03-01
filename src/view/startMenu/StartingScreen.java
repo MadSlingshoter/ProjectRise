@@ -256,9 +256,13 @@ public class StartingScreen extends JFrame {
 
 				/**
 				 * Updated 2022-02-04 by Marcus Juninger to handle whitespace usernames in bug B4.
+				 * Updated 2022-03-01 by Susanne Vikström, to handle identical usernames, see bug B16.
 				 */
 				if(tfPlayer1.getText().isBlank() || tfPlayer2.getText().isBlank() || tfPlayer3.getText().isBlank() || tfPlayer4.getText().isBlank()) {
 					JOptionPane.showMessageDialog(null, "All players must have a name. Names can not be blank.");
+				} else if(tfPlayer1.getText().equals(tfPlayer2.getText()) || tfPlayer1.getText().equals(tfPlayer3.getText()) || tfPlayer1.getText().equals(tfPlayer4.getText())
+						|| tfPlayer2.getText().equals(tfPlayer3.getText()) || tfPlayer2.getText().equals(tfPlayer4.getText()) || tfPlayer3.getText().equals(tfPlayer4.getText())){
+					JOptionPane.showMessageDialog(null, "Players cannot have the same name. Please pick different names for all players.");
 				} else {
 
 					switch(amountOfPlayers) {
