@@ -102,25 +102,39 @@ public class GameLogic {
      * Rolls the two dice.
      * @return two dice rolls of random integers from 1 to 6.
      */
-    public int[] rollDice() {
-        int[] diceRoll = dice.rollDice();
 
+    public int[] rollDice() {
+
+        return new int[]{1,1};//checkRoll(dice.rollDice());
+    }
+
+
+
+    public int[] checkRoll(int[] diceRoll, Dice niceDice) {
+        this.dice = niceDice;
+        /*
         String historyStr = playerList.getActivePlayer().getName();
+
+         */
 
         if (diceRoll[0] == diceRoll[1]) {
             dice.doubleRoll();
-            historyStr += " Rolled a double: ";
+            //historyStr += " Rolled a double: ";
         } else {
-            historyStr += " Rolled a: ";
+            //historyStr += " Rolled a: ";
         }
-        historyStr += dice.getTotalRoll() + "\n";
+        //historyStr += dice.getTotalRoll() + "\n";
 
-        updateHistory(historyStr);
+        //updateHistory(historyStr);
 
-        playerList.getActivePlayer().checkPlayerRank();
 
+        //playerList.getActivePlayer().checkPlayerRank();
+
+/*
         movePlayerThread = new Thread(new LoopThread());
         movePlayerThread.start();
+
+ */
 
 //        updatePlayerList(); // tror att denna är onödig
 

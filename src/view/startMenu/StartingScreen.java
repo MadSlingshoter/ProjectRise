@@ -10,7 +10,6 @@ import java.awt.event.MouseListener;
 import javax.swing.*;
 
 import controller.GameLogic;
-import view.Introduction;
 
 /**
  * First screen which Model.player sees, here he is able to choose the amount of players and
@@ -215,6 +214,91 @@ public class StartingScreen extends JFrame {
 	}
 
 	/**
+	 * Method called when Model.player clicks start game
+	 */
+	public void startUpGame() {
+		String[] playerNameStr = playerNamesToStr();
+		String[] playerColorStr = playerColorsToStr();
+		controller.startNewGame(playerNameStr, playerColorStr);
+
+		dispose();
+	}
+
+	/**
+	 * Creates the right amount of players.
+	 */
+	public String[] playerNamesToStr() {
+		String[] playerNameStr = new String[amountOfPlayers];
+		for (int i = 0; i < amountOfPlayers; i++) {
+
+				playerTf[i].setText(playerTf[i].getText().substring(0, 10));
+
+			playerNameStr[i] = playerTf[i].getText();
+		}
+		return playerNameStr;
+	}
+
+	public String[] playerColorsToStr() {
+		String[] playerColorStr = new String[amountOfPlayers];
+		for (int i = 0; i < amountOfPlayers; i++) {
+			playerColorStr[i] = (String) playerColors[i].getSelectedItem();
+		}
+		return playerColorStr;
+	}
+
+	/**
+	 * Only used for testing purposes. Same functionality as textFieldsBlank.
+	 * @author Nicholas Narvell & Marcus Juninger
+	 * @param player1
+	 * @param player2
+	 * @param player3
+	 * @param player4
+	 * @return
+	 */
+	public boolean textFieldsBlank(String player1, String player2, String player3, String player4) {
+		try {
+			return (player1.isBlank() || player2.isBlank() || player3.isBlank() || player4.isBlank());
+		} catch (NullPointerException e) {
+			return false;
+		}
+	}
+
+	public boolean textFieldsBlank() {
+		try {
+			return tfPlayer1.getText().isBlank() || tfPlayer2.getText().isBlank() || tfPlayer3.getText().isBlank() || tfPlayer4.getText().isBlank();
+		} catch (NullPointerException e) {
+			return false;
+		}
+	}
+
+	/**
+	 * Only used for testing purposes. Same functionality as checkPlayerNamesNotSame.
+	 * @author Nicholas Narvell & Marcus Juninger
+	 * @param player1
+	 * @param player2
+	 * @param player3
+	 * @param player4
+	 * @return
+	 */
+	public boolean playerNamesSame(String player1, String player2, String player3, String player4) {
+		try {
+			return player1.equals(player2) || player1.equals(player3) || player1.equals(player4)
+					|| player2.equals(player3) || player2.equals(player4) || player3.equals(player4);
+		} catch (NullPointerException e) {
+			return false;
+		}
+	}
+
+	public boolean playerNamesSame() {
+		try {
+			return tfPlayer1.getText().equals(tfPlayer2.getText()) || tfPlayer1.getText().equals(tfPlayer3.getText()) || tfPlayer1.getText().equals(tfPlayer4.getText())
+					|| tfPlayer2.getText().equals(tfPlayer3.getText()) || tfPlayer2.getText().equals(tfPlayer4.getText()) || tfPlayer3.getText().equals(tfPlayer4.getText());
+		} catch (NullPointerException e) {
+			return false;
+		}
+	}
+
+	/**
 	 *
 	 * Buttonlistener class, listens for clicks.
 	 * @author Aevan Dino
@@ -259,10 +343,9 @@ public class StartingScreen extends JFrame {
 				 * Updated 2022-02-04 by Marcus Juninger to handle whitespace usernames in bug B4.
 				 * Updated 2022-03-01 by Susanne Vikström, to handle identical usernames, see bug B16.
 				 */
-				if(tfPlayer1.getText().isBlank() || tfPlayer2.getText().isBlank() || tfPlayer3.getText().isBlank() || tfPlayer4.getText().isBlank()) {
+				if(textFieldsBlank()) {
 					JOptionPane.showMessageDialog(null, "All players must have a name. Names can not be blank.");
-				} else if(tfPlayer1.getText().equals(tfPlayer2.getText()) || tfPlayer1.getText().equals(tfPlayer3.getText()) || tfPlayer1.getText().equals(tfPlayer4.getText())
-						|| tfPlayer2.getText().equals(tfPlayer3.getText()) || tfPlayer2.getText().equals(tfPlayer4.getText()) || tfPlayer3.getText().equals(tfPlayer4.getText())){
+				} else if(playerNamesSame()){
 					JOptionPane.showMessageDialog(null, "Players cannot have the same name. Please pick different names for all players.");
 				} else {
 
@@ -299,39 +382,6 @@ public class StartingScreen extends JFrame {
 			}
 		}
 
-		/**
-		 * Method called when Model.player clicks start game
-		 */
-		public void startUpGame() {
-			String[] playerNameStr = playerNamesToStr();
-			String[] playerColorStr = playerColorsToStr();
-			controller.startNewGame(playerNameStr, playerColorStr);
-
-			dispose();
-		}
-		
-		/**
-		 * Creates the right amount of players.
-		 */
-		private String[] playerNamesToStr() {
-			String[] playerNameStr = new String[amountOfPlayers];
-			for (int i = 0; i < amountOfPlayers; i++) {
-				if (playerTf[i].getText().length()>=10) {
-					playerTf[i].setText(playerTf[i].getText().substring(0, 10));
-				}
-				playerNameStr[i] = playerTf[i].getText();
-			}
-			return playerNameStr;
-		}
-
-		private String[] playerColorsToStr() {
-			String[] playerColorStr = new String[amountOfPlayers];
-			for (int i = 0; i < amountOfPlayers; i++) {
-				playerColorStr[i] = (String) playerColors[i].getSelectedItem();
-			}
-			return playerColorStr;
-		}
-		
 		/**
 		 * Updated 2022-03-01 by Susanne Vikström, to show the Confirm button when player Reset players (B25)
 		 * Whenever Model.player chooses to reset the start screen
