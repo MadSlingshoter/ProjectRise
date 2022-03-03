@@ -133,13 +133,11 @@ public class ManageEvents {
 				propertyDialog(tempProperty, player);
 			}
 		} else {
-
-			if (tempProperty.getLevel() == 0) {
-				tempInt = tempProperty.getDefaultRent();
-
+			if (player != tempProperty.getOwner()) {
+				tempInt = tempProperty.getTotalRent();
 				control(player, tempInt);
 				if (player.isAlive()) {
-					eventsPanel.setMessage( player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
+					eventsPanel.setMessage(player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
 							+ tempProperty.getOwner().getName());
 
 					controller.updateHistory(player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
@@ -147,27 +145,17 @@ public class ManageEvents {
 					player.decreaseBalance(tempInt);
 					player.decreaseNetWorth(tempInt);
 					tempProperty.getOwner().increaseBalance(tempInt);
-				}
-			} else {
-				tempInt = tempProperty.getTotalRent();
-				control(player, tempInt);
-				if (player.isAlive() && !(player.equals(tempProperty.getOwner()))) {
-					eventsPanel.setMessage( player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
-							+ tempProperty.getOwner().getName());
-
-					controller.updateHistory(player.getName() + " paid " + tempProperty.getTotalRent() + " GC to "
-							+ tempProperty.getOwner().getName() + "\n");
-					player.decreaseBalance(tempInt);
-					tempProperty.getOwner().increaseBalance(tempInt);
+					tempProperty.getOwner().increaseNetWorth(tempInt);
 				}
 			}
+
 		}
 	}
 
 	/**
 	 * Method called when the player lands on a work tile.
 	 * @param tile tile
-	 * @param player Model.player
+	 * @param player player
 	 */
 	public void workEvent(Tile tile, Player player) {
 
@@ -180,7 +168,7 @@ public class ManageEvents {
 	}
 
 	/**
-	 * Method called when the Model.player lands on a tax tile.
+	 * Method called when the player lands on a tax tile.
 	 * @param tile
 	 * @param player
 	 */
@@ -223,24 +211,27 @@ public class ManageEvents {
 				tavernDialog(tempTavernObj, player);
 			}
 		} else {
-			int randomValue = 0;
+			if (tempTavernObj.getOwner() != player) {
+				int randomValue = 0;
 
-			if (tempTavernObj.getOwner().getAmountOfTaverns() == 1) {
-				randomValue = (controller.getRoll() * 10);
-			} else if (tempTavernObj.getOwner().getAmountOfTaverns() == 2) {
-				randomValue = (controller.getRoll() * 20);
-			}
-			
-			control(player, randomValue);
+				if (tempTavernObj.getOwner().getAmountOfTaverns() == 1) {
+					randomValue = (controller.getRoll() * 10);
+				} else if (tempTavernObj.getOwner().getAmountOfTaverns() == 2) {
+					randomValue = (controller.getRoll() * 20);
+				}
 
-			if (player.isAlive()) {
-				eventsPanel.setMessage(player.getName() + " paid " + randomValue + " GC to " + tempTavernObj.getOwner().getName());
+				control(player, randomValue);
 
-				controller.updateHistory(player.getName() + " paid " + randomValue + " GC to "
-						+ tempTavernObj.getOwner().getName() + "\n");
-				tempTavernObj.getOwner().increaseBalance(randomValue);
-				tempTavernObj.getOwner().increaseNetWorth(randomValue);
-				player.decreaseBalance(randomValue);
+				if (player.isAlive()) {
+					eventsPanel.setMessage(player.getName() + " paid " + randomValue + " GC to " + tempTavernObj.getOwner().getName());
+
+					controller.updateHistory(player.getName() + " paid " + randomValue + " GC to "
+							+ tempTavernObj.getOwner().getName() + "\n");
+					tempTavernObj.getOwner().increaseBalance(randomValue);
+					tempTavernObj.getOwner().increaseNetWorth(randomValue);
+					player.decreaseBalance(randomValue);
+					player.decreaseNetWorth(randomValue);
+				}
 			}
 		}
 	}

@@ -75,7 +75,7 @@ public class Property implements Tile {
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public void setPurchaseable(Boolean canBeBought) {
@@ -83,7 +83,7 @@ public class Property implements Tile {
 	}
 
 	public Boolean getPurchaseable() {
-		return this.purchaseable;
+		return purchaseable;
 	}
 
 	public void setColor(Color colorOfTile) {
@@ -91,7 +91,7 @@ public class Property implements Tile {
 	}
 
 	public Color getColor() {
-		return this.color;
+		return color;
 	} 
 
 	public void setPrice(int price) {
@@ -99,7 +99,7 @@ public class Property implements Tile {
 	}
 
 	public int getPrice() {
-		return this.price;
+		return price;
 	}
 
 	
@@ -112,12 +112,12 @@ public class Property implements Tile {
 	}
 	
 	
-	public void setDefaultRent(int defRent) {
-		this.defaultRent = defRent;
+	public void setDefaultRent(int defaultRent) {
+		this.defaultRent = defaultRent;
 	}
 
 	public int getDefaultRent() {
-		return this.defaultRent;
+		return defaultRent;
 	}
 
 	public void setRentPerLevel(int rentPerLevel) {
@@ -125,15 +125,15 @@ public class Property implements Tile {
 	}
 
 	public int getRentPerLevel() {
-		return this.rentPerLevel;
+		return rentPerLevel;
 	}
 	
 	public int getTotalRent() {
-		return this.defaultRent + (this.rentPerLevel * this.levels);
+		return defaultRent + (rentPerLevel * levels);
 	}
 	
-	public void setLevel(int num) {
-		this.levels=num;
+	public void setLevel(int levels) {
+		this.levels=levels;
 	}
 	
 	public int getLevelPrice() {
