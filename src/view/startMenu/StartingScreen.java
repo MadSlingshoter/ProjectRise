@@ -10,13 +10,13 @@ import java.awt.event.MouseListener;
 import javax.swing.*;
 
 import controller.GameLogic;
-import view.Introduction;
 
 /**
  * First screen which Model.player sees, here he is able to choose the amount of players and
  * what names and colors the players will have during the game.
  * @author Aevan Dino
- *
+ * Updated 2022-03-03 by Mattias Bengtsson to move initialization to inside methods and moving variables
+ * to local variables.
  */
 public class StartingScreen extends JFrame {
 
@@ -24,49 +24,22 @@ public class StartingScreen extends JFrame {
 
 	private GameLogic controller;
 
-	private JButton btnConfirm = new JButton("Confirm");
-	private JButton btnStartGame = new JButton("Start Game");
-	private JButton btnReset = new JButton("Reset");
+	private JButton btnConfirm;
+	private JButton btnStartGame;
+	private JButton btnReset;
 
 	private ImageIcon imgBackground = new ImageIcon(
 			new ImageIcon("images/fancyRoll.jpg").getImage().getScaledInstance(900, 860, Image.SCALE_SMOOTH));
 
-	private Font fontRadioButtons = new Font("Gabriola", Font.PLAIN, 24);
-	private Font fontHeader = new Font("Gabriola", Font.BOLD, 92); 
-	private Font fontLabel = new Font("Gabriola", Font.BOLD, 42);
-	private Font fontLabelPlayer = new Font("Gabriola", Font.BOLD, 30);
+	private JPanel pnlPlayerInfo;
 
-	private JPanel pnlPlayerInfo = new JPanel();
+	private JRadioButton[] radioButtons;
 
-	private JRadioButton[] radioButtons = new JRadioButton[4];
-	private ButtonGroup btnGroup = new ButtonGroup();
+	private JLabel[] playerLabels;
 
-	private JLabel lblPlayer = new JLabel("How many players?");
-	private JLabel lblBackground = new JLabel("", imgBackground, JLabel.CENTER);
-	private JLabel lblRise = new JLabel("RISE");
+	private JTextField[] playerTf;
 
-	private JLabel lblPlayerIndex1 = new JLabel("Player 1:");
-	private JLabel lblPlayerIndex2 = new JLabel("Player 2:");
-	private JLabel lblPlayerIndex3 = new JLabel("Player 3:");
-	private JLabel lblPlayerIndex4 = new JLabel("Player 4:");
-	private JLabel[] playerLabels = new JLabel[] { lblPlayerIndex1, lblPlayerIndex2, lblPlayerIndex3, lblPlayerIndex4 };
-
-	private JTextField tfPlayer1 = new JTextField("Name1...");
-	private JTextField tfPlayer2 = new JTextField("Name2...");
-	private JTextField tfPlayer3 = new JTextField("Name3...");
-	private JTextField tfPlayer4 = new JTextField("Name4...");
-	private JTextField[] playerTf = new JTextField[] { tfPlayer1, tfPlayer2, tfPlayer3, tfPlayer4 };
-
-	private String[] colors = new String[]  { "RED", "GREEN", "ORANGE", "YELLOW", "CYAN", "MAGENTA" };
-	private String[] colors1 = new String[] { "GREEN", "ORANGE", "YELLOW", "CYAN", "MAGENTA", "RED" };
-	private String[] colors2 = new String[] { "ORANGE", "YELLOW", "CYAN", "MAGENTA", "RED", "GREEN" };
-	private String[] colors3 = new String[] { "YELLOW", "CYAN", "MAGENTA", "RED", "GREEN", "ORANGE" };
-
-	private JComboBox<String> playerColors1 = new JComboBox<String>(colors);
-	private JComboBox<String> playerColors2 = new JComboBox<String>(colors1);
-	private JComboBox<String> playerColors3 = new JComboBox<String>(colors2);
-	private JComboBox<String> playerColors4 = new JComboBox<String>(colors3);
-	private JComboBox[] playerColors = new JComboBox[] { playerColors1, playerColors2, playerColors3, playerColors4 };
+	private JComboBox[] playerColors;
 
 	/**
 	 * Mute button
@@ -74,7 +47,7 @@ public class StartingScreen extends JFrame {
 	 * Changed from Checkbox to Toggle button.
 	 * /Marcus Juninger
 	 */
-	private JToggleButton mute = new JToggleButton("Music: On");
+	private JToggleButton mute;
 
 	private int amountOfPlayers;
 
@@ -83,7 +56,7 @@ public class StartingScreen extends JFrame {
 	}
 	
 	/**
-	 * Method to initilize the GUI.
+	 * Method to initialize the GUI.
 	 */
 	public void initializeGUI() {
 		createFrame();
@@ -91,6 +64,7 @@ public class StartingScreen extends JFrame {
 		/**
 		 * JPanel for information about players
 		 */
+		pnlPlayerInfo = new JPanel();
 		pnlPlayerInfo.setBounds(0, 0, 900, 830);
 		pnlPlayerInfo.setOpaque(false);
 		pnlPlayerInfo.setLayout(null);
@@ -98,13 +72,15 @@ public class StartingScreen extends JFrame {
 		/**
 		 * Label used to create a background
 		 */
+		JLabel lblBackground = new JLabel("", imgBackground, JLabel.CENTER);
 		lblBackground.setBounds(0, 0, 900, 830);
-		lblBackground.setIcon(imgBackground);
 		lblBackground.setLayout(null);
 
 		/**
 		 * Header reading "RISE"
 		 */
+		Font fontHeader = new Font("Gabriola", Font.BOLD, 92);
+		JLabel lblRise = new JLabel("RISE");
 		lblRise.setFont(fontHeader);
 		lblRise.setBounds(375, 125, 175, 200);
 		lblBackground.add(lblRise);
@@ -112,6 +88,8 @@ public class StartingScreen extends JFrame {
 		/**
 		 * JLabel reading "How many players?"
 		 */
+		Font fontLabel = new Font("Gabriola", Font.BOLD, 42);
+		JLabel lblPlayer = new JLabel("How many players?");
 		lblPlayer.setFont(fontLabel);
 		lblPlayer.setBounds(315, 175, 300, 200);
 
@@ -123,6 +101,7 @@ public class StartingScreen extends JFrame {
 		/**
 		 * Confirm button
 		 */
+		btnConfirm = new JButton("Confirm");
 		btnConfirm.setBounds(375, 345, 150, 30);
 		btnConfirm.addActionListener(new ButtonListener());
 
@@ -134,13 +113,15 @@ public class StartingScreen extends JFrame {
 		/**
 		 * Start game button
 		 */
+		btnStartGame = new JButton("Start Game");
 		btnStartGame.setBounds(350, 530, 200, 40);
 		btnStartGame.setVisible(false);
 		btnStartGame.addActionListener(new ButtonListener());
 
 		/**
-		 * Rest button
+		 * Reset button
 		 */
+		btnReset = new JButton("Reset");
 		btnReset.setBounds(375, 575, 150, 30);
 		btnReset.setVisible(false);
 		btnReset.addActionListener(new ButtonListener());
@@ -151,6 +132,7 @@ public class StartingScreen extends JFrame {
 		 * Now looks more like a proper on/off toggle switch instead of a checkbox.
 		 * /Marcus Juninger.
 		 */
+		mute = new JToggleButton("Music: On");
 		mute.setBounds(10, 740, 100, 40);
 		mute.addActionListener(new ButtonListener());
 
@@ -165,13 +147,17 @@ public class StartingScreen extends JFrame {
 		lblBackground.add(btnStartGame);
 		lblBackground.add(mute);
 		add(lblBackground);
+
+		/**
+		 * Updated 2022-03-03 by Mattias Bengtsson. Moved method call here to fix 
+		 */
+		setVisible(true);
 	}
 
 	public void createFrame() {
 		setSize(900, 830);
 		setTitle("Choose Player!");
 		setLayout(null);
-		setVisible(true);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -181,7 +167,10 @@ public class StartingScreen extends JFrame {
 	 * Methods create radio buttons using for-loop
 	 */
 	public void createRadioButtons() {
-		for (int i = 0; i < 3; i++) {
+		radioButtons = new JRadioButton[3];
+		ButtonGroup btnGroup = new ButtonGroup();
+		Font fontRadioButtons = new Font("Gabriola", Font.PLAIN, 24);
+		for (int i = 0; i < radioButtons.length; i++) {
 			JRadioButton btnRadio = new JRadioButton((i + 2) + "");
 			btnRadio.setBounds(375 + i * 65, 275, 50, 50);
 			btnRadio.setFont(fontRadioButtons);
@@ -194,19 +183,29 @@ public class StartingScreen extends JFrame {
 	
 	/**
 	 * Creates all players, textfields, labels and color choice boxes
+	 * Updated 2022-03-03 by Mattias Bengtsson to unify the color selection boxes.
 	 */
 	public void createPlayers() {
+		Font fontLabelPlayer = new Font("Gabriola", Font.BOLD, 30);
+		String[] colors = new String[]  { "RED", "GREEN", "ORANGE", "YELLOW", "CYAN", "MAGENTA" };
+		playerLabels = new JLabel[4];
+		playerTf = new JTextField[4];
+		playerColors = new JComboBox[4];
 		for (int i = 0; i < 4; i++) {
+			playerLabels[i] = new JLabel("Player" + (i+1) + ":");
 			playerLabels[i].setBounds(280, 360 + i * 40, 150, 50);
 			playerLabels[i].setFont(fontLabelPlayer);
 			playerLabels[i].setVisible(false);
 
+			playerTf[i] = new JTextField("Name" + (i+1) + "...");
 			playerTf[i].setBounds(375, 360 + i * 40, 150, 30);
 			playerTf[i].setVisible(false);
 			playerTf[i].addMouseListener(new MouseAction());
 
+			playerColors[i] = new JComboBox<String>(colors);
 			playerColors[i].setBounds(530, 360 + i * 40, 100, 30);
 			playerColors[i].setVisible(false);
+			playerColors[i].setSelectedIndex(i);
 
 			pnlPlayerInfo.add(playerLabels[i]);
 			pnlPlayerInfo.add(playerTf[i]);
@@ -236,7 +235,7 @@ public class StartingScreen extends JFrame {
 				}
 			}
 			/**
-			 * Updated 2022-03-01 by Susanne Vikström, to show the Confirm button when player Reset players
+			 * Updated 2022-03-01 by Susanne Vikstrï¿½m, to show the Confirm button when player Reset players
 			 */
 
 			if (e.getSource() == btnConfirm) {
@@ -257,50 +256,73 @@ public class StartingScreen extends JFrame {
 
 				/**
 				 * Updated 2022-02-04 by Marcus Juninger to handle whitespace usernames in bug B4.
-				 * Updated 2022-03-01 by Susanne Vikström, to handle identical usernames, see bug B16.
+				 * Updated 2022-03-01 by Susanne Vikstrï¿½m, to handle identical usernames, see bug B16.
+				 * Updated 2022-03-03 by Mattias Bengtsson to handle identical color choices in bug B7 and for handling
+				 * when information has been entered before Reset has been clicked.
 				 */
-				if(tfPlayer1.getText().isBlank() || tfPlayer2.getText().isBlank() || tfPlayer3.getText().isBlank() || tfPlayer4.getText().isBlank()) {
+				if(!checkBlankNames()) {
 					JOptionPane.showMessageDialog(null, "All players must have a name. Names can not be blank.");
-				} else if(tfPlayer1.getText().equals(tfPlayer2.getText()) || tfPlayer1.getText().equals(tfPlayer3.getText()) || tfPlayer1.getText().equals(tfPlayer4.getText())
-						|| tfPlayer2.getText().equals(tfPlayer3.getText()) || tfPlayer2.getText().equals(tfPlayer4.getText()) || tfPlayer3.getText().equals(tfPlayer4.getText())){
+				} else if(!checkSameName()){
 					JOptionPane.showMessageDialog(null, "Players cannot have the same name. Please pick different names for all players.");
+				} else if (!checkColors()){
+					JOptionPane.showMessageDialog(null, "Two or more players are not allowed to have the same color");
 				} else {
-
-					switch(amountOfPlayers) {
-
-					case 2:
-						if(playerColors[0].getSelectedItem().equals(playerColors[1].getSelectedItem())) {
-							JOptionPane.showMessageDialog(null, "Two players are not allowed to have the same color");
-						} else {
-							startUpGame();
-						}
-						break;
-
-					case 3:
-						if(playerColors[0].getSelectedItem().equals(playerColors[1].getSelectedItem()) 
-								|| playerColors[2].getSelectedItem().equals(playerColors[0].getSelectedItem())) {
-							JOptionPane.showMessageDialog(null, "Two or more players are not allowed to have the same color");
-						} else {
-							startUpGame();
-						}
-						break;
-
-					case 4:
-						if(playerColors[0].getSelectedItem().equals(playerColors[1].getSelectedItem()) 
-								|| playerColors[2].getSelectedItem().equals(playerColors[3].getSelectedItem())
-								|| playerColors[0].getSelectedItem().equals(playerColors[3].getSelectedItem())) {
-							JOptionPane.showMessageDialog(null, "Two or more players are not allowed to have the same color");
-						} else {
-							startUpGame();
-						}
-						break;
-					}
+					startUpGame();
 				}
 			}
 		}
 
 		/**
-		 * Method called when Model.player clicks start game
+		 * Added 2022-03-03 by Mattias Bengtsson
+		 * Checks if all players have a non-blank name. For B29.
+		 * @return true if all players have a non-blank name, false otherwise
+		 */
+		private boolean checkBlankNames() {
+			boolean ok = true;
+			for (int i = 0; i < amountOfPlayers && ok; i++) {
+				if (playerTf[i].getText().isBlank()) {
+					ok = false;
+				}
+			}
+			return ok;
+		}
+
+		/**
+		 * Added 2022-03-03 by Mattias Bengtsson
+		 * Checks if all players have chosen a unique name. For B29.
+		 * @return true if all unique names, false otherwise
+		 */
+		private boolean checkSameName() {
+			boolean ok = true;
+			for (int i = 0; i < amountOfPlayers && ok; i++) {
+				for (int j = i+1; j < amountOfPlayers && ok; j++) {
+					if (playerTf[i].getText().equals(playerTf[j].getText())) {
+						ok = false;
+					}
+				}
+			}
+			return ok;
+		}
+
+		/**
+		 * Added 2022-03-03 by Mattias Bengtsson
+		 * Checks if all players have chosen a unique color. For B7 and B29.
+		 * @return true if all unique colors, false otherwise
+		 */
+		private boolean checkColors() {
+			boolean ok = true;
+			for (int i = 0; i < amountOfPlayers-1 && ok; i++) {
+				for (int j = i+1; j < amountOfPlayers && ok; j++) {
+					if (playerColors[i].getSelectedItem().equals(playerColors[j].getSelectedItem())) {
+						ok = false;
+					}
+				}
+			}
+			return ok;
+		}
+
+		/**
+		 * Method called when player clicks start game
 		 */
 		public void startUpGame() {
 			String[] playerNameStr = playerNamesToStr();
@@ -333,8 +355,8 @@ public class StartingScreen extends JFrame {
 		}
 		
 		/**
-		 * Updated 2022-03-01 by Susanne Vikström, to show the Confirm button when player Reset players (B25)
-		 * Whenever Model.player chooses to reset the start screen
+		 * Updated 2022-03-01 by Susanne Vikstrï¿½m, to show the Confirm button when player Reset players (B25)
+		 * Whenever player chooses to reset the start screen
 		 * @param amountOfPlayers, how many players to draw
 		 * @param bool, boolean indicating whether or not components should be visible.
 		 */
@@ -347,37 +369,40 @@ public class StartingScreen extends JFrame {
 			btnStartGame.setVisible(bool);
 			btnReset.setVisible(bool);
 			btnConfirm.setVisible(!bool);
+			for (JRadioButton radioButton : radioButtons) {
+				radioButton.setEnabled(!bool);
+			}
 		}
 	}
 
 	/**
-	 * MouseClickedListener for the name inserting so the text disappear when the Model.player clicks.
+	 * MouseClickedListener for the name inserting so the text disappear when the player clicks.
 	 */
 	private class MouseAction implements MouseListener{
-		int counter1 = 0, counter2 = 0, counter3 =0, counter4=0;
+		int counter0 = 0, counter1 = 0, counter2 =0, counter3 =0;
 		public void mouseClicked(MouseEvent e) {
-			if(e.getSource() == tfPlayer1) {
-				if(counter1<1) {
+			if(e.getSource() == playerTf[0]) {
+				if(counter0 <1) {
+					counter0++;
+					playerTf[0].setText(null);
+				}
+			}
+			if(e.getSource() == playerTf[1]) {
+				if(counter1 <1) {
 					counter1++;
-					tfPlayer1.setText(null);
+					playerTf[1].setText(null);
 				}
 			}
-			if(e.getSource() == tfPlayer2) {
-				if(counter2<1) {
+			if(e.getSource() == playerTf[2]) {
+				if(counter2 <1) {
 					counter2++;
-					tfPlayer2.setText(null);
+					playerTf[2].setText(null);
 				}
 			}
-			if(e.getSource() == tfPlayer3) {
-				if(counter3<1) {
+			if(e.getSource() == playerTf[3]) {
+				if(counter3 <1) {
 					counter3++;
-					tfPlayer3.setText(null);
-				}
-			}
-			if(e.getSource() == tfPlayer4) {
-				if(counter4<1) {
-					counter4++;
-					tfPlayer4.setText(null);
+					playerTf[3].setText(null);
 				}
 			}
 		}
