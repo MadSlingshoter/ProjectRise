@@ -117,6 +117,8 @@ public class ManageEvents {
 	/**
 	 * Method called when player lands on a property. Checks if it's availability and if the player has to pay rent or
 	 * can purchase the property.
+	 * Updated 2022-03-03 by Mattias Bengtsson to handle correct total wealth updating and not paying rent to oneself
+	 * (B18 and B19).
 	 * @param tile tile
 	 * @param player player
 	 */
@@ -196,7 +198,9 @@ public class ManageEvents {
 	}
 
 	/**
-	 * Method called when players lands on a tavern tile, checks it's availability. 
+	 * Method called when players lands on a tavern tile, checks it's availability.
+	 * Updated 2022-03-03 by Mattias Bengtsson to handle correct total wealth updating and not paying rent to oneself
+	 * (B18 and B19).
 	 * @param tile
 	 * @param player
 	 */

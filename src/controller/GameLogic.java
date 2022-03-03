@@ -206,7 +206,7 @@ public class GameLogic {
                 total + "?");
         if (res == 0) {
             currPlayer.sellProperty(currProperty, total);
-            updateHistory(currPlayer.getName() + " sold " + currProperty.getName());
+            updateHistory(currPlayer.getName() + " sold " + currProperty.getName() + "\n");
             updatePlayerInfo();
         }
     }
@@ -227,7 +227,7 @@ public class GameLogic {
                 if (currProperty.increaseLevel()) {
                     currPlayer.decreaseBalance(currProperty.getLevelPrice());
                     mainWindow.getEastPanel().getPropertyWindowAt(playerIndex).getPlayerPropertyPanelAt(propertyIndex).upgradeUpdate();
-                    updateHistory(currPlayer.getName() + " upgraded " + currProperty.getName());
+                    updateHistory(currPlayer.getName() + " upgraded " + currProperty.getName() + "\n");
                     updatePlayerInfo();
                 } else {
                     mainWindow.showMessage("You need to increase your rank to upgrade this property more.");
@@ -253,7 +253,7 @@ public class GameLogic {
             if (currProperty.decreaseLevel()) {
                 currPlayer.increaseBalance(currProperty.getLevelPrice());
                 mainWindow.getEastPanel().getPropertyWindowAt(playerIndex).getPlayerPropertyPanelAt(propertyIndex).downgradeUpdate();
-                updateHistory(currPlayer.getName() + " downgraded " + currProperty.getName());
+                updateHistory(currPlayer.getName() + " downgraded " + currProperty.getName() + "\n");
                 updatePlayerInfo();
             } else {
                 mainWindow.showMessage("You cannot downgrade this property more.");
