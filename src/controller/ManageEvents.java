@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.Random;
-
 import model.ChurchTax;
 import view.EventsPanel;
 import view.messageGui.DeathGUI;
@@ -59,6 +58,7 @@ public class ManageEvents {
         if (player.getPlayerRank() == PlayerRanks.KINGS || controller.getPlayerList().getLength() == 1) {
             eventsPanel.setMessage("You won!", player.getName());
             eventsPanel.activateResetButton();
+            controller.updatePlayerInfo();
         }
 
         if (tile instanceof Property) {
@@ -364,8 +364,10 @@ public class ManageEvents {
             property.setPurchaseable(false);
             player.decreaseBalance(property.getPrice());
             controller.updateHistory(player.getName() + " purchased " + property.getName() + "\n");
-            controller.updatePlayerInfo();
-        } else {
+
+        }
+
+        else {
             controller.updateHistory(player.getName() + " did not have enough gold " + property.getName() + "\n");
         }
     }
