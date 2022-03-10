@@ -56,6 +56,18 @@ public class ManageEvents {
     public void newEvent(Tile tile, Player player) {
         player.checkPlayerRank();
 
+        if (player.getBalance() < 0) {
+
+            player.setIsAlive(false);
+            controller.getPlayerList().switchToNextPlayer();
+            controller.getPlayerList().eliminatePlayer(player);
+            controller.getPlayerList().updatePlayerList();
+            controller.updatePlayerInfo();
+            controller.getMainWindow().getBoard().removePlayer(player);
+            deathGUI.addGui();
+
+        }
+
         if (player.getPlayerRank() == PlayerRanks.KINGS || controller.getPlayerList().getLength() == 1) {
             eventsPanel.setMessage("You won!", player.getName());
             eventsPanel.activateResetButton();
@@ -108,6 +120,7 @@ public class ManageEvents {
 
         if (player.getBalance() < amount) {
             player.setIsAlive(false);
+            player.setIsAlive(false);
             controller.getPlayerList().switchToNextPlayer();
             controller.getPlayerList().eliminatePlayer(player);
             controller.getPlayerList().updatePlayerList();
@@ -132,18 +145,6 @@ public class ManageEvents {
         boolean purchasable = tempProperty.getPurchaseable();
 
         if (purchasable) {
-
-            if (player.getBalance() < 0) {
-
-                player.setIsAlive(false);
-                controller.getPlayerList().switchToNextPlayer();
-                controller.getPlayerList().eliminatePlayer(player);
-                controller.getPlayerList().updatePlayerList();
-                controller.updatePlayerInfo();
-                controller.getMainWindow().getBoard().removePlayer(player);
-                deathGUI.addGui();
-
-            }
 
             if (player.getBalance() < tempProperty.getPrice()) {
 

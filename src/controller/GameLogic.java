@@ -4,6 +4,7 @@ import model.BackgroundMusic;
 import model.Dice;
 import model.player.Player;
 import model.player.PlayerList;
+import model.player.PlayerRanks;
 import model.tiles.Property;
 import view.MainWindow;
 import view.Introduction;
@@ -154,9 +155,6 @@ public class GameLogic {
      * Determines what happens when the End Turn button is clicked.
      */
     public void endTurn() {
-
-
-
 
         playerList.switchToNextPlayer();
 
