@@ -154,6 +154,10 @@ public class GameLogic {
      * Determines what happens when the End Turn button is clicked.
      */
     public void endTurn() {
+
+
+
+
         playerList.switchToNextPlayer();
 
         if (playerList.getActivePlayer().isPlayerInJail()) {
