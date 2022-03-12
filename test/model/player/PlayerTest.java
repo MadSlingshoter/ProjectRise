@@ -1,11 +1,13 @@
 package model.player;
 
+import model.tiles.Property;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 
+import javax.swing.*;
 import java.awt.*;
 
 import static org.junit.Assert.*;
@@ -15,7 +17,7 @@ public class PlayerTest {
     /**
      * Tests for the Player class
      *
-     * Author: Bajram Gerbeshi
+     * Author: Bajram Gerbeshi, Ali Albabily
      *
      * Date: 2022-02-15
      *
@@ -144,5 +146,71 @@ public class PlayerTest {
     @DisplayName("Should be null (inialized as null")
     public void Image(){
         assertNull(p.getImage());
+    }
+
+    /* Player's ranks related tests */
+
+    @Test
+    public void checkSetPlayerRank() {
+        Player player = new Player("Alice", null, null, 0);
+        player.setPlayerRank(PlayerRanks.KNIGHT);
+        assertEquals(PlayerRanks.KNIGHT, player.getPlayerRank());
+    }
+
+    @Test
+    public void checkDefaultPlayerRank() {
+        Player player = new Player("Alice", null, null, 0);
+        assertEquals(PlayerRanks.PEASANT, player.getPlayerRank());
+    }
+
+    @Test
+    public void checkIfPlayerReachedRankKnight() {
+        Player player = new Player("Alice", null, null, 0);
+        player.increaseNetWorth(500);
+        player.checkPlayerRank();
+        assertEquals(PlayerRanks.KNIGHT, player.getPlayerRank());
+    }
+
+    @Test
+    public void checkIfPlayerReachedRankLord() {
+        Player player = new Player("Alice", null, null, 0);
+        player.increaseNetWorth(2500);
+        player.checkPlayerRank();
+        assertEquals(PlayerRanks.LORD, player.getPlayerRank());
+    }
+
+    @Test
+    public void checkIfPlayerReachedRankKings() {
+        Player player = new Player("Alice", null, null, 0);
+        player.increaseNetWorth(6000);
+        player.checkPlayerRank();
+        assertEquals(PlayerRanks.KINGS, player.getPlayerRank());
+    }
+
+    /* Player's properties related tests */
+
+    @Test
+    public void checkDefaultNumberOfPlayerProperties() {
+        Player player = new Player("Alice", null, null, 0);
+        assertEquals(0, player.getProperties().size());
+    }
+
+    @Test
+    public void checkIfNumberOfPlayerPropertiesIncreased() {
+        Player player = new Player("Alice", null, null, 0);
+        Property woodCutterCamp = new Property("Wood Cutter Camp", 60, 2, 30, new Color(58,20,56,255), 50,new ImageIcon("tilePics/Wood.png"));
+        player.addNewProperty(woodCutterCamp);
+        assertEquals(1, player.getProperties().size());
+    }
+
+    @Test
+    public void checkIfNumberOfPlayerPropertiesDecreased() {
+        Player player = new Player("Alice", null, null, 0);
+        Property woodCutterCamp = new Property("Wood Cutter Camp", 60, 2, 30, new Color(58,20,56,255), 50,new ImageIcon("tilePics/Wood.png"));
+        Property fishStand = new Property("Fish Stand", 100, 6, 40, new Color(131, 166, 219, 255),50 ,new ImageIcon("tilePics/fish.png"));
+        player.addNewProperty(woodCutterCamp);
+        player.addNewProperty(fishStand);
+        player.removeProperty(fishStand);
+        assertEquals(1, player.getProperties().size());
     }
 }
