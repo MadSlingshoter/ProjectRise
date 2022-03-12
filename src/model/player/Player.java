@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import model.tiles.Property;
 import model.tiles.Tavern;
 import model.tiles.Tile;
+import view.MainWindow;
 
 /**
  * Player class deals with everything that has to do with a player.
@@ -370,10 +371,13 @@ public class Player {
 		if (getNetWorth() >= 4000) {
 			setPlayerRank(PlayerRanks.LORD);
 		}
-		if (getNetWorth() >= 7500) {
+		if (getNetWorth() > 7500) {
 			setPlayerRank(PlayerRanks.KINGS);
+				JOptionPane.showMessageDialog(null, " Game over!!!");
+
+			}
 		}
-	}
+
 
 	/**
 	 * @return propertiesOwned, returns entire ArrayList of properties owned.
@@ -381,7 +385,6 @@ public class Player {
 	public ArrayList<Property> getProperties() {
 		return this.propertiesOwned;
 	}
-
 	/**
 	 * @return all taverns owned by player
 	 */

@@ -56,8 +56,10 @@ public class ManageEvents {
         player.checkPlayerRank();
 
         if (player.getPlayerRank() == PlayerRanks.KINGS || controller.getPlayerList().getLength() == 1) {
-            eventsPanel.setMessage("You won!", player.getName());
-            eventsPanel.activateResetButton();
+            eventsPanel.setMessage(" You won!, Game over", player.getName());
+            controller.updatePlayerInfo();
+         eventsPanel.activateResetButton();
+
             controller.updatePlayerInfo();
         }
 
