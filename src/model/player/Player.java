@@ -375,13 +375,11 @@ public class Player {
 			setPlayerRank(PlayerRanks.KINGS);
 
 		}
-		else if(getBalance() == 7500 && getPlayerRank() == PlayerRanks.KINGS) {
+		else if(getBalance() >= 7500 && getPlayerRank() == PlayerRanks.KINGS) {
 			JOptionPane.showMessageDialog(null, " Game over!!!" + getName() + "Has has exceeded 7500 GC");
-
+          System.exit(0);
 		}
-
-
-			}
+	}
 
 	/**
 	 * @return propertiesOwned, returns entire ArrayList of properties owned.

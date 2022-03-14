@@ -69,7 +69,7 @@ public class ManageEvents {
         }
 
         if (player.getPlayerRank() == PlayerRanks.KINGS || controller.getPlayerList().getLength() == 1) {
-            eventsPanel.setMessage(" You won!" + "Game over,", player.getName()+ "has exceeded 7500 GC");
+            eventsPanel.setMessage(" You won!", player.getName());
             controller.updatePlayerInfo();
              eventsPanel.activateResetButton();
 
