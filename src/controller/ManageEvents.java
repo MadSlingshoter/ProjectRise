@@ -55,6 +55,7 @@ public class ManageEvents {
      */
     public void newEvent(Tile tile, Player player) {
         player.checkPlayerRank();
+        controller.updatePlayerInfo();
 
         if (player.getBalance() < 0) {
 
