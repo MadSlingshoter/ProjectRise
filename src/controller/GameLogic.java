@@ -155,9 +155,6 @@ public class GameLogic {
      */
     public void endTurn() {
 
-
-
-
         playerList.switchToNextPlayer();
 
         if (playerList.getActivePlayer().isPlayerInJail()) {

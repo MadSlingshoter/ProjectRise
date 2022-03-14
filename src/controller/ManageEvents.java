@@ -68,9 +68,9 @@ public class ManageEvents {
         }
 
         if (player.getPlayerRank() == PlayerRanks.KINGS || controller.getPlayerList().getLength() == 1) {
-            eventsPanel.setMessage(" You won!, Game over", player.getName());
+            eventsPanel.setMessage(" You won!" + "Game over,", player.getName()+ "has exceeded 7500 GC");
             controller.updatePlayerInfo();
-         eventsPanel.activateResetButton();
+             eventsPanel.activateResetButton();
 
             controller.updatePlayerInfo();
         }
@@ -364,12 +364,11 @@ public class ManageEvents {
         if (property.getPrice() <= player.getBalance()) {
             property.setOwner(player);
             player.addNewProperty(property);
-            property.setPurchaseable(false);
+            property.setPurchaseable(true);
             player.decreaseBalance(property.getPrice());
             controller.updateHistory(player.getName() + " purchased " + property.getName() + "\n");
 
         }
-
         else {
             controller.updateHistory(player.getName() + " did not have enough gold " + property.getName() + "\n");
         }
