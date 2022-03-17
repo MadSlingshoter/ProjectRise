@@ -375,10 +375,6 @@ public class Player {
 			setPlayerRank(PlayerRanks.KINGS);
 
 		}
-		if(getNetWorth() >= 7500 && getPlayerRank() == PlayerRanks.KINGS) {
-			JOptionPane.showMessageDialog(null, " Game over!!!" + getName() + "Has has exceeded 7500 GC");
-          System.exit(0);
-		}
 	}
 
 	/**
