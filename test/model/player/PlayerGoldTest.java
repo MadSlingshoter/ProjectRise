@@ -42,7 +42,7 @@ class PlayerGoldTest {
         testPlayer2 = new Player("Testplayer2",new ImageIcon(),1);
 
         PlayerNameArray [1] = "Testplayer2";
-        PlayerColorArray [0]="YELLOW";
+        PlayerColorArray [1]="YELLOW";
 
 
         System.out.println("Test player 1 Balance = "+ testPlayer.getBalance());
@@ -94,7 +94,6 @@ class PlayerGoldTest {
 
         System.out.println("Testing if TestPlayer2 has the correct new balance after the purchase");
         Assert.assertEquals(1000,testPlayer2.getBalance());
-        
     }
 
 }
