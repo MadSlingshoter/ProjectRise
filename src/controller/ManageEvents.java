@@ -17,6 +17,8 @@ import model.tiles.Tax;
 import model.tiles.Tile;
 import model.tiles.Work;
 
+import javax.swing.*;
+
 /**
  * The class handles all the events that occur when a Model.player lands on a tile.
  *
@@ -56,25 +58,7 @@ public class ManageEvents {
         player.checkPlayerRank();
         controller.updatePlayerInfo();
 
-        if (player.getBalance() < 0) {
-
-            player.setIsAlive(false);
-            controller.getPlayerList().switchToNextPlayer();
-            controller.getPlayerList().eliminatePlayer(player);
-            controller.getPlayerList().updatePlayerList();
-            controller.updatePlayerInfo();
-            controller.getMainWindow().getBoard().removePlayer(player);
-            deathGUI.addGui();
-
-        }
-
-        if (player.getPlayerRank() == PlayerRanks.KINGS || controller.getPlayerList().getLength() == 1) {
-            eventsPanel.setMessage(" You won!", player.getName());
-            controller.updatePlayerInfo();
-             eventsPanel.activateResetButton();
-
-            controller.updatePlayerInfo();
-        }
+        checkWinningConditions(player);
 
         if (tile instanceof Property) {
             propertyEvent(tile, player);
@@ -107,7 +91,23 @@ public class ManageEvents {
         if (tile instanceof FortuneTeller) {
             fortuneTellerEvent(tile, player);
         }
+
+        player.checkPlayerRank();
         controller.updatePlayerInfo();
+
+        if (player.getBalance() < 0) {
+
+            player.setIsAlive(false);
+            controller.getPlayerList().switchToNextPlayer();
+            controller.getPlayerList().eliminatePlayer(player);
+            controller.getPlayerList().updatePlayerList();
+            controller.updatePlayerInfo();
+            controller.getMainWindow().getBoard().removePlayer(player);
+            deathGUI.addGui();
+
+        }
+
+        checkWinningConditions(player);
     }
 
     public void hideEventPanels() {
@@ -467,6 +467,24 @@ public class ManageEvents {
         } else {
             eventsPanel.setMessage("You have been cursed! \n"
                     + "You pay " + amount + " GC", "Curse");
+        }
+    }
+
+    /**
+     * This method ends the game when any of the winning conditions has been met.
+     *
+     * @param player,   player who landed on the tile
+     */
+    private void checkWinningConditions(Player player) {
+
+        if (player.getPlayerRank() == PlayerRanks.KINGS) {
+            JOptionPane.showMessageDialog(null, " Game over!!! " + player.getName() + " has exceeded 7500 GC");
+            System.exit(0);
+        }
+
+        if (controller.getPlayerList().getLength() == 1) {
+            JOptionPane.showMessageDialog(null, " Game over!!! The last standing player wins!");
+            System.exit(0);
         }
     }
 
