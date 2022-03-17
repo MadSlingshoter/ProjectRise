@@ -89,7 +89,7 @@ public class ManageEvents {
         }
 
         if (tile instanceof FortuneTeller) {
-            fortuneTellerEvent(tile, player);
+            fortuneTellerEvent(tile, player); // blessing
         }
 
         player.checkPlayerRank();
@@ -364,11 +364,11 @@ public class ManageEvents {
     public void propertyBuy(Property property, Player player) {
         if (property.getPrice() <= player.getBalance()) {
             property.setOwner(player);
-            player.addNewProperty(property);
             property.setPurchaseable(true);
+            player.addNewProperty(property);
             player.decreaseBalance(property.getPrice());
             controller.updateHistory(player.getName() + " purchased " + property.getName() + "\n");
-
+            controller.updatePlayerInfo();
         }
         else {
             controller.updateHistory(player.getName() + " did not have enough gold " + property.getName() + "\n");
@@ -436,7 +436,8 @@ public class ManageEvents {
      * @param player,   player who landed on the tile
      */
     public void fortune(FortuneTeller tempCard, Player player) {
-        tempCard.setAmount(rand.nextInt(600) - 300);
+        int randomAmount = rand.nextInt(600) - 300;
+        tempCard.setAmount(randomAmount);
         if (tempCard.getAmount() < 0) {
             int pay = (tempCard.getAmount() * -1);
             tempCard.setIsBlessing(false);
@@ -452,9 +453,12 @@ public class ManageEvents {
         } else {
             tempCard.setIsBlessing(true);
             tempCard.setFortune("BLESSING");
+            System.out.println(tempCard.getAmount());
             player.increaseBalance(tempCard.getAmount());
             player.increaseNetWorth(tempCard.getAmount());
+          //  System.out.println(player.getBalance());
             controller.updateHistory(player.getName() + " received " + tempCard.getAmount() + " CG\n");
+           // System.out.println("a" + player.getBalance());
             newFortune(true, tempCard.getAmount());
         }
     }
@@ -462,7 +466,7 @@ public class ManageEvents {
     public void newFortune(boolean b, int amount) {
         if (b) {
             eventsPanel.setMessage("Fortune smiles upon you. \n"
-                    + "You recived " + amount + " GC", "Blessing");
+                    + "You received " + amount + " GC", "Blessing");
 
         } else {
             eventsPanel.setMessage("You have been cursed! \n"

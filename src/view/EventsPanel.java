@@ -157,6 +157,7 @@ public class EventsPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 deactivateAllButtons();
                 manageEvent.propertyBuy(property,player);
+
                 setVisible(false);
             }
         });
@@ -187,7 +188,7 @@ public class EventsPanel extends JPanel {
         yesTavern.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                deactivateAllButtons();
+                deactivateAllButtons();  // buying tavern
                 manageEvent.buyTavern(tavern,player);
                 setVisible(false);
             }
