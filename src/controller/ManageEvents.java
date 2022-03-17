@@ -368,7 +368,7 @@ public class ManageEvents {
             property.setPurchaseable(true);
             player.decreaseBalance(property.getPrice());
             controller.updateHistory(player.getName() + " purchased " + property.getName() + "\n");
-
+            controller.updatePlayerInfo();
         }
         else {
             controller.updateHistory(player.getName() + " did not have enough gold " + property.getName() + "\n");
